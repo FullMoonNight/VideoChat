@@ -4,5 +4,45 @@
 .main-view-header .user-profile-menu {
   display: flex;
 }
+.main-view-header .user-profile-menu img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+.main-view-header .user-profile-menu .status-username {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+.main-view-header .user-profile-menu .status-username .status-emblem {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.main-view-header .user-profile-menu .status-username .status-emblem.active {
+  background-color: #10a856;
+}
+.main-view-header .user-profile-menu .status-username .status-emblem.sleep {
+  background-color: #c4e509;
+}
+.main-view-header .user-profile-menu .status-username .status-emblem.invisible {
+  background-color: gray;
+  position: relative;
+}
+.main-view-header .user-profile-menu .status-username .status-emblem.invisible::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #fff;
+}
+.main-view-header .user-profile-menu .status-username .user-username {
+  margin-left: 10px;
+}
 
 /*# sourceMappingURL=MainHeader.css.map */
