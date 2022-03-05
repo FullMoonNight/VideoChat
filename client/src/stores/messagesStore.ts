@@ -1,15 +1,14 @@
-import {action, makeAutoObservable} from "mobx";
+import {action, makeAutoObservable, toJS} from "mobx";
 
 interface MessageType {
     message: string,
     type: KindOfMessage,
-    // cssClass: 'visible' | 'vanishing',
     id: number,
 }
 
 type KindOfMessage = 'success' | 'error' | 'primary'
 
-export default class MessagesStore {
+class MessagesStore {
     messages: MessageType[]
 
     constructor() {
@@ -18,15 +17,18 @@ export default class MessagesStore {
     }
 
     @action
-    async addMessage(message: { message: string, type: KindOfMessage }) {
+    addMessage(message: { message: string, type: KindOfMessage }) {
+        if (!message.message) return
         const id = new Date().getTime()
-        this.messages.push({id: id, message: message.message, type: message.type})
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        this.deleteMessage(id)
+        this.messages.push({id, ...message})
+        setTimeout(() => this.deleteMessage(id), 0)
     }
 
     @action
     deleteMessage(id: number) {
-        this.messages.filter(e => e.id !== id)
+        this.messages = this.messages.filter(e => e.id !== id)
     }
 }
+
+const messagesStore = new MessagesStore()
+export {messagesStore}

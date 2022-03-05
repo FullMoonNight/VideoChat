@@ -1,13 +1,10 @@
 import LoginRequest, {LoginParams} from "../requests/user/LoginRequest";
 import RegistrationRequest, {RegisterParams} from "../requests/user/RegistrationRequest";
-// import MessageController from "./MessageController";
+import MessageController from "./MessageController";
 import LogoutRequest from "../requests/user/LogoutRequest";
 import CheckAuthRequest from "../requests/user/CheckAuthRequest";
-import AppStore from "../stores/appStore";
-import AuthStore from "../stores/authStore";
-
-const appStore = new AppStore()
-const authStore = new AuthStore()
+import {appStore} from "../stores/appStore";
+import {authStore} from "../stores/authStore";
 
 export default class AuthController {
     static async login(params: LoginParams) {
@@ -17,10 +14,10 @@ export default class AuthController {
 
         if (result.status === 200) {
             localStorage.setItem('accessToken', result.data.accessToken)
-            authStore.login()
-            // MessageController.success('Успешный вход')
+            authStore.login({userId: result.data.userId})
+            MessageController.success('Успешный вход')
         } else if (result.response && result.response.status !== 500) {
-            // MessageController.error(result.response.data.error)
+            MessageController.error(result.response.data.message)
         }
         appStore.appEndLoading()
     }
@@ -32,10 +29,10 @@ export default class AuthController {
 
         if (result.status === 200) {
             localStorage.setItem('accessToken', result.data.accessToken)
-            authStore.login()
-            // MessageController.success('Успешная регистрация')
+            authStore.login({userId: result.data.userId})
+            MessageController.success('Успешная регистрация')
         } else if (result.response && result.response.status !== 500) {
-            // MessageController.error(result.response.data.error)
+            MessageController.error(result.response.data.message)
         }
         appStore.appEndLoading()
     }
@@ -48,9 +45,9 @@ export default class AuthController {
         if (result.status === 200) {
             localStorage.removeItem('accessToken')
             authStore.logout()
-            // if (!automatic) MessageController.primary('Произведен выход из системы')
+            if (!automatic) MessageController.primary('Произведен выход из системы')
         } else if (result.response && result.response.status !== 500) {
-            // MessageController.error(result.response.data.error)
+            MessageController.error(result.response.data.message)
         }
         appStore.appEndLoading()
     }
@@ -60,7 +57,7 @@ export default class AuthController {
         const result = await command.execute()
 
         if (result.status === 200) {
-            authStore.login()
+            authStore.login({userId: result.data.userId})
         }
     }
 }

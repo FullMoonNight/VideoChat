@@ -46,7 +46,7 @@ class UserService {
             }
             if (!user.accountApprove) {
                 //Perform some logic for send message to confirm the account email
-                throw new Error("Email on this account isn't confirm")
+                // throw new Error("Email on this account isn't confirm")
             }
             const equalPasswords = await compare(password, user.password)
             if (!equalPasswords) {
@@ -67,7 +67,7 @@ class UserService {
     }
 
     async logout(refreshToken) {
-        if (!refreshToken) throw new Error('Refresh token isn\'t exist')
+        if (!refreshToken) throw new Error()
         await JwtService.deleteToken(refreshToken)
     }
 

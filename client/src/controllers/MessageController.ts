@@ -1,16 +1,15 @@
-import store from "../redux/store";
-import {addMessage} from "../redux/reducers/messagesReducer";
+import {messagesStore} from "../stores/messagesStore";
 
 export default class MessageController {
     static success(message: string) {
-        store.dispatch(addMessage({message, type: "success"}))
+        messagesStore.addMessage({message, type: "success"})
     }
 
     static error(message: string) {
-        store.dispatch(addMessage({message, type: "error"}))
+        messagesStore.addMessage({message, type: "error"})
     }
 
     static primary(message: string) {
-        store.dispatch(addMessage({message, type: "primary"}))
+        messagesStore.addMessage({message, type: "primary"})
     }
 }

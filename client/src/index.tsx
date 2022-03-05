@@ -2,26 +2,29 @@ import React, {createContext} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import AppStore from "./stores/appStore";
-import AuthStore from "./stores/authStore";
-import MessagesStore from "./stores/messagesStore";
+import {appStore} from "./stores/appStore";
+import {authStore} from "./stores/authStore";
+import {messagesStore} from "./stores/messagesStore";
+import {HashRouter} from "react-router-dom";
 
 type MainContextType = {
-    app: AppStore,
-    auth: AuthStore,
-    messages: MessagesStore
+    app: typeof appStore,
+    auth: typeof authStore,
+    messages: typeof messagesStore
 }
 export const MainContext = createContext<MainContextType>({} as MainContextType)
 
 ReactDOM.render(
     <MainContext.Provider value={{
-        app: new AppStore(),
-        auth: new AuthStore(),
-        messages: new MessagesStore()
+        app: appStore,
+        auth: authStore,
+        messages: messagesStore
     }}>
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
+        <HashRouter>
+            <React.StrictMode>
+                <App/>
+            </React.StrictMode>
+        </HashRouter>
     </MainContext.Provider>,
     document.getElementById('root')
 );

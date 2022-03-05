@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 
-export default class AppStore {
+class AppStore {
     waiting: boolean
     loading: boolean
 
@@ -26,3 +26,6 @@ export default class AppStore {
         this.loading = false
     }
 }
+
+const appStore = new AppStore()
+export {appStore}
