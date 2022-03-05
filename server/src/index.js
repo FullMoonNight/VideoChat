@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const path = require("path");
 
 const app = express()
 const server = require('http').createServer(app)
@@ -14,6 +15,8 @@ const sequelize = require('./database')
 const {} = require('./models')
 
 const PORT = process.env.PORT || 5000;
+console.log(path.resolve(__dirname, 'static'))
+
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -21,6 +24,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
+app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', MainRouter);
 app.use(ErrorMiddleware);
 

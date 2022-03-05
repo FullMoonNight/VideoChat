@@ -5,7 +5,7 @@ export const MainHeader = () => {
     return (
         <header className='main-view-header'>
             <div className="user-profile-menu">
-                <img src="123" alt=""/>
+                <img src="user-avatar/123.png" alt=""/>
                 <div className="status-username">
                     <span className='status-emblem'>&nbsp;</span>
                     <p className='user-username'>Rakuk</p>
