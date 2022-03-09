@@ -1,8 +1,8 @@
 import React from 'react';
-import {MainHeader} from "./main-view-header/MainHeader";
+import {AsidePanel} from "./main-view-aside/AsidePanel";
 
 export const MainView = () => {
     return (
-        <MainHeader/>
+        <AsidePanel/>
     );
 };

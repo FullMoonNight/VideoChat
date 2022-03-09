@@ -1,0 +1,16 @@
+@mixin common-button {
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s;
+
+    &:hover {
+        filter: brightness(80%);
+    }
+
+    &:active {
+        filter: brightness(90%);
+    }
+}

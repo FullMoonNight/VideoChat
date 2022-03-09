@@ -5,15 +5,20 @@ import {MainContext} from "./index";
 import AuthController from "./controllers/AuthController";
 import {MessageFeed} from "./components/system-message/MessageFeed";
 import {useRoutes} from "./Router/useRoutes";
+import ProfileSettingsController from "./controllers/ProfileSettingsController";
 
 const App = observer(() => {
     const {app} = useContext(MainContext)
     const routes = useRoutes()
-    console.log(1)
 
     useEffect(() => {
         app.appStartLoading()
         AuthController.checkAuth().then(res => app.appEndLoading())
+    }, [])
+
+    useEffect(() => {
+        const currentScheme = ProfileSettingsController.getCurrentColorScheme()
+        ProfileSettingsController.changeColorScheme(currentScheme)
     }, [])
 
     return (

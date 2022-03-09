@@ -13,7 +13,7 @@ interface LoginResponse {
 
 export default class LoginRequest extends BaseRequest<LoginResponse> {
     method: MethodType = 'post'
-    route: string = '/user/login-registration'
+    route: string = '/authenticate/login'
     parameters: LoginParams
     
     constructor(parameters: LoginParams) {

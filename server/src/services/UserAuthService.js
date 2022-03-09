@@ -5,8 +5,7 @@ const {v4} = require('uuid')
 const {hash, compare} = require("bcrypt");
 const {ApiError} = require("../Error/ApiError");
 
-
-class UserService {
+class UserAuthService {
     async registration(email, username, password) {
         return await sequelize.transaction(async (t) => {
             const candidate = await UserModel.findOne({where: {email}})
@@ -78,8 +77,6 @@ class UserService {
             }
             const userData = JwtService.validateRefreshToken(refreshToken)
             const tokenFromDB = await JwtService.findToken(userData.userId)
-            console.log(refreshToken)
-            console.log(tokenFromDB.token)
             if (!userData || tokenFromDB.token !== refreshToken) {
                 throw ApiError.unauthorized()
             }
@@ -97,4 +94,4 @@ class UserService {
 
 }
 
-module.exports = new UserService()
+module.exports = new UserAuthService()

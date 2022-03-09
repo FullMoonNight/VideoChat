@@ -5,7 +5,7 @@ require('dotenv').config()
 
 class JwtService {
     generateTokens(payload) {
-        const accessToken = sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '15m'})
+        const accessToken = sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '5s'})
         const refreshToken = sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn: '30d'})
 
         return {
@@ -16,6 +16,9 @@ class JwtService {
 
     async updateToken(userId, refreshToken) {
         const userToken = await TokensModel.findOne({where: {user_id: userId}})
+        if (!userToken) {
+            return await this.saveNewToken(userId, refreshToken)
+        }
         userToken.token = refreshToken
         await userToken.save()
     }

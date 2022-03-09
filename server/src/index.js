@@ -1,7 +1,9 @@
+const path = require("path");
+
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const path = require("path");
+const fileUpload = require('express-fileupload')
 
 const app = express()
 const server = require('http').createServer(app)
@@ -15,13 +17,13 @@ const sequelize = require('./database')
 const {} = require('./models')
 
 const PORT = process.env.PORT || 5000;
-console.log(path.resolve(__dirname, 'static'))
 
 
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }))
+app.use(fileUpload({}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.resolve(__dirname, 'static')))

@@ -47,7 +47,7 @@ class RequestExecutor<T> {
                 if (error.response.status === 401 && error.config && !originRequest._isRetry) {
                     originRequest._isRetry = true
                     try {
-                        const response = await axios.post<{ accessToken: string }>(`${process.env.REACT_APP_DESTINATION_HOST}/api/user/refresh`, null, {withCredentials: true})
+                        const response = await axios.post<{ accessToken: string }>(`${process.env.REACT_APP_DESTINATION_HOST}/api/authenticate/refresh`, null, {withCredentials: true})
                         localStorage.setItem('accessToken', response.data.accessToken)
                         return axiosInstance.request(originRequest)
                     } catch (e) {

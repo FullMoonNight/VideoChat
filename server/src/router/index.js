@@ -1,10 +1,11 @@
 const Router = require("express");
-const UserRouter = require('./UserRouter.js')
+const UserAuthRouter = require('./UserAuthRouter')
+const UserProfileRouter = require('./UserProfileRouter')
 
 
 const router = new Router()
 
-router.use('/user', UserRouter)
-
+router.use('/authenticate', UserAuthRouter)
+router.use('/profile_settings', UserProfileRouter)
 
 module.exports = router

@@ -1,10 +1,10 @@
-import LoginRequest, {LoginParams} from "../requests/user/LoginRequest";
-import RegistrationRequest, {RegisterParams} from "../requests/user/RegistrationRequest";
+import LoginRequest, {LoginParams} from "../requests/authenticate/LoginRequest";
+import RegistrationRequest, {RegisterParams} from "../requests/authenticate/RegistrationRequest";
 import MessageController from "./MessageController";
-import LogoutRequest from "../requests/user/LogoutRequest";
-import CheckAuthRequest from "../requests/user/CheckAuthRequest";
+import LogoutRequest from "../requests/authenticate/LogoutRequest";
+import CheckAuthRequest from "../requests/authenticate/CheckAuthRequest";
 import {appStore} from "../stores/appStore";
-import {authStore} from "../stores/authStore";
+import {userStore} from "../stores/userStore";
 
 export default class AuthController {
     static async login(params: LoginParams) {
@@ -14,7 +14,7 @@ export default class AuthController {
 
         if (result.status === 200) {
             localStorage.setItem('accessToken', result.data.accessToken)
-            authStore.login({userId: result.data.userId})
+            userStore.login({userId: result.data.userId})
             MessageController.success('Успешный вход')
         } else if (result.response && result.response.status !== 500) {
             MessageController.error(result.response.data.message)
@@ -29,7 +29,7 @@ export default class AuthController {
 
         if (result.status === 200) {
             localStorage.setItem('accessToken', result.data.accessToken)
-            authStore.login({userId: result.data.userId})
+            userStore.login({userId: result.data.userId})
             MessageController.success('Успешная регистрация')
         } else if (result.response && result.response.status !== 500) {
             MessageController.error(result.response.data.message)
@@ -44,7 +44,7 @@ export default class AuthController {
 
         if (result.status === 200) {
             localStorage.removeItem('accessToken')
-            authStore.logout()
+            userStore.logout()
             if (!automatic) MessageController.primary('Произведен выход из системы')
         } else if (result.response && result.response.status !== 500) {
             MessageController.error(result.response.data.message)
@@ -57,7 +57,7 @@ export default class AuthController {
         const result = await command.execute()
 
         if (result.status === 200) {
-            authStore.login({userId: result.data.userId})
+            userStore.login({userId: result.data.userId})
         }
     }
 }

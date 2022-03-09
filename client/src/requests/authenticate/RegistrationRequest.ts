@@ -14,7 +14,7 @@ interface RegisterResponse {
 
 export default class RegistrationRequest extends BaseRequest<RegisterResponse> {
     method: MethodType = "post"
-    route: string = "/user/registration"
+    route: string = "/authenticate/registration"
     parameters: RegisterParams
 
     constructor(parameters: RegisterParams) {

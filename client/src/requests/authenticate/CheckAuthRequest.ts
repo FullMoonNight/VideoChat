@@ -5,5 +5,5 @@ interface CheckAuthResponse {
 }
 
 export default class CheckAuthRequest extends BaseRequest<CheckAuthResponse> {
-    route: string = '/user/checkauth'
+    route: string = '/authenticate/checkauth'
 }

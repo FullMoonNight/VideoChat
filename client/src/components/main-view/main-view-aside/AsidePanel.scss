@@ -1,0 +1,19 @@
+.main-view-aside {
+    height: 100vh;
+    width: 300px;
+    background-color: var(--main-color);
+
+    .aside-header {
+        display: flex;
+        height: min-content;
+        background-color: var(--main-color-contrast);
+
+        .main-logo {
+            flex-grow: 1;
+            line-height: 50px;
+            font-size: 30px;
+            text-align: center;
+
+        }
+    }
+}

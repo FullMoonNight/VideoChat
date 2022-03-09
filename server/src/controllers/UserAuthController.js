@@ -1,16 +1,13 @@
 const {ApiError} = require("../Error/ApiError");
-const UserService = require('../services/UserService')
+const UserAuthService = require('../services/UserAuthService')
+const {errorHandler} = require("../utils/ErrorHandlerFunction");
 
-function errorHandler(e) {
-    if (e instanceof ApiError) return e
-    return ApiError.badRequest(e.message)
-}
 
-class UserController {
+class UserAuthController {
     async registration(req, res, next) {
         try {
             const {email, username, password} = req.body
-            const {refreshToken: newRefreshToken, email: e, ...userDto} = await UserService.registration(email, username, password)
+            const {refreshToken: newRefreshToken, email: e, ...userDto} = await UserAuthService.registration(email, username, password)
             res.cookie('refreshToken', newRefreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             res.status(200).json(userDto)
         } catch (e) {
@@ -21,7 +18,7 @@ class UserController {
     async login(req, res, next) {
         try {
             const {email, password} = req.body
-            const {refreshToken: newRefreshToken, email: e, ...userDto} = await UserService.login(email, password)
+            const {refreshToken: newRefreshToken, email: e, ...userDto} = await UserAuthService.login(email, password)
             res.cookie('refreshToken', newRefreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             res.status(200).json(userDto)
         } catch (e) {
@@ -32,7 +29,7 @@ class UserController {
     async logout(req, res, next) {
         try {
             const {refreshToken} = req.cookies
-            await UserService.logout(refreshToken)
+            await UserAuthService.logout(refreshToken)
             res.clearCookie('refreshToken')
             res.send('ok');
         } catch (e) {
@@ -43,7 +40,7 @@ class UserController {
     async refresh(req, res, next) {
         try {
             const {refreshToken} = req.cookies
-            const {refreshToken: newRefreshToken, email, ...userDto} = await UserService.refresh(refreshToken)
+            const {refreshToken: newRefreshToken, email, ...userDto} = await UserAuthService.refresh(refreshToken)
             res.cookie('refreshToken', newRefreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             res.json(userDto);
         } catch (e) {
@@ -65,4 +62,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController()
+module.exports = new UserAuthController()

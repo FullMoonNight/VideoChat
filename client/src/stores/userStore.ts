@@ -1,17 +1,19 @@
 import {action, makeAutoObservable} from "mobx";
 
 interface UserType {
-    id: string | null
+    userId: string | null
+    userImageId: string
 }
 
-class AuthStore {
+class UserStore {
     isAuth: boolean
     user: UserType
 
     constructor() {
         this.isAuth = false
         this.user = {
-            id: null
+            userId: null,
+            userImageId: '',
         }
         makeAutoObservable(this)
     }
@@ -19,15 +21,15 @@ class AuthStore {
     @action
     login({userId}: { userId?: string }) {
         this.isAuth = true
-        userId && (this.user.id = userId)
+        userId && (this.user.userId = userId)
     }
 
     @action
     logout() {
         this.isAuth = false
-        this.user.id = null
+        this.user.userId = null
     }
 }
 
-const authStore = new AuthStore()
-export {authStore}
+const userStore = new UserStore()
+export {userStore}

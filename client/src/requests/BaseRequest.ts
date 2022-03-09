@@ -30,7 +30,7 @@ export default class BaseRequest<T> implements Request {
         if (this.parameters && Object.keys(this.parameters).length && this.queryParams) {
             let quarryStr = ''
             for (const [key, value] of Object.entries(this.parameters)) {
-                if (value.toString().trim())
+                if (value && value.toString().trim())
                     quarryStr += `${key}=${value}&`
             }
             return `${this.route}?${quarryStr.substr(0, quarryStr.length - 1)}`

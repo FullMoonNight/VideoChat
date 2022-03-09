@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {appStore} from "./stores/appStore";
-import {authStore} from "./stores/authStore";
+import {userStore} from "./stores/userStore";
 import {messagesStore} from "./stores/messagesStore";
 import {HashRouter} from "react-router-dom";
 
 type MainContextType = {
     app: typeof appStore,
-    auth: typeof authStore,
+    user: typeof userStore,
     messages: typeof messagesStore
 }
 export const MainContext = createContext<MainContextType>({} as MainContextType)
@@ -17,7 +17,7 @@ export const MainContext = createContext<MainContextType>({} as MainContextType)
 ReactDOM.render(
     <MainContext.Provider value={{
         app: appStore,
-        auth: authStore,
+        user: userStore,
         messages: messagesStore
     }}>
         <HashRouter>
