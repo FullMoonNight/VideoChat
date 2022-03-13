@@ -1,22 +1,26 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useContext} from 'react';
 import './UserAccountSettingsPanel.css'
 import {useImmer} from "use-immer";
 import ProfileSettingsController from "../../../controllers/ProfileSettingsController";
+import {observer} from "mobx-react-lite";
+import {MainContext} from "../../../index";
 
 interface SettingsPanelFieldType {
     avatar: Blob,
     username: string,
-    name: string | undefined,
-    surname: string | undefined,
+    name?: string,
+    surname?: string,
     colorTheme: 'light' | 'dark'
 }
 
-export const UserAccountSettingsPanel = () => {
+export const UserAccountSettingsPanel = observer(() => {
+    const {profile, user} = useContext(MainContext)
+
     const [panelState, setPanelState] = useImmer<SettingsPanelFieldType>({
         avatar: new Blob(),
-        username: '',
-        name: '',
-        surname: '',
+        username: profile.username,
+        name: profile.name || '',
+        surname: profile.surname || '',
         colorTheme: ProfileSettingsController.getCurrentColorScheme()
     })
 
@@ -46,7 +50,6 @@ export const UserAccountSettingsPanel = () => {
         const event = e as ChangeEvent<HTMLInputElement>
         const field = event.target.name as 'username' | 'name' | 'surname'
         const value = event.target.value
-        console.log(field, value)
 
         setPanelState(draft => {
             draft[field] = value
@@ -55,12 +58,11 @@ export const UserAccountSettingsPanel = () => {
     }
 
     const submitHandler = async () => {
-        const imageBuffer = await panelState.avatar.arrayBuffer()
         await ProfileSettingsController.saveProfileSettings({
             username: panelState.username,
             name: panelState.name,
             surname: panelState.surname
-        }, imageBuffer)
+        }, panelState.avatar)
     }
 
     return (
@@ -84,7 +86,12 @@ export const UserAccountSettingsPanel = () => {
                                 alt='user'
                                 onChange={imageChangeHandler}
                             />
-                            <img src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/123.png`} alt=""/>
+                            <img src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/${user.user.userId}--${profile.userImageId}.png`}
+                                 alt=""
+                                 style={{
+                                     objectFit: 'cover'
+                                 }}
+                            />
                         </div>
                         <div className="user-info-block">
                             <div className="input-block">
@@ -132,4 +139,4 @@ export const UserAccountSettingsPanel = () => {
 
         </div>
     );
-};
+});

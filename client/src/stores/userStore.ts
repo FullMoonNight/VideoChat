@@ -2,7 +2,6 @@ import {action, makeAutoObservable} from "mobx";
 
 interface UserType {
     userId: string | null
-    userImageId: string
 }
 
 class UserStore {
@@ -13,7 +12,6 @@ class UserStore {
         this.isAuth = false
         this.user = {
             userId: null,
-            userImageId: '',
         }
         makeAutoObservable(this)
     }

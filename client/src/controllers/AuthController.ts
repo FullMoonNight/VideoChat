@@ -5,6 +5,7 @@ import LogoutRequest from "../requests/authenticate/LogoutRequest";
 import CheckAuthRequest from "../requests/authenticate/CheckAuthRequest";
 import {appStore} from "../stores/appStore";
 import {userStore} from "../stores/userStore";
+import {profileStore} from "../stores/profileStore";
 
 export default class AuthController {
     static async login(params: LoginParams) {
@@ -45,6 +46,7 @@ export default class AuthController {
         if (result.status === 200) {
             localStorage.removeItem('accessToken')
             userStore.logout()
+            profileStore.changeLoaded(false)
             if (!automatic) MessageController.primary('Произведен выход из системы')
         } else if (result.response && result.response.status !== 500) {
             MessageController.error(result.response.data.message)

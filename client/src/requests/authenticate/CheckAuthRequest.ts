@@ -1,9 +1,9 @@
 import BaseRequest from "../BaseRequest";
 
-interface CheckAuthResponse {
+interface CommandResponse {
     userId?: undefined
 }
 
-export default class CheckAuthRequest extends BaseRequest<CheckAuthResponse> {
+export default class CheckAuthRequest extends BaseRequest<CommandResponse> {
     route: string = '/authenticate/checkauth'
 }

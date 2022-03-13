@@ -8,7 +8,7 @@ interface MessageType {
 
 type KindOfMessage = 'success' | 'error' | 'primary'
 
-class MessagesStore {
+class SystemMessagesStore {
     messages: MessageType[]
 
     constructor() {
@@ -30,5 +30,5 @@ class MessagesStore {
     }
 }
 
-const messagesStore = new MessagesStore()
-export {messagesStore}
+const systemMessagesStore = new SystemMessagesStore()
+export {systemMessagesStore}

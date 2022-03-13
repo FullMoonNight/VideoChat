@@ -8,18 +8,22 @@ export interface SaveProfileSettingsParams extends Params {
     surname?: string | null
 }
 
-export default class SaveProfileSettingsRequest extends BaseRequest<any> {
+interface CommandResponse {
+    userImageId: string
+    username: string
+    name?: string
+    surname?: string
+}
+
+export default class SaveProfileSettingsRequest extends BaseRequest<CommandResponse> {
     method: MethodType = 'post'
     route: string = '/profile_settings'
-    queryParams: boolean = true
     parameters: SaveProfileSettingsParams
-    haveBinaryData: boolean = true
-    binaryData: ArrayBuffer
+    attachment: Blob
 
-    constructor(parameters: SaveProfileSettingsParams, requestBody: ArrayBuffer) {
+    constructor(parameters: SaveProfileSettingsParams, attachment: Blob) {
         super();
         this.parameters = parameters
-        this.binaryData = requestBody
-        console.log(requestBody)
+        this.attachment = attachment
     }
 }

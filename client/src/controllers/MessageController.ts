@@ -1,15 +1,15 @@
-import {messagesStore} from "../stores/messagesStore";
+import {systemMessagesStore} from "../stores/systemMessagesStore";
 
 export default class MessageController {
     static success(message: string) {
-        messagesStore.addMessage({message, type: "success"})
+        systemMessagesStore.addMessage({message, type: "success"})
     }
 
     static error(message: string) {
-        messagesStore.addMessage({message, type: "error"})
+        systemMessagesStore.addMessage({message, type: "error"})
     }
 
     static primary(message: string) {
-        messagesStore.addMessage({message, type: "primary"})
+        systemMessagesStore.addMessage({message, type: "primary"})
     }
 }

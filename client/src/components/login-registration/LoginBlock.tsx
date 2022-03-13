@@ -12,7 +12,7 @@ export const LoginBlock = ({emailHandler, passwordHandler, email, password}: Pro
         <form>
             <h3>Login</h3>
             <div className="input-field">
-                <input type="text" name="" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
+                <input type="email" name="" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
                 <label htmlFor="email">Email</label>
             </div>
             <div className="input-field">

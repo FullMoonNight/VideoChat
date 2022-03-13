@@ -6,9 +6,7 @@ export default class BaseRequest<T> implements Request {
     route: string = '';
     method: MethodType = 'get';
     parameters?: Params;
-    queryParams: boolean = false;
-    haveBinaryData: boolean = false;
-    binaryData?: ArrayBuffer;
+    attachment?: Blob | Blob[]
 
     async execute() {
         const requestExecutor = new RequestExecutor<T>(this)
@@ -20,14 +18,22 @@ export default class BaseRequest<T> implements Request {
         return {}
     };
 
-    getBinaryData() {
-        if (this.haveBinaryData) {
-            return this.binaryData
+    getAttachment() {
+        if (this.attachment) {
+            const formData = new FormData()
+            if (this.attachment instanceof Array) {
+                this.attachment.forEach(attachment => {
+                    formData.append('files', attachment)
+                })
+            } else {
+                formData.append('files', this.attachment)
+            }
+            return formData
         }
     }
 
     getRoute() {
-        if (this.parameters && Object.keys(this.parameters).length && this.queryParams) {
+        if (this.parameters && Object.keys(this.parameters).length && this.attachment) {
             let quarryStr = ''
             for (const [key, value] of Object.entries(this.parameters)) {
                 if (value && value.toString().trim())

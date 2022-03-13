@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import './UserMenu.css'
 import {useNavigate} from "react-router-dom";
+import AuthController from "../../../../../controllers/AuthController";
 
 interface Props {
     setActive: (active: boolean) => void,
@@ -13,13 +14,16 @@ export const UserMenu = ({setActive}: Props) => {
         }
         document.getElementById('root')?.addEventListener('click', handler)
         return () => document.getElementById('root')?.removeEventListener('click', handler)
-
     }, [])
 
     const navigation = useNavigate()
 
     const settingsHandler = () => {
         navigation('/main/settings')
+    }
+
+    const logoutHandler = () => {
+        AuthController.logout().then()
     }
 
     return (
@@ -30,7 +34,7 @@ export const UserMenu = ({setActive}: Props) => {
             <div onClick={settingsHandler}>
                 <span>Settings</span>
             </div>
-            <div>
+            <div onClick={logoutHandler}>
                 <span>Logout</span>
             </div>
         </div>

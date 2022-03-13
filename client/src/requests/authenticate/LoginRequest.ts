@@ -6,16 +6,16 @@ export interface LoginParams extends Params {
     password: string,
 }
 
-interface LoginResponse {
+interface CommandResponse {
     accessToken: string,
     userId: string
 }
 
-export default class LoginRequest extends BaseRequest<LoginResponse> {
+export default class LoginRequest extends BaseRequest<CommandResponse> {
     method: MethodType = 'post'
     route: string = '/authenticate/login'
     parameters: LoginParams
-    
+
     constructor(parameters: LoginParams) {
         super()
         this.parameters = parameters

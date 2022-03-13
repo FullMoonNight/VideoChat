@@ -5,13 +5,11 @@ export default interface Request {
     method: MethodType,
     route: string,
     parameters?: Params,
-    queryParams: boolean,
 
-    binaryData?: ArrayBuffer,
-    haveBinaryData: boolean
+    attachment?: Blob | Blob[],
 
     getParameters: () => Params | {}
-    getBinaryData: () => ArrayBuffer | undefined
+    getAttachment: () => FormData | undefined
     getRoute: () => string
 
 }

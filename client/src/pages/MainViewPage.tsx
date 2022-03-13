@@ -26,6 +26,7 @@ export const MainViewPage = () => {
         navigate('main')
     }
 
+
     return (
         <>
             <MainView/>

@@ -1,6 +1,7 @@
 import GetProfileSettingsRequest from "../requests/profile/GetProfileSettingsRequest";
-import {userStore} from "../stores/userStore";
 import SaveProfileSettingsRequest, {SaveProfileSettingsParams} from "../requests/profile/SaveProfileSettingsRequest";
+import {profileStore} from "../stores/profileStore";
+import {systemMessagesStore} from "../stores/systemMessagesStore";
 
 export default class ProfileSettingsController {
     static async getProfileSettings() {
@@ -8,17 +9,18 @@ export default class ProfileSettingsController {
         const result = await command.execute()
 
         if (result.status === 200) {
-            userStore.user.userImageId = result.data.userImageId
-
+            profileStore.setProfileSettings(result.data)
+            profileStore.changeLoaded(true)
         }
     }
 
-    static async saveProfileSettings(parameters: SaveProfileSettingsParams, requestBody: ArrayBuffer) {
-        const command = new SaveProfileSettingsRequest(parameters, requestBody)
+    static async saveProfileSettings(parameters: SaveProfileSettingsParams, image: Blob) {
+        const command = new SaveProfileSettingsRequest(parameters, image)
         const result = await command.execute()
 
         if (result.status === 200) {
-            console.log(result.data)
+            profileStore.setProfileSettings(result.data)
+            systemMessagesStore.addMessage({message: 'Профиль успешно сохранен', type: 'success'})
         }
     }
 

@@ -4,13 +4,15 @@ import './index.css';
 import App from './App';
 import {appStore} from "./stores/appStore";
 import {userStore} from "./stores/userStore";
-import {messagesStore} from "./stores/messagesStore";
+import {systemMessagesStore} from "./stores/systemMessagesStore";
+import {profileStore} from "./stores/profileStore";
 import {HashRouter} from "react-router-dom";
 
 type MainContextType = {
     app: typeof appStore,
     user: typeof userStore,
-    messages: typeof messagesStore
+    messages: typeof systemMessagesStore
+    profile: typeof profileStore
 }
 export const MainContext = createContext<MainContextType>({} as MainContextType)
 
@@ -18,7 +20,8 @@ ReactDOM.render(
     <MainContext.Provider value={{
         app: appStore,
         user: userStore,
-        messages: messagesStore
+        messages: systemMessagesStore,
+        profile: profileStore
     }}>
         <HashRouter>
             <React.StrictMode>

@@ -1,5 +1,6 @@
 const sequelize = require("../database");
 const JwtService = require("./JwtService")
+const UserProfileService = require("./UserProfileService.js")
 const {UserModel, TokensModel, UserSettingsModel} = require('../models')
 const {v4} = require('uuid')
 const {hash, compare} = require("bcrypt");
@@ -19,10 +20,12 @@ class UserAuthService {
                 password: encodedPassword,
                 accountApprove: false
             })
-            const userSettings = await UserSettingsModel.create({
+            const userAvatarId = await UserProfileService.generateDefaultUserAvatar(user.user_id, username)
+            await UserSettingsModel.create({
                 id: v4(),
                 user_id: user.user_id,
-                username
+                username,
+                imageId: userAvatarId
             })
             const {accessToken, refreshToken} = JwtService.generateTokens({userId: user.user_id, email: user.email})
 

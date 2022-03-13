@@ -2,6 +2,7 @@ const {Sequelize} = require('sequelize')
 const cls = require('cls-hooked')
 const namespace = cls.createNamespace('main-namespace')
 Sequelize.useCLS(namespace)
+
 require('dotenv').config()
 
 const sequelize = new Sequelize(

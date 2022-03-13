@@ -21,7 +21,7 @@ class RequestExecutor<T> {
 
     async execute(): Promise<AxiosResponse<T> & AxiosError<ErrorType>> {
         if (this.method === 'post') {
-            let data = this.command.binaryData ? this.command.getBinaryData() : this.command.getParameters()
+            let data = this.command.attachment ? this.command.getAttachment() : this.command.getParameters()
             return RequestExecutor.axios.post(this.command.getRoute(), data).catch(reason => reason)
         } else {
             return RequestExecutor.axios.get(this.command.getRoute()).catch(reason => reason)
