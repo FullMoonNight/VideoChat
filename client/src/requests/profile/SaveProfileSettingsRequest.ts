@@ -8,14 +8,14 @@ export interface SaveProfileSettingsParams extends Params {
     surname?: string | null
 }
 
-interface CommandResponse {
+interface SaveSettingsResponse {
     userImageId: string
     username: string
     name?: string
     surname?: string
 }
 
-export default class SaveProfileSettingsRequest extends BaseRequest<CommandResponse> {
+export default class SaveProfileSettingsRequest extends BaseRequest<SaveSettingsResponse> {
     method: MethodType = 'post'
     route: string = '/profile_settings'
     parameters: SaveProfileSettingsParams

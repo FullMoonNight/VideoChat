@@ -7,12 +7,12 @@ export interface RegisterParams extends Params {
     password: string,
 }
 
-interface CommandResponse {
+interface RegistrationResponse {
     accessToken: string,
     userId: string
 }
 
-export default class RegistrationRequest extends BaseRequest<CommandResponse> {
+export default class RegistrationRequest extends BaseRequest<RegistrationResponse> {
     method: MethodType = "post"
     route: string = "/authenticate/registration"
     parameters: RegisterParams

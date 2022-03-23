@@ -1,7 +1,9 @@
 .main-view-aside {
     height: 100vh;
-    width: 300px;
+    width: 360px;
     background-color: var(--main-color);
+    display: flex;
+    flex-direction: column;
 
     .aside-header {
         display: flex;
@@ -13,7 +15,13 @@
             line-height: 50px;
             font-size: 30px;
             text-align: center;
-
+            padding: 0 5px;
         }
+    }
+
+    .aside-main {
+        height: 100%;
+        display: flex;
+        overflow: hidden;
     }
 }

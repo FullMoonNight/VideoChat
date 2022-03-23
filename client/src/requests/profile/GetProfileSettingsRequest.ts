@@ -1,12 +1,12 @@
 import BaseRequest from "../BaseRequest";
 
-interface CommandResponse {
+interface GetSettingsResponse {
     userImageId: string
     username: string
     name?: string
     surname?: string
 }
 
-export default class GetProfileSettingsRequest extends BaseRequest<CommandResponse> {
+export default class GetProfileSettingsRequest extends BaseRequest<GetSettingsResponse> {
     route: string = '/profile_settings'
 }

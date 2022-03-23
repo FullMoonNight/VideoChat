@@ -1,0 +1,45 @@
+.menu-block {
+    background-color: var(--main-color);
+    filter: brightness(90%);
+    min-width: 60px;
+    height: 100%;
+
+    .menu-item-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .menu-item {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            margin-top: 7px;
+            color: var(--accent-color);
+
+            &:hover {
+                background-color: var(--main-color-contrast);
+            }
+
+            &.active {
+                &:after {
+                    content: '';
+                    width: 5px;
+                    height: 35px;
+                    background-color: var(--accent-color);
+                    position: absolute;
+                    top: 50%;
+                    left: -6px;
+                    transform: translateY(-50%);
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+
+}
