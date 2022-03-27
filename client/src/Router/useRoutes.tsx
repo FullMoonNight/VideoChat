@@ -18,9 +18,7 @@ export function useRoutes() {
     } else {
         return (
             <Routes>
-                <Route path='/main' element={<MainViewPage/>}>
-                    <Route path='settings' element={<UserAccountSettingsPanel/>}/>
-                </Route>
+                <Route path='/main' element={<MainViewPage/>}/>
                 <Route path='*' element={<Navigate to='main'/>}/>
             </Routes>
         )

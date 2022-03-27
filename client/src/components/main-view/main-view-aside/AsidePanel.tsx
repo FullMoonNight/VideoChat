@@ -16,7 +16,7 @@ export const AsidePanel = () => {
             </header>
             <main className='aside-main'>
                 <AsideMenu/>
-                {components.asideComponent}
+                {components.asidePanel}
             </main>
         </aside>
     );

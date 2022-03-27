@@ -1,9 +1,15 @@
-import React, {CSSProperties} from 'react';
-import {Outlet, useLocation, useNavigate} from 'react-router-dom'
+import React, {createContext, CSSProperties, useState} from 'react';
 import {MainView} from "../components/main-view/MainView";
 
+interface WinContext {
+    setContextWindow: (window: JSX.Element | null) => void,
+}
+
+export const WinContext = createContext<WinContext>({} as WinContext)
 
 export const MainViewPage = () => {
+    const [ContextWindow, setContextWindow] = useState<JSX.Element | null>(null)
+
     const style = {
         position: 'absolute',
         top: 0,
@@ -17,25 +23,22 @@ export const MainViewPage = () => {
         alignItems: 'center'
     } as CSSProperties
 
-    const navigate = useNavigate()
-    const location = useLocation()
-    const main = location.pathname === '/main'
-
-    const goToMain = (e: any) => {
+    const closeHandler = (e: any) => {
         if (e.target.dataset.element !== 'close-wrapper') return
-        navigate('main')
+        setContextWindow(null)
     }
 
-
     return (
-        <>
+        <WinContext.Provider value={{setContextWindow}}>
             <MainView/>
-            {main ?
-                null :
-                <div style={style} data-element='close-wrapper' onClick={goToMain}>
-                    <Outlet/>
-                </div>}
-        </>
+            {
+                ContextWindow ?
+                    <div style={style} data-element='close-wrapper' onClick={closeHandler}>
+                        {ContextWindow}
+                    </div> :
+                    null
+            }
+        </WinContext.Provider>
     )
 
 };

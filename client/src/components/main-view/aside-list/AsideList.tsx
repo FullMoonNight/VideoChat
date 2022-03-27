@@ -8,6 +8,8 @@ interface Props<T> {
 
 export const AsideList = <T extends { id: string }>({dataArray, Template}: Props<T>) => {
     if (!Template) return null
+
+
     return (
         <div className='aside-list'>
             {dataArray.map(e => (

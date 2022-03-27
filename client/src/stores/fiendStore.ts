@@ -2,6 +2,8 @@
 //pending - запрос отправлен, но не принят
 //request - взодящий запрос дружбы
 
+import {action, makeAutoObservable} from "mobx";
+
 interface FriendType<T extends "friend" | "pending" | "request"> {
     linkId: string,
     user: {
@@ -28,25 +30,25 @@ class FriendStore {
             request: [],
             pending: []
         }
+        makeAutoObservable(this, undefined, {deep: true})
     }
 
+    @action
     setFriends(friends: FriendType<'friend' | "pending" | "request">[]) {
+        const friendsMap = new Set(this.friends.friends.map(e => e.linkId))
+        const requestMap = new Set(this.friends.request.map(e => e.linkId))
+        const pendingMap = new Set(this.friends.pending.map(e => e.linkId))
+
         friends.forEach(element => {
             switch (element.status) {
                 case 'friend':
-                    if (!this.friends.friends.find(e => e.linkId === element.linkId)) {
-                        this.friends.friends.push(element as FriendType<'friend'>)
-                    }
+                    if (!friendsMap.has(element.linkId)) this.friends.friends.push(element as FriendType<'friend'>)
                     break
                 case 'pending':
-                    if (!this.friends.pending.find(e => e.linkId === element.linkId)) {
-                        this.friends.pending.push(element as FriendType<'pending'>)
-                    }
+                    if (!pendingMap.has(element.linkId)) this.friends.pending.push(element as FriendType<'pending'>)
                     break
                 case 'request':
-                    if (!this.friends.request.find(e => e.linkId === element.linkId)) {
-                        this.friends.request.push(element as FriendType<'request'>)
-                    }
+                    if (!requestMap.has(element.linkId)) this.friends.request.push(element as FriendType<'request'>)
                     break
             }
         })

@@ -13,8 +13,12 @@ interface Props {
 }
 
 export const FriendTemplate = ({data}: Props) => {
+    const clickHandler = () => {
+        console.log(data)
+    }
+
     return (
-        <div className='friend-element'>
+        <div className='friend-element' onClick={clickHandler}>
             <div className='user-avatar'>
                 <img src={`user-avatar/${data.user.userId}--${data.user.userImageId}.png`} alt=""/>
                 <span className={`user-status ${data.user.status || 'active'}`}></span>

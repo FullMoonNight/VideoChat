@@ -6,17 +6,22 @@ import {AsideList} from "../../aside-list/AsideList";
 import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
+import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
 
 
 export const AsideMenu = observer(() => {
-    const {changeHandler} = useContext(ViewPanelsContext)
+    const {setPanelsHandler} = useContext(ViewPanelsContext)
     const {friends} = useContext(MainContext)
 
+    // Load all data first time
     useEffect(() => {
-        const savedActiveType = localStorage.getItem('activeMenuItem')
-        if (savedActiveType) {
-            setActiveElement(savedActiveType, null)
-        }
+        Promise.all([UserFriendsController.getAllFriends()])
+            .then(() => {
+                const savedActiveType = localStorage.getItem('activeMenuItem')
+                if (savedActiveType) {
+                    setActiveElement(savedActiveType, null)
+                }
+            })
     }, [])
 
     const menuBlock = useRef<HTMLDivElement>(null)
@@ -27,11 +32,10 @@ export const AsideMenu = observer(() => {
         return dataList.map(e => ({...e, id: e[idValue]}))
     }
 
-    const setActiveElement = async (type: string, element: HTMLDListElement | null) => {
+    const setActiveElement = (type: string, element: HTMLDListElement | null) => {
         if (!element && menuBlock.current) {
             element = menuBlock.current.querySelector(`[data-name=${type}]`)
         }
-
         if (currentActiveElement.current.currentActive) {
             currentActiveElement.current.currentActive.classList.remove('active')
         }
@@ -39,20 +43,28 @@ export const AsideMenu = observer(() => {
         currentActiveElement.current.currentActive = element
         localStorage.setItem('activeMenuItem', type)
 
-        let asideTemplate,
+        let asideListTemplate,
             mainComponent,
             mapKey = 'id',
-            data: any[] = []
+            data: any[] = [];
 
         switch (type) {
+            case 'directChats':
+                break
+            case 'groupChats':
+                break
             case 'friends':
-                await UserFriendsController.getAllFriends()
-                asideTemplate = FriendTemplate
+                asideListTemplate = FriendTemplate
+                mainComponent = <FriendMainPanel/>
                 mapKey = 'linkId'
                 data = friends.friends.friends
+                break
+            case 'videoConf':
+                break
         }
-        changeHandler({
-            asideComponent: <AsideList dataArray={formatData(data, mapKey)} Template={asideTemplate}/>
+        setPanelsHandler({
+            asideComponent: <AsideList dataArray={formatData(data, mapKey)} Template={asideListTemplate}/>,
+            mainComponent: mainComponent
         })
     }
 

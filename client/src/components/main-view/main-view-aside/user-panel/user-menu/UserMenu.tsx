@@ -1,13 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import './UserMenu.css'
-import {useNavigate} from "react-router-dom";
 import AuthController from "../../../../../controllers/AuthController";
+import {WinContext} from "../../../../../pages/MainViewPage";
+import {UserAccountSettingsPanel} from "../../../settings-panel/UserAccountSettingsPanel";
 
 interface Props {
     setActive: (active: boolean) => void,
 }
 
 export const UserMenu = ({setActive}: Props) => {
+    const {setContextWindow} = useContext(WinContext)
+
     useEffect(() => {
         const handler = () => {
             setActive(false)
@@ -16,10 +19,8 @@ export const UserMenu = ({setActive}: Props) => {
         return () => document.getElementById('root')?.removeEventListener('click', handler)
     }, [])
 
-    const navigation = useNavigate()
-
     const settingsHandler = () => {
-        navigation('/main/settings')
+        setContextWindow(<UserAccountSettingsPanel/>)
     }
 
     const logoutHandler = () => {

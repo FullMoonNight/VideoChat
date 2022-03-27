@@ -9,8 +9,6 @@ export default class UserFriendsController {
 
         if (result.status === 200) {
             friendStore.setFriends(result.data)
-            return result.data
         }
-        return []
     }
 }
