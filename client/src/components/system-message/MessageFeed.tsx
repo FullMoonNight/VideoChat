@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import './MessageFeed.css'
 import {MainContext} from "../../index";
 import {observer} from "mobx-react-lite";
-import {toJS} from "mobx";
 import {useTransition, animated} from "@react-spring/web";
 
 export const MessageFeed = observer(() => {

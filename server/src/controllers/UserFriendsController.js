@@ -7,8 +7,19 @@ class UserFriendsController {
         try {
             const userId = req._user.userId
             const friends = await UserFriendsService.getAllFriends(userId)
-            console.log(friends)
             res.json(friends)
+        } catch (e) {
+            next(errorHandler(e))
+        }
+    }
+
+    async findFriendsByUsername(req, res, next) {
+        try {
+            const userId = req._user.userId
+            const usernamePart = req.query.usernamePart
+
+            const usersNotFriends = await UserFriendsService.findFriends(userId, usernamePart)
+            res.json(usersNotFriends)
         } catch (e) {
             next(errorHandler(e))
         }
@@ -39,7 +50,9 @@ class UserFriendsController {
     }
 
     async rejectFriendRequest(req, res, next) {
-
+        const answeredUserId = req._user.userId
+        const requestedUserId = req.body.userId
+        await UserFriendsService.rejectFriendRequest(requestedUserId, answeredUserId)
     }
 }
 

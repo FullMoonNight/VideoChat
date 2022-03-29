@@ -9,9 +9,13 @@ const {ApiError} = require("../Error/ApiError");
 class UserAuthService {
     async registration(email, username, password) {
         return await sequelize.transaction(async (t) => {
-            const candidate = await UserModel.findOne({where: {email}})
-            if (candidate) {
+            const emailCandidate = await UserModel.findOne({where: {email}})
+            if (emailCandidate) {
                 throw new Error('User with this email already exist')
+            }
+            const usernameCandidate = await UserSettingsModel.findOne({where: {username}})
+            if (usernameCandidate) {
+                throw new Error('User with this username already exist')
             }
             const encodedPassword = await hash(password, 4)
             const user = await UserModel.create({
@@ -25,7 +29,8 @@ class UserAuthService {
                 id: v4(),
                 user_id: user.user_id,
                 username,
-                imageId: userAvatarId
+                imageId: userAvatarId,
+                status: 'active'
             })
             const {accessToken, refreshToken} = JwtService.generateTokens({userId: user.user_id, email: user.email})
 

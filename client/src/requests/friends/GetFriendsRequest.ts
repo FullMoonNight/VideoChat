@@ -6,12 +6,12 @@ interface GetFriendsResponse {
         userId: string,
         userImageId: string,
         username: string,
-        status?: 'active' | 'sleep' | 'invisible'
+        status: 'active' | 'sleep' | 'invisible'
     }
-    status: "friend" | "pending" | "request"
+    status: "friends" | "pending" | "request"
 }
 
 
-export class GetFriendsCommand extends BaseRequest<GetFriendsResponse[]> {
+export class GetFriendsRequest extends BaseRequest<GetFriendsResponse[]> {
     route: string = '/friends'
 }

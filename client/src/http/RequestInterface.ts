@@ -5,7 +5,6 @@ export default interface Request {
     method: MethodType,
     route: string,
     parameters?: Params,
-
     attachment?: Blob | Blob[],
 
     getParameters: () => Params | {}

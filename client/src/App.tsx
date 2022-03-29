@@ -4,7 +4,7 @@ import {observer} from "mobx-react-lite";
 import {MainContext} from "./index";
 import AuthController from "./controllers/AuthController";
 import {MessageFeed} from "./components/system-message/MessageFeed";
-import {useRoutes} from "./Router/useRoutes";
+import {useRoutes} from "./router/useRoutes";
 import ProfileSettingsController from "./controllers/ProfileSettingsController";
 
 const App = observer(() => {

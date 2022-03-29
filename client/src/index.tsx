@@ -6,7 +6,7 @@ import {appStore} from "./stores/appStore";
 import {userStore} from "./stores/userStore";
 import {systemMessagesStore} from "./stores/systemMessagesStore";
 import {profileStore} from "./stores/profileStore";
-import {friendStore} from "./stores/fiendStore";
+import {friendStore} from "./stores/friendStore";
 import {HashRouter} from "react-router-dom";
 
 type MainContextType = {

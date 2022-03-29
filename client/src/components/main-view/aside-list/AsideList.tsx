@@ -1,9 +1,9 @@
-import {FunctionComponent} from "react";
+import React, {FunctionComponent, ReactElement} from "react";
 import './AsideList.css'
 
 interface Props<T> {
     dataArray: T[],
-    Template?: FunctionComponent<{ data: T }>
+    Template?: FunctionComponent<{ data: T }>,
 }
 
 export const AsideList = <T extends { id: string }>({dataArray, Template}: Props<T>) => {

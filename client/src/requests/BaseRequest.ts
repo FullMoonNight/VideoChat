@@ -28,12 +28,15 @@ export default class BaseRequest<T> implements Request {
             } else {
                 formData.append('files', this.attachment)
             }
+            if (this.parameters && Object.keys(this.parameters).length) {
+                formData.append('body', JSON.stringify(this.parameters))
+            }
             return formData
         }
     }
 
     getRoute() {
-        if (this.parameters && Object.keys(this.parameters).length && this.attachment) {
+        if (this.parameters && Object.keys(this.parameters).length && this.method === "get") {
             let quarryStr = ''
             for (const [key, value] of Object.entries(this.parameters)) {
                 if (value && value.toString().trim())

@@ -17,7 +17,7 @@ class UserProfileController {
         try {
             const userId = req._user.userId
             const imageFile = req.files.files
-            const userSettings = req.query
+            const userSettings = JSON.parse(req.body.body)
 
             const savedUserSettings = await UserProfileService.updateUserSettings(userId, userSettings)
             let userImageId

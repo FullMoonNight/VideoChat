@@ -7,6 +7,7 @@ import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
+import {toJS} from "mobx";
 
 
 export const AsideMenu = observer(() => {
@@ -49,22 +50,25 @@ export const AsideMenu = observer(() => {
             data: any[] = [];
 
         switch (type) {
-            case 'directChats':
-                break
-            case 'groupChats':
-                break
             case 'friends':
                 asideListTemplate = FriendTemplate
                 mainComponent = <FriendMainPanel/>
                 mapKey = 'linkId'
-                data = friends.friends.friends
+                data = friends.friends
+                break
+            case 'directChats':
+                mainComponent = null
+                break
+            case 'groupChats':
+                mainComponent = null
                 break
             case 'videoConf':
+                mainComponent = null
                 break
         }
         setPanelsHandler({
             asideComponent: <AsideList dataArray={formatData(data, mapKey)} Template={asideListTemplate}/>,
-            mainComponent: mainComponent
+            mainComponent
         })
     }
 
@@ -79,9 +83,9 @@ export const AsideMenu = observer(() => {
     return (
         <div className='menu-block' ref={menuBlock}>
             <ul className="menu-item-list" onClick={clickHandler}>
+                <li className="menu-item" data-name='friends'>F</li>
                 <li className="menu-item" data-name='directChats'>D</li>
                 <li className="menu-item" data-name='groupChats'>G</li>
-                <li className="menu-item" data-name='friends'>F</li>
                 <li className="menu-item" data-name='videoConf'>V</li>
             </ul>
         </div>

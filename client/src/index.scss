@@ -23,7 +23,7 @@ body {
         --main-color-contrast: #7fc68e;
         --accent-color: #ea3633;
         --background-color: #d0d0d0;
-        --text-color: #ffffff;
+        --text-color: #343434;
     }
 
 }
@@ -38,6 +38,10 @@ code {
     //outline: 1px solid red;
     margin: 0;
     padding: 0;
+}
+
+img {
+    object-fit: cover;
 }
 
 ::-webkit-scrollbar {
