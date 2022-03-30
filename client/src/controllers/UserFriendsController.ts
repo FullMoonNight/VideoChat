@@ -22,7 +22,9 @@ export default class UserFriendsController {
 
         if (result.status === 200) {
             return result.data
-        } else return []
+        } else {
+            return []
+        }
     }
 
     static async sendFriendRequest(params: SendFriendParams) {

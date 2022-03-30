@@ -49,8 +49,8 @@ export const FriendTemplate = ({data, buttonConfig}: Props) => {
                 <img src={`user-avatar/${data.user.userId}--${data.user.userImageId}.png`} alt=""/>
                 <span className={`user-status ${data.user.status || 'active'}`}></span>
             </div>
-            <div className="spacer"></div>
             <span className='user-username'>{data.user.username}</span>
+            <div className="spacer"></div>
             <button className='message' hidden={!buttonConfig?.message} onClick={messageBtnHandler}>M</button>
             <button className='addFriend' hidden={!buttonConfig?.addFriend} onClick={addFriendBtnHandler}>A</button>
             <button className='acceptFriend' hidden={!buttonConfig?.acceptFriend} onClick={acceptFriendBtnHandler}>V</button>

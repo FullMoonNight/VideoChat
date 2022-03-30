@@ -28,13 +28,7 @@ interface ButtonsState {
 
 export const FriendMainPanel = observer(() => {
         const {friends} = useContext(MainContext)
-
-        useEffect(() => {
-            console.log('effect', toJS(friends))
-        }, [friends.friends, friends.request, friends.pending])
-
         const friendsUnitedList = useMemo(friends.getAllFriends.bind(friends), [friends.friends, friends.request, friends.pending])
-        console.log(toJS(friendsUnitedList))
 
         const [searchUsernameString, setSearchUsernameString] = useState<string>('')
         const [sectionName, setSectionName] = useState<string>('')
@@ -44,10 +38,12 @@ export const FriendMainPanel = observer(() => {
 
         const currentActiveElement = useRef<HTMLDListElement | null>(null)
         const menuBlock = useRef<HTMLUListElement | null>(null)
+        const currentActiveTabType = useRef<string>('active')
 
+        //Обновляет все спаски после изменеия данных
         useEffect(() => {
-            setActiveElement('active', null)
-        }, [])
+            setFriendListsState()
+        }, [friends.friends, friends.pending, friends.request])
 
         const setActiveElement = (menuTab: string, element: HTMLDListElement | null) => {
             if (element && element.classList.contains('active')) {
@@ -64,6 +60,13 @@ export const FriendMainPanel = observer(() => {
 
             setSearchButtonVisible(false)
             setSearchUsernameString('')
+            currentActiveTabType.current = menuTab
+
+            setFriendListsState()
+        }
+
+        const setFriendListsState = () => {
+            const menuTab = currentActiveTabType.current
 
             let arr: FriendElement[] = []
             switch (menuTab) {
@@ -88,13 +91,16 @@ export const FriendMainPanel = observer(() => {
                     setButtons({removeFriend: true})
                     break
                 case 'add':
-                    arr = []
                     setSectionName('Add new friends')
                     setSearchButtonVisible(true)
                     setButtons({addFriend: true})
                     break
             }
-            setFriendsList(arr)
+            if (menuTab === 'add') {
+                findUsersHandler()
+            } else {
+                setFriendsList(arr)
+            }
         }
 
         const headerMenuClick = (e: any) => {
@@ -111,7 +117,13 @@ export const FriendMainPanel = observer(() => {
 
         const findUsersHandler = async () => {
             const users = await UserFriendsController.findFriendsByUsername({usernamePart: searchUsernameString})
+            // console.log(users)
             setFriendsList(users)
+        }
+
+        const filterUsersHandler = (elem: FriendElement) => {
+            if (currentActiveTabType.current === 'add') return true
+            return elem.user.username.includes(searchUsernameString)
         }
 
         return (
@@ -137,9 +149,11 @@ export const FriendMainPanel = observer(() => {
                     <div className="friend-list-block">
                         <div className="friend-list-content">
                             {
-                                friendsList.map(data => (
-                                    <FriendTemplate key={data.linkId} data={{...data, id: data.linkId}} buttonConfig={buttons}/>
-                                ))
+                                friendsList
+                                    .filter(filterUsersHandler)
+                                    .map(data => (
+                                        <FriendTemplate key={data.linkId} data={{...data, id: data.linkId}} buttonConfig={buttons}/>
+                                    ))
                             }
                         </div>
                     </div>

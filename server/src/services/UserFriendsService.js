@@ -38,7 +38,7 @@ class UserFriendsService {
 
     async findFriends(userId, usernamePart) {
         return sequelize.transaction(async t => {
-            let [friends] = await this.getAllFriends(userId)
+            let friends = await this.getAllFriends(userId)
             const [allUsers] = await UserService.getUsers(usernamePart)
 
             const friendsMap = new Set()

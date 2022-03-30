@@ -65,4 +65,35 @@
         margin-left: 15px;
         font-weight: 600;
     }
+
+    .spacer {
+        flex-grow: 1;
+    }
+
+    button {
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+        border-radius: 50%;
+        background: none;
+        cursor: pointer;
+        color: var(--text-color);
+
+        &.message {
+            border: 2px solid #3498db;
+        }
+
+        &.addFriend, &.acceptFriend {
+            border: 2px solid #10a856;
+        }
+
+        &.rejectFriend, &.removeFriend {
+            border: 2px solid #ea3633;
+
+        }
+
+        &:hover {
+            filter: brightness(130%);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import './AsideMenu.css'
-import {useContext, useEffect, useRef} from "react";
+import {FunctionComponent, useContext, useEffect, useRef, useState} from "react";
 import {ViewPanelsContext} from "../../MainView";
 import {FriendTemplate} from "../../aside-list/aside-list-templates/FriendTemplate";
 import {AsideList} from "../../aside-list/AsideList";
@@ -9,12 +9,23 @@ import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
 import {toJS} from "mobx";
 
+const formatData = (dataList: any[], idValue: string) => {
+    if (idValue === 'id') return dataList
+    return dataList.map(e => ({...e, id: e[idValue]}))
+}
+
+interface ViewConfigurationType {
+    asideListTemplate?: FunctionComponent<any>,
+    mapKey: string,
+    mainComponent?: JSX.Element | null,
+    data: any[]
+}
 
 export const AsideMenu = observer(() => {
     const {setPanelsHandler} = useContext(ViewPanelsContext)
     const {friends} = useContext(MainContext)
 
-    // Load all data first time
+    // Загрузка данных для всех элементов меню
     useEffect(() => {
         Promise.all([UserFriendsController.getAllFriends()])
             .then(() => {
@@ -25,51 +36,70 @@ export const AsideMenu = observer(() => {
             })
     }, [])
 
-    const menuBlock = useRef<HTMLDivElement>(null)
-    const currentActiveElement = useRef<{ currentActive: HTMLDListElement | null }>({currentActive: null})
+    const [viewConfiguration, setViewConfiguration] = useState<ViewConfigurationType>({data: [], mapKey: 'id'})
+    useEffect(() => {
+        setPanelsHandler({
+            asideComponent: <AsideList dataArray={formatData(viewConfiguration.data, viewConfiguration.mapKey)} Template={viewConfiguration.asideListTemplate}/>,
+            mainComponent: viewConfiguration.mainComponent
+        })
+    }, [viewConfiguration.data])
 
-    const formatData = (dataList: any[], idValue: string) => {
-        if (idValue === 'id') return dataList
-        return dataList.map(e => ({...e, id: e[idValue]}))
-    }
+    useEffect(() => {
+        setMenuState()
+    }, [friends.friends])
+
+    const menuBlock = useRef<HTMLDivElement>(null)
+    const currentActiveElement = useRef<HTMLDListElement | null>(null)
 
     const setActiveElement = (type: string, element: HTMLDListElement | null) => {
         if (!element && menuBlock.current) {
             element = menuBlock.current.querySelector(`[data-name=${type}]`)
         }
-        if (currentActiveElement.current.currentActive) {
-            currentActiveElement.current.currentActive.classList.remove('active')
+        if (currentActiveElement.current) {
+            currentActiveElement.current.classList.remove('active')
         }
         element && element.classList.add('active')
-        currentActiveElement.current.currentActive = element
+        currentActiveElement.current = element
         localStorage.setItem('activeMenuItem', type)
 
-        let asideListTemplate,
-            mainComponent,
-            mapKey = 'id',
-            data: any[] = [];
+        setMenuState()
+    }
+
+    const setMenuState = () => {
+        const type = currentActiveElement.current?.dataset.name
+        if (!type) return
 
         switch (type) {
             case 'friends':
-                asideListTemplate = FriendTemplate
-                mainComponent = <FriendMainPanel/>
-                mapKey = 'linkId'
-                data = friends.friends
-                break
+                setViewConfiguration({
+                    asideListTemplate: FriendTemplate,
+                    mainComponent: <FriendMainPanel/>,
+                    data: friends.friends,
+                    mapKey: 'linkId'
+                })
+                break;
             case 'directChats':
-                mainComponent = null
-                break
-            case 'groupChats':
-                mainComponent = null
-                break
-            case 'videoConf':
-                mainComponent = null
-                break
+                setViewConfiguration({
+                    mainComponent: null,
+                    data: [],
+                    mapKey: 'id'
+                })
+                break;
+            // case 'groupChats':
+            //     setViewConfiguration({
+            //         mainComponent: null,
+            //         data: [],
+            //         mapKey: 'id'
+            //     })
+            //     break;
+            // case 'videoConf':
+            //     setViewConfiguration({
+            //         mainComponent: null,
+            //         data: [],
+            //         mapKey: 'id'
+            //     })
+            //     break;
         }
-        setPanelsHandler({
-            asideComponent: <AsideList dataArray={formatData(data, mapKey)} Template={asideListTemplate}/>,
-            mainComponent
-        })
     }
 
     const clickHandler = (e: any) => {

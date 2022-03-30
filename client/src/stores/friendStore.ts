@@ -31,12 +31,8 @@ class FriendStore {
     @action
     setFriends(friends: FriendType<'friends' | "pending" | "request">[]) {
         const friendsMap = new Set(this.friends.map(e => e.linkId))
-        const requestMap = new Set(this.request.map(e => e.linkId))
         const pendingMap = new Set(this.pending.map(e => e.linkId))
-
-        this.friends = []
-        this.pending = []
-        this.request = []
+        const requestMap = new Set(this.request.map(e => e.linkId))
 
         friends.forEach(element => {
             switch (element.status) {
