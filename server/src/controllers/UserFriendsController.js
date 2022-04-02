@@ -50,10 +50,29 @@ class UserFriendsController {
     }
 
     async rejectFriendRequest(req, res, next) {
-        const answeredUserId = req._user.userId
-        const requestedUserId = req.body.userId
-        await UserFriendsService.rejectFriendRequest(requestedUserId, answeredUserId)
+        try {
+            const answeredUserId = req._user.userId
+            const requestedUserId = req.body.userId
+            await UserFriendsService.rejectFriendRequest(requestedUserId, answeredUserId)
+
+            res.json('ok')
+        } catch (e) {
+            next(errorHandler(e))
+        }
     }
+
+    async removeFriendRequest(req, res, next) {
+        try {
+            const requestedUserId = req._user.userId
+            const friendUserId = req.body.userId
+            await UserFriendsService.removeFriendRequest(requestedUserId, friendUserId)
+
+            res.json('ok')
+        } catch (e) {
+            next(errorHandler(e))
+        }
+    }
+
 }
 
 module.exports = new UserFriendsController()

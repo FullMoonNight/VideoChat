@@ -109,6 +109,25 @@ class UserFriendsService {
         })
         await friendRequest.destroy()
     }
+
+    async removeFriendRequest(firstUserId, secondUserId) {
+        const friend = await FriendsModel.findOne({
+            where: {
+                [Op.or]: [
+                    {
+                        user_id_first: firstUserId,
+                        user_id_second: secondUserId
+                    },
+                    {
+                        user_id_first: secondUserId,
+                        user_id_second: firstUserId
+                    }]
+            }
+        })
+
+        console.log(friend)
+        await friend.destroy()
+    }
 }
 
 module.exports = new UserFriendsService()

@@ -4,7 +4,6 @@ import {MainContext} from "../../../index";
 import {FriendTemplate} from "../aside-list/aside-list-templates/FriendTemplate";
 import './FriendMainPanel.css'
 import UserFriendsController from "../../../controllers/UserFriendsController";
-import {toJS} from "mobx";
 
 interface FriendElement {
     linkId: string,
@@ -35,15 +34,24 @@ export const FriendMainPanel = observer(() => {
         const [searchButtonVisible, setSearchButtonVisible] = useState<boolean>(false)
         const [friendsList, setFriendsList] = useState<FriendElement[]>([])
         const [buttons, setButtons] = useState<ButtonsState>({})
+        const [requestUsersCount, setRequestUsersCount] = useState<number>(0)
 
         const currentActiveElement = useRef<HTMLDListElement | null>(null)
         const menuBlock = useRef<HTMLUListElement | null>(null)
-        const currentActiveTabType = useRef<string>('active')
+        const currentActiveTabType = useRef<string>('online')
 
         //Обновляет все спаски после изменеия данных
         useEffect(() => {
             setFriendListsState()
-        }, [friends.friends, friends.pending, friends.request])
+        }, [friendsUnitedList])
+
+        useEffect(() => {
+            setActiveElement(currentActiveTabType.current, null)
+        }, [])
+
+        useEffect(() => {
+            setRequestUsersCount(friends.request.length)
+        }, [friends.request])
 
         const setActiveElement = (menuTab: string, element: HTMLDListElement | null) => {
             if (element && element.classList.contains('active')) {
@@ -70,7 +78,7 @@ export const FriendMainPanel = observer(() => {
 
             let arr: FriendElement[] = []
             switch (menuTab) {
-                case 'active':
+                case 'online':
                     arr = friendsUnitedList.filter(e => e.status === 'friends' && e.user.status === 'active')
                     setSectionName('Online friends')
                     setButtons({message: true, removeFriend: true})
@@ -131,9 +139,9 @@ export const FriendMainPanel = observer(() => {
                 <div className="friend-type-header">
                     <p>Friends</p>
                     <ul onClick={headerMenuClick} ref={menuBlock}>
-                        <li data-tab='active'>Online</li>
+                        <li data-tab='online'>Online</li>
                         <li data-tab='all'>All</li>
-                        <li data-tab='requested'>Requested</li>
+                        <li data-tab='requested'>Requested<p hidden={!requestUsersCount}>{requestUsersCount}</p></li>
                         <li data-tab='pending'>Pending</li>
                         <li className="add-friends" data-tab='add'>Add friends</li>
                     </ul>
@@ -152,7 +160,7 @@ export const FriendMainPanel = observer(() => {
                                 friendsList
                                     .filter(filterUsersHandler)
                                     .map(data => (
-                                        <FriendTemplate key={data.linkId} data={{...data, id: data.linkId}} buttonConfig={buttons}/>
+                                        <FriendTemplate key={data.linkId} data={{...data, id: data.linkId}} props={{buttonConfig: buttons}}/>
                                     ))
                             }
                         </div>

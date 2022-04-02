@@ -11,16 +11,18 @@ interface Props {
             status?: 'active' | 'sleep' | 'invisible'
         }
     },
-    buttonConfig?: {
-        message?: boolean,
-        addFriend?: boolean,
-        acceptFriend?: boolean,
-        rejectFriend?: boolean,
-        removeFriend?: boolean
+    props: {
+        buttonConfig: {
+            message?: boolean,
+            addFriend?: boolean,
+            acceptFriend?: boolean,
+            rejectFriend?: boolean,
+            removeFriend?: boolean
+        }
     }
 }
 
-export const FriendTemplate = ({data, buttonConfig}: Props) => {
+export const FriendTemplate = ({data, props}: Props) => {
     const clickHandler = () => {
     }
 
@@ -28,19 +30,20 @@ export const FriendTemplate = ({data, buttonConfig}: Props) => {
 
     }
 
-    const addFriendBtnHandler = () => {
-        UserFriendsController.sendFriendRequest({userId: data.user.userId})
+    const addFriendBtnHandler = async () => {
+        await UserFriendsController.sendFriendRequest({userId: data.user.userId})
     }
 
-    const acceptFriendBtnHandler = () => {
-        UserFriendsController.acceptFriendRequest({userId: data.user.userId})
+    const acceptFriendBtnHandler = async () => {
+        await UserFriendsController.acceptFriendRequest({userId: data.user.userId})
     }
 
-    const rejectFriendBtnHandler = () => {
-        UserFriendsController.rejectFriendRequest({userId: data.user.userId})
+    const rejectFriendBtnHandler = async () => {
+        await UserFriendsController.rejectFriendRequest({userId: data.user.userId})
     }
 
-    const removeFriendBtnHandler = () => {
+    const removeFriendBtnHandler = async () => {
+        await UserFriendsController.removeFriendRequest({userId: data.user.userId})
     }
 
     return (
@@ -51,11 +54,11 @@ export const FriendTemplate = ({data, buttonConfig}: Props) => {
             </div>
             <span className='user-username'>{data.user.username}</span>
             <div className="spacer"></div>
-            <button className='message' hidden={!buttonConfig?.message} onClick={messageBtnHandler}>M</button>
-            <button className='addFriend' hidden={!buttonConfig?.addFriend} onClick={addFriendBtnHandler}>A</button>
-            <button className='acceptFriend' hidden={!buttonConfig?.acceptFriend} onClick={acceptFriendBtnHandler}>V</button>
-            <button className='rejectFriend' hidden={!buttonConfig?.rejectFriend} onClick={rejectFriendBtnHandler}>R</button>
-            <button className='removeFriend' hidden={!buttonConfig?.removeFriend} onClick={removeFriendBtnHandler}>X</button>
+            <button className='message' hidden={!props.buttonConfig?.message} onClick={messageBtnHandler}>M</button>
+            <button className='addFriend' hidden={!props.buttonConfig?.addFriend} onClick={addFriendBtnHandler}>A</button>
+            <button className='acceptFriend' hidden={!props.buttonConfig?.acceptFriend} onClick={acceptFriendBtnHandler}>V</button>
+            <button className='rejectFriend' hidden={!props.buttonConfig?.rejectFriend} onClick={rejectFriendBtnHandler}>R</button>
+            <button className='removeFriend' hidden={!props.buttonConfig?.removeFriend} onClick={removeFriendBtnHandler}>X</button>
         </div>
     )
 }

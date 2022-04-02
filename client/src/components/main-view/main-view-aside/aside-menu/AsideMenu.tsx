@@ -1,5 +1,5 @@
 import './AsideMenu.css'
-import {FunctionComponent, useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {ViewPanelsContext} from "../../MainView";
 import {FriendTemplate} from "../../aside-list/aside-list-templates/FriendTemplate";
 import {AsideList} from "../../aside-list/AsideList";
@@ -7,7 +7,6 @@ import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
-import {toJS} from "mobx";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
@@ -15,10 +14,8 @@ const formatData = (dataList: any[], idValue: string) => {
 }
 
 interface ViewConfigurationType {
-    asideListTemplate?: FunctionComponent<any>,
-    mapKey: string,
+    asideComponent?: JSX.Element | null,
     mainComponent?: JSX.Element | null,
-    data: any[]
 }
 
 export const AsideMenu = observer(() => {
@@ -36,13 +33,13 @@ export const AsideMenu = observer(() => {
             })
     }, [])
 
-    const [viewConfiguration, setViewConfiguration] = useState<ViewConfigurationType>({data: [], mapKey: 'id'})
+    const [viewConfiguration, setViewConfiguration] = useState<ViewConfigurationType>({})
     useEffect(() => {
         setPanelsHandler({
-            asideComponent: <AsideList dataArray={formatData(viewConfiguration.data, viewConfiguration.mapKey)} Template={viewConfiguration.asideListTemplate}/>,
+            asideComponent: viewConfiguration.asideComponent,
             mainComponent: viewConfiguration.mainComponent
         })
-    }, [viewConfiguration.data])
+    }, [viewConfiguration])
 
     useEffect(() => {
         setMenuState()
@@ -72,33 +69,29 @@ export const AsideMenu = observer(() => {
         switch (type) {
             case 'friends':
                 setViewConfiguration({
-                    asideListTemplate: FriendTemplate,
+                    asideComponent: <AsideList
+                        Template={FriendTemplate}
+                        dataList={formatData(friends.friends, 'linkId')}
+                        props={{buttonConfig: {message: true}}}
+                    />,
                     mainComponent: <FriendMainPanel/>,
-                    data: friends.friends,
-                    mapKey: 'linkId'
                 })
                 break;
             case 'directChats':
                 setViewConfiguration({
                     mainComponent: null,
-                    data: [],
-                    mapKey: 'id'
                 })
                 break;
-            // case 'groupChats':
-            //     setViewConfiguration({
-            //         mainComponent: null,
-            //         data: [],
-            //         mapKey: 'id'
-            //     })
-            //     break;
-            // case 'videoConf':
-            //     setViewConfiguration({
-            //         mainComponent: null,
-            //         data: [],
-            //         mapKey: 'id'
-            //     })
-            //     break;
+            case 'groupChats':
+                setViewConfiguration({
+                    mainComponent: null,
+                })
+                break;
+            case 'videoConf':
+                setViewConfiguration({
+                    mainComponent: null,
+                })
+                break;
         }
     }
 

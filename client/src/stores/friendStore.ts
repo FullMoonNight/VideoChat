@@ -34,6 +34,10 @@ class FriendStore {
         const pendingMap = new Set(this.pending.map(e => e.linkId))
         const requestMap = new Set(this.request.map(e => e.linkId))
 
+        this.friends = []
+        this.pending = []
+        this.request = []
+
         friends.forEach(element => {
             switch (element.status) {
                 case 'friends':
@@ -47,6 +51,7 @@ class FriendStore {
                     break
             }
         })
+
         // console.log('updated', toJS(this))
     }
 

@@ -17,6 +17,7 @@ class UserProfileService {
             name: userSettings.name,
             surname: userSettings.surname,
             userImageId: userSettings.imageId,
+            status: userSettings.status
         }
     }
 

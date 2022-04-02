@@ -1,19 +1,21 @@
-import React, {FunctionComponent, ReactElement} from "react";
+import React, {FunctionComponent} from "react";
 import './AsideList.css'
 
-interface Props<T> {
-    dataArray: T[],
-    Template?: FunctionComponent<{ data: T }>,
+interface Props<T, R, P> {
+    Template: FunctionComponent<T>,
+    dataList: R[]
+    props: P
 }
 
-export const AsideList = <T extends { id: string }>({dataArray, Template}: Props<T>) => {
-    if (!Template) return null
+export const AsideList = <T extends { data: { id: string }, props: {} }, R extends T["data"], P extends T["props"]>({Template, dataList, props}: Props<T, R, P>) => {
+    if (!Template) return <h2>List is empty</h2>
 
 
     return (
         <div className='aside-list'>
-            {dataArray.map(e => (
-                <Template key={e.id} data={e}/>
+            {dataList.map(e => (
+                // @ts-ignore
+                <Template key={e.id} data={e} props={props}/>
             ))}
         </div>
     )
