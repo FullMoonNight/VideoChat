@@ -33,7 +33,7 @@ class JwtService {
 
     async deleteToken(token) {
         const tokenDB = await TokensModel.findOne({where: {token}})
-        await tokenDB.destroy()
+        tokenDB && await tokenDB.destroy()
     }
 
     validateAccessToken(accessToken) {

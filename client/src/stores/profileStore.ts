@@ -5,6 +5,7 @@ class ProfileStore {
     username: string
     name?: string
     surname?: string
+    status?: 'active' | 'sleep' | 'hidden'
     loaded: boolean
 
     constructor() {

@@ -23,5 +23,10 @@
         height: 100%;
         display: flex;
         overflow: hidden;
+
+        .aside-list{
+            display: flex;
+            flex-direction: column;
+        }
     }
 }

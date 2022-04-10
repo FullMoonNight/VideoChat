@@ -22,5 +22,9 @@
   display: flex;
   overflow: hidden;
 }
+.main-view-aside .aside-main .aside-list {
+  display: flex;
+  flex-direction: column;
+}
 
 /*# sourceMappingURL=AsidePanel.css.map */

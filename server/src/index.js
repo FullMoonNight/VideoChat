@@ -16,6 +16,8 @@ const ErrorMiddleware = require('./middlewares/ErrorMiddleware')
 const sequelize = require('./database')
 const {} = require('./models')
 
+const SocketInterface = require('./socket/SocketInterface')
+
 const PORT = process.env.PORT || 5000;
 
 
@@ -30,12 +32,13 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', MainRouter);
 app.use(ErrorMiddleware);
 
+new SocketInterface(io);
 
 (async function start() {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
-        app.listen(PORT, () => console.log(`Server has been started on ${PORT}`))
+        server.listen(PORT, () => console.log(`Server has been started on ${PORT}`))
     } catch (e) {
         console.log(e)
     }

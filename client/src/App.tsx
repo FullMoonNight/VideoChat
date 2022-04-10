@@ -1,14 +1,14 @@
 import React, {useContext, useEffect} from 'react';
-import {LoginPage} from "./pages/LoginPage";
 import {observer} from "mobx-react-lite";
 import {MainContext} from "./index";
 import AuthController from "./controllers/AuthController";
 import {MessageFeed} from "./components/system-message/MessageFeed";
 import {useRoutes} from "./router/useRoutes";
 import ProfileSettingsController from "./controllers/ProfileSettingsController";
+import {socketInterface} from "./socket/SocketInterface";
 
 const App = observer(() => {
-    const {app} = useContext(MainContext)
+    const {app, user} = useContext(MainContext)
     const routes = useRoutes()
 
     useEffect(() => {
@@ -20,6 +20,17 @@ const App = observer(() => {
         const currentScheme = ProfileSettingsController.getCurrentColorScheme()
         ProfileSettingsController.changeColorScheme(currentScheme)
     }, [])
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken')
+        if (token) {
+            socketInterface.createSocket(token)
+            socketInterface.connect()
+        }
+        return () => {
+            socketInterface.disconnect()
+        }
+    }, [user.isAuth])
 
     return (
         <>

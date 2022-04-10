@@ -1,6 +1,7 @@
 import Request, {MethodType} from "../http/RequestInterface";
 import axios, {AxiosResponse, AxiosInstance, AxiosError} from "axios";
 import AuthController from "../controllers/AuthController";
+import {userStore} from "../stores/userStore";
 
 
 interface ErrorType {

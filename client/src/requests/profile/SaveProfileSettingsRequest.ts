@@ -1,6 +1,5 @@
 import BaseRequest from "../BaseRequest";
 import {MethodType, Params} from "../../http/RequestInterface";
-import {log} from "util";
 
 export interface SaveProfileSettingsParams extends Params {
     username: string,

@@ -21,8 +21,8 @@ export const UserPanel = observer(() => {
                      style={{
                          objectFit: 'cover'
                      }}/>
-                <div className="status-username">
-                    <span className='status-emblem active'></span>
+                <div className='status-username'>
+                    <span className={`status-emblem ${profile.status}`}></span>
                     <p className='user-username'>{profile.username}</p>
                 </div>
             </div>

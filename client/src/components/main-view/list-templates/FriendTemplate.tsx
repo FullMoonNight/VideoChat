@@ -1,5 +1,6 @@
+import React from 'react';
 import './FriendTemplate.css'
-import UserFriendsController from "../../../../controllers/UserFriendsController";
+import UserFriendsController from "../../../controllers/UserFriendsController";
 
 interface Props {
     data: {
@@ -27,7 +28,6 @@ export const FriendTemplate = ({data, props}: Props) => {
     }
 
     const messageBtnHandler = () => {
-
     }
 
     const addFriendBtnHandler = async () => {

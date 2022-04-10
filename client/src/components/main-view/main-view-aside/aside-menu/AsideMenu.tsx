@@ -1,16 +1,22 @@
 import './AsideMenu.css'
 import {useContext, useEffect, useRef, useState} from "react";
 import {ViewPanelsContext} from "../../MainView";
-import {FriendTemplate} from "../../aside-list/aside-list-templates/FriendTemplate";
-import {AsideList} from "../../aside-list/AsideList";
+import {FriendTemplate} from "../../list-templates/FriendTemplate";
+import {AsideList} from "../aside-list/AsideList";
 import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
+import {CreateRoomBtn} from "../aside-components/CreateRoomBtn";
+import {ConferenceRoomTemplate} from "../../list-templates/ConferenceRoomTemplate";
+import {toJS} from "mobx";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
-    return dataList.map(e => ({...e, id: e[idValue]}))
+    const idValueArr = idValue.split('.')
+    return dataList.map(e => ({
+        ...e, id: idValueArr.reduce((v, cur) => v[cur], e)
+    }))
 }
 
 interface ViewConfigurationType {
@@ -20,7 +26,7 @@ interface ViewConfigurationType {
 
 export const AsideMenu = observer(() => {
     const {setPanelsHandler} = useContext(ViewPanelsContext)
-    const {friends} = useContext(MainContext)
+    const {friends, rooms} = useContext(MainContext)
 
     // Загрузка данных для всех элементов меню
     useEffect(() => {
@@ -88,7 +94,18 @@ export const AsideMenu = observer(() => {
                 })
                 break;
             case 'videoConf':
+                console.log(toJS(rooms.rooms))
                 setViewConfiguration({
+                    asideComponent: (
+                        <>
+                            <CreateRoomBtn/>
+                            <AsideList
+                                Template={ConferenceRoomTemplate}
+                                dataList={formatData(rooms.rooms, 'room_id')}
+                                props={{}}
+                            />
+                        </>
+                    ),
                     mainComponent: null,
                 })
                 break;

@@ -6,6 +6,8 @@ const RoomChatModel = require('./RoomChatModel')
 const RoomModel = require('./RoomModel')
 const FriendsModel = require('./FriendsModel')
 const PersonalMessagesModel = require('./PersonalMessages')
+const RoomMembers = require('./RoomMembers')
+
 const {DataTypes} = require("sequelize");
 
 //User-Tokens relation
@@ -106,6 +108,25 @@ PersonalMessagesModel.belongsTo(UserModel, {
     keyType: DataTypes.UUID
 })
 
+//RoomMembers - Room
+UserModel.hasMany(RoomMembers, {
+    foreignKey: 'user_id',
+    keyType: DataTypes.UUID
+})
+RoomMembers.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    keyType: DataTypes.UUID
+})
+
+RoomModel.hasMany(RoomMembers, {
+    foreignKey: 'room_id',
+    keyType: DataTypes.UUID
+})
+RoomMembers.belongsTo(RoomModel, {
+    foreignKey: 'room_id',
+    keyType: DataTypes.UUID,
+})
+
 module.exports = {
     UserModel,
     TokensModel,
@@ -115,4 +136,5 @@ module.exports = {
     RoomModel,
     FriendsModel,
     PersonalMessagesModel,
+    RoomMembers
 }
