@@ -36,7 +36,7 @@ export const AsideMenu = observer(() => {
                 if (savedActiveType) {
                     setActiveElement(savedActiveType, null)
                 }
-            })
+            });
     }, [])
 
     const [viewConfiguration, setViewConfiguration] = useState<ViewConfigurationType>({})
@@ -48,7 +48,7 @@ export const AsideMenu = observer(() => {
     }, [viewConfiguration])
 
     useEffect(() => {
-        setMenuState()
+        setMenuState();
     }, [friends.friends])
 
     const menuBlock = useRef<HTMLDivElement>(null)
@@ -85,16 +85,17 @@ export const AsideMenu = observer(() => {
                 break;
             case 'directChats':
                 setViewConfiguration({
+                    asideComponent: null,
                     mainComponent: null,
                 })
                 break;
             case 'groupChats':
                 setViewConfiguration({
+                    asideComponent: null,
                     mainComponent: null,
                 })
                 break;
             case 'videoConf':
-                console.log(toJS(rooms.rooms))
                 setViewConfiguration({
                     asideComponent: (
                         <>

@@ -30,9 +30,9 @@ class FriendStore {
 
     @action
     setFriends(friends: FriendType<'friends' | "pending" | "request">[]) {
-        const friendsMap = new Set(this.friends.map(e => e.linkId))
-        const pendingMap = new Set(this.pending.map(e => e.linkId))
-        const requestMap = new Set(this.request.map(e => e.linkId))
+        const friendsMap = new Set()
+        const pendingMap = new Set()
+        const requestMap = new Set()
 
         this.friends = []
         this.pending = []
@@ -41,13 +41,22 @@ class FriendStore {
         friends.forEach(element => {
             switch (element.status) {
                 case 'friends':
-                    if (!friendsMap.has(element.linkId)) this.friends = [...this.friends, element as FriendType<'friends'>]
+                    if (!friendsMap.has(element.linkId)) {
+                        this.friends = [...this.friends, element as FriendType<'friends'>]
+                        friendsMap.add(element.linkId)
+                    }
                     break
                 case 'pending':
-                    if (!pendingMap.has(element.linkId)) this.pending = [...this.pending, element as FriendType<'pending'>]
+                    if (!pendingMap.has(element.linkId)) {
+                        this.pending = [...this.pending, element as FriendType<'pending'>]
+                        pendingMap.add(element.linkId)
+                    }
                     break
                 case 'request':
-                    if (!requestMap.has(element.linkId)) this.request = [...this.request, element as FriendType<'request'>]
+                    if (!requestMap.has(element.linkId)) {
+                        this.request = [...this.request, element as FriendType<'request'>]
+                        requestMap.add(element.linkId)
+                    }
                     break
             }
         })

@@ -19,12 +19,14 @@
 }
 .main-view-aside .aside-main {
   height: 100%;
+  width: 100%;
   display: flex;
   overflow: hidden;
 }
-.main-view-aside .aside-main .aside-list {
+.main-view-aside .aside-main .aside-list-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 /*# sourceMappingURL=AsidePanel.css.map */

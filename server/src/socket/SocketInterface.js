@@ -39,8 +39,9 @@ class SocketInterface {
     }
 
     mapUserSessions(token, socketId) {
-        if (!token) return
-        const userId = JwtService.validateAccessToken(token).userId
+        const userObj = JwtService.validateAccessToken(token)
+        if (!userObj) return
+        const userId = userObj.userId
         if (this.#usersMap[userId]) {
             this.#usersMap[userId].push(socketId)
         } else {

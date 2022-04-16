@@ -1,16 +1,23 @@
 import BaseRequest from "../BaseRequest";
-import {Params} from "../../http/RequestInterface";
+import {MethodType, Params} from "../../http/RequestInterface";
 
-export interface CreateNewRoomParams extends Params{
-    userId: string
+export interface CreateNewRoomParams extends Params {
+    userId: string,
+    room: {
+        roomName: string,
+        includedUsersId: string[],
+        handWrEditor: boolean,
+        textEditor: boolean
+    }
 }
 
-interface CreateNewRoomResponse{
+interface CreateNewRoomResponse {
     roomId: string
 }
 
-export default class CreateNewRoomRequest extends BaseRequest<CreateNewRoomResponse>{
+export default class CreateNewRoomRequest extends BaseRequest<CreateNewRoomResponse> {
     route: string = '/user_rooms/create_room'
+    method: MethodType = "post"
     parameters: CreateNewRoomParams
 
     constructor(parameters: CreateNewRoomParams) {

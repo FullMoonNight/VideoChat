@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useContext} from 'react';
 import './UserAccountSettingsPanel.css'
 import {useImmer} from "use-immer";
-import ProfileSettingsController from "../../../controllers/ProfileSettingsController";
+import ProfileSettingsController from "../../../../controllers/ProfileSettingsController";
 import {observer} from "mobx-react-lite";
-import {MainContext} from "../../../index";
+import {MainContext} from "../../../../index";
 
 interface SettingsPanelFieldType {
     avatar: Blob,
@@ -31,7 +31,6 @@ export const UserAccountSettingsPanel = observer(() => {
         const file = event.target.files[0]
         setPanelState(draft => {
             draft.avatar = file
-            return draft
         })
     }
 
@@ -42,7 +41,6 @@ export const UserAccountSettingsPanel = observer(() => {
         ProfileSettingsController.changeColorScheme(theme)
         setPanelState(draft => {
             draft.colorTheme = theme
-            return draft
         })
     }
 
@@ -53,7 +51,6 @@ export const UserAccountSettingsPanel = observer(() => {
 
         setPanelState(draft => {
             draft[field] = value
-            return draft
         })
     }
 

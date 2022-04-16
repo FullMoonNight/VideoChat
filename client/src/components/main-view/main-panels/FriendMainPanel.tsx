@@ -123,9 +123,10 @@ export const FriendMainPanel = observer(() => {
             setSearchUsernameString(e.target.value)
         }
 
-        const findUsersHandler = async () => {
+        const findUsersHandler = async (e?: any) => {
+            e?.preventDefault()
+            if (!searchButtonVisible) return
             const users = await UserFriendsController.findFriendsByUsername({usernamePart: searchUsernameString})
-            // console.log(users)
             setFriendsList(users)
         }
 
@@ -147,7 +148,7 @@ export const FriendMainPanel = observer(() => {
                     </ul>
                 </div>
                 <div className="search-line">
-                    <input type="text" placeholder='Username' value={searchUsernameString} onChange={inputChangeHandler}/>
+                    <form onSubmit={findUsersHandler}><input type="text" placeholder='Username' value={searchUsernameString} onChange={inputChangeHandler}/></form>
                     <button hidden={!searchButtonVisible} onClick={findUsersHandler}>Find</button>
                 </div>
                 <div className="section-name">

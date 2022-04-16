@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
-import './UserPanel.css'
+import './UserBlock.css'
 import {UserMenu} from "./user-menu/UserMenu";
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
 
-export const UserPanel = observer(() => {
+export const UserBlock = observer(() => {
     const {profile, user} = useContext(MainContext)
 
     const [active, setActive] = useState<boolean>(false)
@@ -14,7 +14,7 @@ export const UserPanel = observer(() => {
     }
 
     return (
-        <div className="user-profile-panel">
+        <div className="user-profile-block">
             <div className='img-nickname-card' onClick={clickHandler}>
                 <img src={`user-avatar/${user.user.userId}--${profile.userImageId}.png`}
                      alt="user"

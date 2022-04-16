@@ -1,13 +1,12 @@
-import RoomController from "../../../../controllers/RoomController";
 import {useContext} from "react";
-import {MainContext} from "../../../../index";
+import {WinContext} from "../../../../pages/MainViewPage";
+import {CreateRoomPanel} from "../../ui-panels/create-room-panel/CreateRoomPanel";
 
 export const CreateRoomBtn = () => {
-    const {user} = useContext(MainContext)
+    const {setContextWindow} = useContext(WinContext)
 
     const clickHandler = (e: any) => {
-        const userId = user.user.userId
-        userId && RoomController.createNewRoom({userId})
+        setContextWindow(<CreateRoomPanel/>)
     }
 
     return (

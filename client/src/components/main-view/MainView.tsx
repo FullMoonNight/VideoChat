@@ -40,8 +40,6 @@ export const MainView = observer(() => {
         !profile.loaded && ProfileSettingsController.getProfileSettings().then(res => app.appEndLoading())
     }, [])
 
-
-
     return (
         <ViewPanelsContext.Provider value={{
             components: {

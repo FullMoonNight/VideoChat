@@ -1,4 +1,4 @@
-@import '../../../scss/mixins';
+@import '../../../../scss/mixins';
 
 .settings-panel {
     width: 600px;
@@ -105,30 +105,9 @@
                         }
 
                         input {
-                            background: none;
-                            border: none;
-                            backdrop-filter: brightness(80%);
-                            box-sizing: border-box;
+                            @include common-text-input;
                             width: 80%;
                             height: 30px;
-                            padding: 0 10px;
-                            border-radius: 5px;
-                            color: var(--text-color);
-                            font-size: 15px;
-                            outline: none;
-
-
-                            &:focus {
-                                outline: 1px solid var(--accent-color);
-                            }
-
-                            &:focus, &:valid {
-                                + label {
-                                    top: -20px;
-                                    left: 2px;
-                                    font-size: 13px;
-                                }
-                            }
                         }
                     }
                 }

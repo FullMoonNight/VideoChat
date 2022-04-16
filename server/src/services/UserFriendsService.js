@@ -32,7 +32,6 @@ class UserFriendsService {
                 },
                 status,
             }
-
         })
     }
 

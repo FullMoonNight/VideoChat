@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import './UserMenu.css'
 import AuthController from "../../../../../controllers/AuthController";
 import {WinContext} from "../../../../../pages/MainViewPage";
-import {UserAccountSettingsPanel} from "../../../settings-panel/UserAccountSettingsPanel";
+import {UserAccountSettingsPanel} from "../../../ui-panels/settings-panel/UserAccountSettingsPanel";
 
 interface Props {
     setActive: (active: boolean) => void,
