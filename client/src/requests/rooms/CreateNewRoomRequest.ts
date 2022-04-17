@@ -12,7 +12,8 @@ export interface CreateNewRoomParams extends Params {
 }
 
 interface CreateNewRoomResponse {
-    roomId: string
+    roomId: string,
+    roomName: string,
 }
 
 export default class CreateNewRoomRequest extends BaseRequest<CreateNewRoomResponse> {

@@ -19,12 +19,8 @@ class UserProfileController {
             const imageFile = req.files.files
             const userSettings = JSON.parse(req.body.body)
 
-            const savedUserSettings = await UserProfileService.updateUserSettings(userId, userSettings)
-            let userImageId
-            if (imageFile.size) {
-                userImageId = await UserProfileService.changeUserAvatar(userId, imageFile.data)
-            }
-            res.json({userImageId, ...savedUserSettings})
+            const savedUserSettings = await UserProfileService.updateUserSettings(userId, userSettings, imageFile)
+            res.json(savedUserSettings)
         } catch (e) {
             next(errorHandler(e))
         }

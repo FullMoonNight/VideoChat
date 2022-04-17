@@ -4,6 +4,7 @@ import {useImmer} from "use-immer";
 import ProfileSettingsController from "../../../../controllers/ProfileSettingsController";
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
+import {WinContext} from "../../../../pages/MainViewPage";
 
 interface SettingsPanelFieldType {
     avatar: Blob,
@@ -15,12 +16,13 @@ interface SettingsPanelFieldType {
 
 export const UserAccountSettingsPanel = observer(() => {
     const {profile, user} = useContext(MainContext)
+    const {closeHandler} = useContext(WinContext)
 
     const [panelState, setPanelState] = useImmer<SettingsPanelFieldType>({
         avatar: new Blob(),
-        username: profile.username,
-        name: profile.name || '',
-        surname: profile.surname || '',
+        username: profile.settings.username,
+        name: profile.settings.name || '',
+        surname: profile.settings.surname || '',
         colorTheme: ProfileSettingsController.getCurrentColorScheme()
     })
 
@@ -60,6 +62,7 @@ export const UserAccountSettingsPanel = observer(() => {
             name: panelState.name,
             surname: panelState.surname
         }, panelState.avatar)
+        closeHandler()
     }
 
     return (
@@ -83,7 +86,7 @@ export const UserAccountSettingsPanel = observer(() => {
                                 alt='user'
                                 onChange={imageChangeHandler}
                             />
-                            <img src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/${user.user.userId}--${profile.userImageId}.png`}
+                            <img src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/${user.user.userId}--${profile.settings.userImageId}.png`}
                                  alt=""
                                  style={{
                                      objectFit: 'cover'

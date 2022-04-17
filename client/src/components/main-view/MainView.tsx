@@ -36,8 +36,10 @@ export const MainView = observer(() => {
     }
 
     useEffect(() => {
-        app.appStartLoading()
-        !profile.loaded && ProfileSettingsController.getProfileSettings().then(res => app.appEndLoading())
+        if (!profile.loaded) {
+            app.appStartLoading()
+            ProfileSettingsController.getProfileSettings().then(res => app.appEndLoading())
+        }
     }, [])
 
     return (

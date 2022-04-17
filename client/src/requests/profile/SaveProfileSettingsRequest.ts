@@ -1,5 +1,6 @@
 import BaseRequest from "../BaseRequest";
 import {MethodType, Params} from "../../http/RequestInterface";
+import {ProfileSettingsType} from "../../types/ProfileSettingsType";
 
 export interface SaveProfileSettingsParams extends Params {
     username: string,
@@ -7,14 +8,7 @@ export interface SaveProfileSettingsParams extends Params {
     surname?: string | null
 }
 
-interface SaveSettingsResponse {
-    userImageId: string
-    username: string
-    name?: string
-    surname?: string
-}
-
-export default class SaveProfileSettingsRequest extends BaseRequest<SaveSettingsResponse> {
+export default class SaveProfileSettingsRequest extends BaseRequest<ProfileSettingsType> {
     method: MethodType = 'post'
     route: string = '/profile_settings'
     parameters: SaveProfileSettingsParams

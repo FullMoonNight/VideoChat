@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './UserBlock.css'
 import {UserMenu} from "./user-menu/UserMenu";
 import {observer} from "mobx-react-lite";
@@ -16,14 +16,14 @@ export const UserBlock = observer(() => {
     return (
         <div className="user-profile-block">
             <div className='img-nickname-card' onClick={clickHandler}>
-                <img src={`user-avatar/${user.user.userId}--${profile.userImageId}.png`}
+                <img src={`user-avatar/${user.user.userId}--${profile.settings.userImageId}.png`}
                      alt="user"
                      style={{
                          objectFit: 'cover'
                      }}/>
                 <div className='status-username'>
-                    <span className={`status-emblem ${profile.status}`}></span>
-                    <p className='user-username'>{profile.username}</p>
+                    <span className={`status-emblem ${profile.settings.status}`}></span>
+                    <p className='user-username'>{profile.settings.username}</p>
                 </div>
             </div>
             {active ? <UserMenu setActive={setActive}/> : null}

@@ -76,7 +76,7 @@ RoomModel.hasOne(RoomChatModel, {
 })
 RoomChatModel.belongsTo(RoomModel, {
     foreignKey: 'room_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
 })
 
 //RoomChat-ChatMessages relation

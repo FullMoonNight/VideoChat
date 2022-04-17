@@ -1,10 +1,8 @@
 import BaseRequest from "../BaseRequest";
+import {ProfileSettingsType} from "../../types/ProfileSettingsType";
 
-interface GetSettingsResponse {
-    userImageId: string
-    username: string
-    name?: string
-    surname?: string
+interface GetSettingsResponse extends ProfileSettingsType {
+
 }
 
 export default class GetProfileSettingsRequest extends BaseRequest<GetSettingsResponse> {

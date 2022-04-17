@@ -10,6 +10,7 @@ import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
 import {CreateRoomBtn} from "../aside-components/CreateRoomBtn";
 import {ConferenceRoomTemplate} from "../../list-templates/ConferenceRoomTemplate";
 import {toJS} from "mobx";
+import RoomController from "../../../../controllers/RoomController";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
@@ -30,7 +31,7 @@ export const AsideMenu = observer(() => {
 
     // Загрузка данных для всех элементов меню
     useEffect(() => {
-        Promise.all([UserFriendsController.getAllFriends()])
+        Promise.all([UserFriendsController.getAllFriends(), RoomController.getUserRooms()])
             .then(() => {
                 const savedActiveType = localStorage.getItem('activeMenuItem')
                 if (savedActiveType) {
@@ -49,7 +50,7 @@ export const AsideMenu = observer(() => {
 
     useEffect(() => {
         setMenuState();
-    }, [friends.friends])
+    }, [friends.friends, rooms.rooms])
 
     const menuBlock = useRef<HTMLDivElement>(null)
     const currentActiveElement = useRef<HTMLDListElement | null>(null)
@@ -102,7 +103,7 @@ export const AsideMenu = observer(() => {
                             <CreateRoomBtn/>
                             <AsideList
                                 Template={ConferenceRoomTemplate}
-                                dataList={formatData(rooms.rooms, 'room_id')}
+                                dataList={formatData(rooms.rooms, 'roomId')}
                                 props={{}}
                             />
                         </>

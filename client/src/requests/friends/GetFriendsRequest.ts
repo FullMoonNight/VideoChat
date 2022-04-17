@@ -1,14 +1,7 @@
 import BaseRequest from "../BaseRequest";
+import {FriendElementType} from "../../types/FriendElementType";
 
-interface GetFriendsResponse {
-    linkId: string,
-    user: {
-        userId: string,
-        userImageId: string,
-        username: string,
-        status: 'active' | 'sleep' | 'invisible'
-    }
-    status: "friends" | "pending" | "request"
+interface GetFriendsResponse extends FriendElementType {
 }
 
 

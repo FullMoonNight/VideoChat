@@ -4,9 +4,11 @@ import {MainContext} from "../../../../index";
 import './CreateRoomPanel.css'
 import {useImmer} from "use-immer";
 import RoomController from "../../../../controllers/RoomController";
+import {WinContext} from "../../../../pages/MainViewPage";
 
 export const CreateRoomPanel = observer(() => {
     const {friends, user} = useContext(MainContext)
+    const {closeHandler} = useContext(WinContext)
 
     const [friendList, setFriendList] = useState(friends.friends)
     const [includedFriendList, setIncludedFriendList] = useState<typeof friends.friends>([])
@@ -45,10 +47,11 @@ export const CreateRoomPanel = observer(() => {
         setRoomName(roomName)
     }
 
-    const createNewRoomHandler = () => {
+    const createNewRoomHandler = async (e: any) => {
+        e.preventDefault()
         if (user.user.userId) {
             const includedUsersId = includedFriendList.map(friend => friend.user.userId)
-            RoomController.createNewRoom({
+            await RoomController.createNewRoom({
                 userId: user.user.userId,
                 room: {
                     roomName,
@@ -57,6 +60,7 @@ export const CreateRoomPanel = observer(() => {
                     textEditor: checkboxValues.text
                 }
             })
+            closeHandler()
         }
     }
 
@@ -68,7 +72,7 @@ export const CreateRoomPanel = observer(() => {
             </div>
             <div className="separator-line"></div>
             <div className="input-block">
-                <form>
+                <form onSubmit={createNewRoomHandler}>
                     <input id='room-name-input' value={roomName} onChange={roomNameInputHandler} required autoFocus/>
                     <label htmlFor="room-name-input">Room name</label>
                 </form>

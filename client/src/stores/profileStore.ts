@@ -1,28 +1,22 @@
 import {action, makeAutoObservable} from "mobx";
+import {ProfileSettingsType} from "../types/ProfileSettingsType";
 
 class ProfileStore {
-    userImageId: string
-    username: string
-    name?: string
-    surname?: string
-    status?: 'active' | 'sleep' | 'hidden'
+    settings: ProfileSettingsType
     loaded: boolean
 
     constructor() {
-        this.userImageId = ''
-        this.username = ''
+        this.settings = {
+            userImageId: '',
+            username: ''
+        }
         this.loaded = false
-        makeAutoObservable(this)
+        makeAutoObservable(this, undefined, {deep: true})
     }
 
     @action
-    setProfileSettings(params: { userImageId: string, username: string, name?: string, surname?: string }) {
-        Object.entries(params).forEach(([key, value]) => {
-            const k = key as keyof ProfileStore
-            if (value) {
-                (this as Record<typeof k, any>)[k] = value
-            }
-        })
+    setProfileSettings(params: ProfileSettingsType) {
+        this.settings = params
     }
 
     @action

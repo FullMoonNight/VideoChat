@@ -1,48 +1,19 @@
-import {action, makeAutoObservable} from "mobx";
+import {action, makeAutoObservable, toJS} from "mobx";
+import {RoomElementType} from "../types/RoomElementType";
 
-interface Room {
-    room_id: string,
-    name: string,
-    owner: string,
-    roomImageId: string
-}
 
 class RoomStore {
-    rooms: Room[]
+    rooms: RoomElementType[]
 
     constructor() {
-        this.rooms = [
-            {
-                room_id: '14a7e7f1-0ca6-450d-84dc-f5f481613817',
-                owner: '0080530d-92ea-401c-af64-e66b02c6fb46',
-                roomImageId: '',
-                name: 'test-room'
-            },
-            {
-                room_id: '14a7e7f1-0cfd6-450d-84dc-f5f481613817',
-                owner: '0080530d-92ea-401c-af64-e66b02c6fb46',
-                roomImageId: '',
-                name: 'test-room'
-            },
-            {
-                room_id: '14a7e7f1-0c36-450d-84dc-f5f481613817',
-                owner: '0080530d-92ea-401c-af64-e66b02c6fb46',
-                roomImageId: '',
-                name: 'test-room'
-            },
-            {
-                room_id: '14a7e7f1-0ca6-4gf0d-84dc-f5f481613817',
-                owner: '0080530d-92ea-401c-af64-e66b02c6fb46',
-                roomImageId: '',
-                name: 'test-room'
-            },
-        ]
+        this.rooms = []
         makeAutoObservable(this)
     }
 
     @action
-    setRooms(rooms: Room[]) {
+    setRooms(rooms: RoomElementType[]) {
         this.rooms = rooms
+        console.log(toJS(this.rooms))
     }
 }
 

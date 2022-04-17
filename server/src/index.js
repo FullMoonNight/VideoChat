@@ -37,7 +37,7 @@ new SocketInterface(io);
 (async function start() {
     try {
         await sequelize.authenticate()
-        await sequelize.sync()
+        await sequelize.sync({alter: true})
         server.listen(PORT, () => console.log(`Server has been started on ${PORT}`))
     } catch (e) {
         console.log(e)

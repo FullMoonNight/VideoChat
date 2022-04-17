@@ -2,23 +2,14 @@
 //pending - запрос отправлен, но не принят
 //request - взодящий запрос дружбы
 
-import {action, makeAutoObservable, toJS,} from "mobx";
+import {action, makeAutoObservable} from "mobx";
+import {FriendElementType} from "../types/FriendElementType";
 
-interface FriendType<T extends "friends" | "pending" | "request"> {
-    linkId: string,
-    user: {
-        userId: string,
-        userImageId: string,
-        username: string,
-        status: 'active' | 'sleep' | 'invisible'
-    }
-    status: T
-}
 
 class FriendStore {
-    friends: FriendType<'friends'>[]
-    request: FriendType<'request'>[]
-    pending: FriendType<'pending'>[]
+    friends: FriendElementType<'friends'>[]
+    request: FriendElementType<'request'>[]
+    pending: FriendElementType<'pending'>[]
 
     constructor() {
         this.friends = []
@@ -29,7 +20,7 @@ class FriendStore {
     }
 
     @action
-    setFriends(friends: FriendType<'friends' | "pending" | "request">[]) {
+    setFriends(friends: FriendElementType[]) {
         const friendsMap = new Set()
         const pendingMap = new Set()
         const requestMap = new Set()
@@ -42,19 +33,19 @@ class FriendStore {
             switch (element.status) {
                 case 'friends':
                     if (!friendsMap.has(element.linkId)) {
-                        this.friends = [...this.friends, element as FriendType<'friends'>]
+                        this.friends = [...this.friends, element as FriendElementType<'friends'>]
                         friendsMap.add(element.linkId)
                     }
                     break
                 case 'pending':
                     if (!pendingMap.has(element.linkId)) {
-                        this.pending = [...this.pending, element as FriendType<'pending'>]
+                        this.pending = [...this.pending, element as FriendElementType<'pending'>]
                         pendingMap.add(element.linkId)
                     }
                     break
                 case 'request':
                     if (!requestMap.has(element.linkId)) {
-                        this.request = [...this.request, element as FriendType<'request'>]
+                        this.request = [...this.request, element as FriendElementType<'request'>]
                         requestMap.add(element.linkId)
                     }
                     break

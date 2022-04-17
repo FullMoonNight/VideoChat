@@ -1,19 +1,12 @@
 import BaseRequest from "../BaseRequest";
 import {Params} from "../../http/RequestInterface";
+import {FriendElementType} from "../../types/FriendElementType";
 
 export interface FindUsersParams extends Params {
     usernamePart: string
 }
 
-interface FindUsersResponse {
-    linkId: string,
-    user: {
-        userId: string,
-        userImageId: string,
-        username: string,
-        status?: 'active' | 'sleep' | 'invisible'
-    }
-    status: "friends" | "pending" | "request"
+interface FindUsersResponse extends FriendElementType{
 }
 
 export class FindFriendsByUsernameRequest extends BaseRequest<FindUsersResponse[]> {

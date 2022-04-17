@@ -4,17 +4,7 @@ import {MainContext} from "../../../index";
 import {FriendTemplate} from "../list-templates/FriendTemplate";
 import './FriendMainPanel.css'
 import UserFriendsController from "../../../controllers/UserFriendsController";
-
-interface FriendElement {
-    linkId: string,
-    user: {
-        userId: string,
-        username: string,
-        userImageId: string,
-        status?: 'active' | 'sleep' | 'invisible'
-    },
-    status: 'friends' | 'pending' | 'request'
-}
+import {FriendElementType} from "../../../types/FriendElementType";
 
 interface ButtonsState {
     message?: boolean,
@@ -24,7 +14,6 @@ interface ButtonsState {
     removeFriend?: boolean
 }
 
-
 export const FriendMainPanel = observer(() => {
         const {friends} = useContext(MainContext)
         const friendsUnitedList = useMemo(friends.getAllFriends.bind(friends), [friends.friends, friends.request, friends.pending])
@@ -32,7 +21,7 @@ export const FriendMainPanel = observer(() => {
         const [searchUsernameString, setSearchUsernameString] = useState<string>('')
         const [sectionName, setSectionName] = useState<string>('')
         const [searchButtonVisible, setSearchButtonVisible] = useState<boolean>(false)
-        const [friendsList, setFriendsList] = useState<FriendElement[]>([])
+        const [friendsList, setFriendsList] = useState<FriendElementType[]>([])
         const [buttons, setButtons] = useState<ButtonsState>({})
         const [requestUsersCount, setRequestUsersCount] = useState<number>(0)
 
@@ -76,7 +65,7 @@ export const FriendMainPanel = observer(() => {
         const setFriendListsState = () => {
             const menuTab = currentActiveTabType.current
 
-            let arr: FriendElement[] = []
+            let arr: FriendElementType[] = []
             switch (menuTab) {
                 case 'online':
                     arr = friendsUnitedList.filter(e => e.status === 'friends' && e.user.status === 'active')
@@ -130,7 +119,7 @@ export const FriendMainPanel = observer(() => {
             setFriendsList(users)
         }
 
-        const filterUsersHandler = (elem: FriendElement) => {
+        const filterUsersHandler = (elem: FriendElementType) => {
             if (currentActiveTabType.current === 'add') return true
             return elem.user.username.includes(searchUsernameString)
         }
@@ -148,7 +137,7 @@ export const FriendMainPanel = observer(() => {
                     </ul>
                 </div>
                 <div className="search-line">
-                    <form onSubmit={findUsersHandler}><input type="text" placeholder='Username' value={searchUsernameString} onChange={inputChangeHandler}/></form>
+                    <form onSubmit={findUsersHandler}><input type="text" placeholder='Search' value={searchUsernameString} onChange={inputChangeHandler}/></form>
                     <button hidden={!searchButtonVisible} onClick={findUsersHandler}>Find</button>
                 </div>
                 <div className="section-name">

@@ -3,6 +3,7 @@ import {MainView} from "../components/main-view/MainView";
 
 interface WinContext {
     setContextWindow: (window: JSX.Element | null) => void,
+    closeHandler: (e?: any) => void
 }
 
 export const WinContext = createContext<WinContext>({} as WinContext)
@@ -24,12 +25,12 @@ export const MainViewPage = () => {
     } as CSSProperties
 
     const closeHandler = (e: any) => {
-        if (e.target.dataset.element !== 'close-wrapper') return
+        if (e && e.target.dataset.element !== 'close-wrapper') return
         setContextWindow(null)
     }
 
     return (
-        <WinContext.Provider value={{setContextWindow}}>
+        <WinContext.Provider value={{setContextWindow, closeHandler}}>
             <MainView/>
             {
                 ContextWindow ?

@@ -1,16 +1,12 @@
 import React from 'react';
 import './FriendTemplate.css'
 import UserFriendsController from "../../../controllers/UserFriendsController";
+import {UserElementType} from "../../../types/UserElementType";
 
 interface Props {
     data: {
         id: string,
-        user: {
-            userId: string,
-            userImageId: string,
-            username: string,
-            status?: 'active' | 'sleep' | 'invisible'
-        }
+        user: UserElementType
     },
     props: {
         buttonConfig: {
