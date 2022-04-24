@@ -39,11 +39,13 @@ module.exports.callListeners = function callListeners(socket, socketInterface) {
         userSocketsInRoom.forEach(socketId => {
             io.to(socketId).emit('ADD_PEER', {
                 peerId: socket.id,
+                userId: socket._userId,
                 createOffer: false
             })
 
             socket.emit('ADD_PEER', {
                 peerId: socketId,
+                userId: io.sockets.sockets.get(socketId)._userId,
                 createOffer: true
             })
         })

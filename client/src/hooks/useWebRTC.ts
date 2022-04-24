@@ -8,18 +8,18 @@ import webRTCInterface from "../WebRCT/WebRTCInterface";
 import {MainContext} from "../index";
 
 export function useWebRTC(roomId: string) {
-    const [clients, setClients] = useCallbackState<string[]>([]);
+    const [clients, setClients] = useCallbackState<{ socketId: string, userId: string }[]>([]);
     const {user} = useContext(MainContext)
 
     const addNewClient = useCallback((newClient, cb) => {
-        if (!clients.includes(newClient)) {
-            setClients((list: string[]) => [...list, newClient], cb)
+        if (!clients.find((element) => element.userId === newClient.user && element.socketId === newClient.socketId)) {
+            setClients((list: { socketId: string, userId: string }[]) => [...list, newClient], cb)
         }
     }, [clients, setClients])
 
 
     useEffect(() => {
-        async function handlePeer({peerId, createOffer}: { peerId: string, createOffer: boolean }) {
+        async function handlePeer({peerId, userId, createOffer}: { peerId: string, userId: string, createOffer: boolean }) {
             if (peerId in WebRTCInterface.peerConnections) {
                 return console.log(`Already connected to peer ${peerId}`)
             }
@@ -37,7 +37,7 @@ export function useWebRTC(roomId: string) {
             }
 
             WebRTCInterface.peerConnections[peerId].ontrack = ({streams: [remoteStream]}) => {
-                addNewClient(peerId, () => {
+                addNewClient({socketId: peerId, userId}, () => {
                     if (WebRTCInterface.videoElements[peerId]) {
                         // @ts-ignore
                         WebRTCInterface.videoElements[peerId].srcObject = remoteStream
@@ -94,7 +94,7 @@ export function useWebRTC(roomId: string) {
 
             console.log(webRTCInterface.videoElements)
 
-            setClients((list: string[]) => list.filter(client => client !== peerId), () => {
+            setClients((list: { socketId: string, userId: string }[]) => list.filter(client => client !== peerId), () => {
             })
 
             console.log(clients)
@@ -120,9 +120,10 @@ export function useWebRTC(roomId: string) {
     useEffect(() => {
         async function startCapture() {
             webRTCInterface.localMediaStream = await navigator.mediaDevices.getUserMedia({
-                audio: true
+                audio: true,
+                video: true
             })
-            addNewClient('local', () => {
+            addNewClient({socketId: 'local', userId: user.user.userId}, () => {
                 const localVideoElement = webRTCInterface.videoElements['local']
 
                 if (localVideoElement) {

@@ -13,6 +13,11 @@ class SocketInterface {
     constructor(io) {
         if (SocketInterface.#singletonInstance) return SocketInterface.#singletonInstance
 
+        io.use((socket, next) => {
+            socket._userId = JwtService.validateAccessToken(socket.handshake.auth.token).userId
+            next()
+        })
+
         this.#ioMain = io
         this.#initListeners()
         SocketInterface.#singletonInstance = this
@@ -29,11 +34,11 @@ class SocketInterface {
     #initListeners() {
         this.#ioMain.on('connection', socket => {
             console.log('connect ####', socket.id)
-            this.#mapUserSessions(socket.handshake.auth.token, socket.id)
+            this.#mapUserSessions(socket._userId, socket.id)
 
             socket.on('disconnect', reason => {
                 console.log('disconnect ####', socket.id, reason)
-                this.#removeDisconnectedSocket(socket.handshake.auth.token, socket.id)
+                this.#removeDisconnectedSocket(socket._userId, socket.id)
             })
 
             messageListeners(socket, this)
@@ -43,10 +48,7 @@ class SocketInterface {
         })
     }
 
-    #mapUserSessions(token, socketId) {
-        const userObj = JwtService.validateAccessToken(token)
-        if (!userObj) return
-        const userId = userObj.userId
+    #mapUserSessions(userId, socketId) {
         if (this.#usersMap[userId]) {
             this.#usersMap[userId].push(socketId)
         } else {
@@ -54,8 +56,7 @@ class SocketInterface {
         }
     }
 
-    #removeDisconnectedSocket(token, socketId) {
-        const userId = JwtService.validateAccessToken(token).userId
+    #removeDisconnectedSocket(userId, socketId) {
         this.#usersMap[userId] = this.#usersMap[userId].filter(e => e !== socketId)
         if (!this.#usersMap[userId].length) delete this.#usersMap[userId]
     }
