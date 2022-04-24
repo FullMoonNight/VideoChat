@@ -28,6 +28,12 @@ class UserProfileService {
         const buffer = generateImage(username)
 
         const userAvatarId = v4()
+        try {
+            await fs.access(this.#defaultAvatarPath)
+        } catch (e) {
+            console.log('created user-avatar dir')
+            await fs.mkdir(this.#defaultAvatarPath)
+        }
         await fs.writeFile(`${this.#defaultAvatarPath}/${userId}--${userAvatarId}.png`, buffer)
 
         return userAvatarId
@@ -42,6 +48,12 @@ class UserProfileService {
                 }
             });
             if (imageFile.size) {
+                try {
+                    await fs.access(this.#defaultAvatarPath)
+                } catch (e) {
+                    console.log('created user-avatar dir')
+                    await fs.mkdir(this.#defaultAvatarPath)
+                }
                 await fs.writeFile(`${this.#defaultAvatarPath}/${userId}--${currentUserSettings.imageId}.png`, imageFile.data)
             }
             await currentUserSettings.save()

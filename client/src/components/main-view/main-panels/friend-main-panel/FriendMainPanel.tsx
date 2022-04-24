@@ -1,10 +1,10 @@
 import {ChangeEvent, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {observer} from "mobx-react-lite";
-import {MainContext} from "../../../index";
-import {FriendTemplate} from "../list-templates/FriendTemplate";
+import {MainContext} from "../../../../index";
+import {FriendTemplate} from "../../list-templates/FriendTemplate";
 import './FriendMainPanel.css'
-import UserFriendsController from "../../../controllers/UserFriendsController";
-import {FriendElementType} from "../../../types/FriendElementType";
+import UserFriendsController from "../../../../controllers/UserFriendsController";
+import {FriendElementType} from "../../../../types/FriendElementType";
 
 interface ButtonsState {
     message?: boolean,
@@ -126,7 +126,7 @@ export const FriendMainPanel = observer(() => {
 
         return (
             <div className="friend-list-panel">
-                <div className="friend-type-header">
+                <header className="friend-type-header">
                     <p>Friends</p>
                     <ul onClick={headerMenuClick} ref={menuBlock}>
                         <li data-tab='online'>Online</li>
@@ -135,7 +135,7 @@ export const FriendMainPanel = observer(() => {
                         <li data-tab='pending'>Pending</li>
                         <li className="add-friends" data-tab='add'>Add friends</li>
                     </ul>
-                </div>
+                </header>
                 <div className="search-line">
                     <form onSubmit={findUsersHandler}><input type="text" placeholder='Search' value={searchUsernameString} onChange={inputChangeHandler}/></form>
                     <button hidden={!searchButtonVisible} onClick={findUsersHandler}>Find</button>

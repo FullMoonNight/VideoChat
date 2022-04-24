@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './UserBlock.css'
-import {UserMenu} from "./user-menu/UserMenu";
+import {UserMenu} from "../user-menu/UserMenu";
 import {observer} from "mobx-react-lite";
-import {MainContext} from "../../../../index";
+import {MainContext} from "../../../../../index";
 
 export const UserBlock = observer(() => {
     const {profile, user} = useContext(MainContext)

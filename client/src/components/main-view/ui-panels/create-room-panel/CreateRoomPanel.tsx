@@ -13,7 +13,7 @@ export const CreateRoomPanel = observer(() => {
     const [friendList, setFriendList] = useState(friends.friends)
     const [includedFriendList, setIncludedFriendList] = useState<typeof friends.friends>([])
     const [roomName, setRoomName] = useState('')
-    const [checkboxValues, setCheckboxValues] = useImmer<{ text: boolean, handWr: boolean }>({text: false, handWr: false})
+    const [checkboxValues, setCheckboxValues] = useImmer<{ text: boolean, handWr: boolean, chat: boolean }>({text: false, handWr: false, chat: true})
 
     useEffect(() => {
         setFriendList(friends.friends)
@@ -36,7 +36,7 @@ export const CreateRoomPanel = observer(() => {
     }
 
     const checkboxHandler = (e: any) => {
-        const field: 'handWr' | 'text' = e.target.name;
+        const field: 'handWr' | 'text' | 'chat' = e.target.name;
         setCheckboxValues(draft => {
             draft[field] = !draft[field]
         })
@@ -57,7 +57,8 @@ export const CreateRoomPanel = observer(() => {
                     roomName,
                     includedUsersId,
                     handWrEditor: checkboxValues.handWr,
-                    textEditor: checkboxValues.text
+                    textEditor: checkboxValues.text,
+                    chat: checkboxValues.chat
                 }
             })
             closeHandler()
@@ -78,6 +79,11 @@ export const CreateRoomPanel = observer(() => {
                 </form>
             </div>
             <div className="checkbox-group">
+                <label className="checkbox-field">
+                    Add chat
+                    <input type="checkbox" name='chat' hidden checked={checkboxValues.chat} onChange={checkboxHandler}/>
+                    <span className="checkmark"></span>
+                </label>
                 <label className="checkbox-field">
                     Add text editor
                     <input type="checkbox" name='text' hidden checked={checkboxValues.text} onChange={checkboxHandler}/>

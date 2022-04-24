@@ -2,11 +2,14 @@ module.exports.callListeners = function callListeners(socket, socketInterface) {
     const io = socketInterface.ioMain
     const usersMap = socketInterface.usersMap
 
+    //пока не нужно использовать
     socket.on('CREATE_ROOM', ({roomId}) => {
-        if(io.sockets.adapter.rooms.get(roomId)) return console.log(`room ${roomId} already exist`)
+        if (io.sockets.adapter.rooms.get(roomId)) return console.log(`room ${roomId} already exist`)
         socket.join(roomId)
+        socket.emit('ROOM_CREATED', {roomId})
     })
 
+    //пока не нужно использовать
     socket.on('INVITE_USERS', ({usersList, roomId}) => {
         let userSocketsId = []
         usersList.forEach(userId => {
@@ -19,15 +22,47 @@ module.exports.callListeners = function callListeners(socket, socketInterface) {
     })
 
     socket.on('JOIN_ROOM', ({userId, roomId}) => {
-        const userSocketsInRoom = [...io.sockets.adapter.rooms.get(roomId)]
+        let userSocketsInRoom
+        try {
+            userSocketsInRoom = [...io.sockets.adapter.rooms.get(roomId)]
+        } catch (e) {
+            return socket.join(roomId)
+        }
         const userSockets = usersMap[userId]
-        if (!userSockets.length) return console.log(`user ${userId} in not connected to WS server`)
+        if (userSockets && !userSockets.length) return console.log(`user ${userId} in not connected to WS server`)
 
         for (const userSocketsKey of userSockets) {
             if (userSocketsInRoom.includes(userSocketsKey)) return console.log(`user ${userId} already in room ${roomId}`)
 
         }
+
+        userSocketsInRoom.forEach(socketId => {
+            io.to(socketId).emit('ADD_PEER', {
+                peerId: socket.id,
+                createOffer: false
+            })
+
+            socket.emit('ADD_PEER', {
+                peerId: socketId,
+                createOffer: true
+            })
+        })
+
         socket.join(roomId)
         socket.emit('START_CONNECTION', {roomId})
+    })
+
+    socket.on('RELAY_SDP', ({peerId, sessionDescription}) => {
+        io.to(peerId).emit('SESSION_DESCRIPTION', {
+            peerId: socket.id,
+            sessionDescription
+        })
+    })
+
+    socket.on('RELAY_ICE', ({peerId, iceCandidate}) => {
+        io.to(peerId).emit('ICE_CANDIDATE', {
+            peerId: socket.id,
+            iceCandidate
+        })
     })
 }

@@ -7,7 +7,8 @@ export interface CreateNewRoomParams extends Params {
         roomName: string,
         includedUsersId: string[],
         handWrEditor: boolean,
-        textEditor: boolean
+        textEditor: boolean,
+        chat: boolean
     }
 }
 

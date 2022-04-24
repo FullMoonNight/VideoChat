@@ -1,22 +1,34 @@
+import './ConferenceRoomTemplate.css'
+import {RoomElementType} from "../../../types/RoomElementType";
+import {useContext} from "react";
+import {WinContext} from "../../../pages/MainViewPage";
+import {RoomMainPanel} from "../main-panels/room-main-panel/RoomMainPanel";
+import {ViewPanelsContext} from "../MainView";
+
 interface Props {
     data: {
-        id: string,
-        name: string,
-        room_id: string,
-        owner: string,
-        roomImageId: string
-    },
+        id: string
+    } & RoomElementType
     props: {}
 }
 
 export const ConferenceRoomTemplate = ({data}: Props) => {
-    console.log(data)
+    const {setPanelsHandler} = useContext(ViewPanelsContext)
+
+    const clickHandler = () => {
+        setPanelsHandler({
+            mainComponent: <RoomMainPanel roomId={data.roomId}/>
+        })
+    }
+
     return (
-        <div className='room-element'>
-            <div className='room-image'>
-                <img src={`room-image/${data.roomImageId}.png`} alt=""/>
+        <div className='room-element' onClick={clickHandler}>
+            <div className="room-element__image">
+                <img src={`room-image/${data.roomId}--${data.roomImageId}.png`} style={{objectFit: "cover"}} alt="room-img"/>
+                <span hidden={data.confirm}>NEW</span>
             </div>
-            <span className='room-name'>{data.name}</span>
+            <span className='room-element__room-name'>{data.name}</span>
+
 
         </div>
     )

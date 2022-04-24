@@ -1,0 +1,43 @@
+.room-element {
+    width: 100%;
+    margin: 2px 0;
+    padding: 7px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 7px;
+
+    &__image {
+        position: relative;
+
+        img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        span {
+            position: absolute;
+            padding: 0 2px;
+            bottom: 0;
+            right: -10px;
+            background-color: red;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+    }
+
+    &__room-name {
+        font-size: 17px;
+        color: var(--text-color);
+        margin-left: 15px;
+        font-weight: 600;
+    }
+
+    &:hover {
+        backdrop-filter: brightness(80%);
+    }
+}

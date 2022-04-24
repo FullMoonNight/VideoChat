@@ -6,8 +6,8 @@ import {AsideList} from "../aside-list/AsideList";
 import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
-import {FriendMainPanel} from "../../main-panels/FriendMainPanel";
-import {CreateRoomBtn} from "../aside-components/CreateRoomBtn";
+import {FriendMainPanel} from "../../main-panels/friend-main-panel/FriendMainPanel";
+import {CreateRoomBtn} from "../aside-components/create-room-btn/CreateRoomBtn";
 import {ConferenceRoomTemplate} from "../../list-templates/ConferenceRoomTemplate";
 import {toJS} from "mobx";
 import RoomController from "../../../../controllers/RoomController";
@@ -28,6 +28,7 @@ interface ViewConfigurationType {
 export const AsideMenu = observer(() => {
     const {setPanelsHandler} = useContext(ViewPanelsContext)
     const {friends, rooms} = useContext(MainContext)
+
 
     // Загрузка данных для всех элементов меню
     useEffect(() => {
@@ -108,7 +109,6 @@ export const AsideMenu = observer(() => {
                             />
                         </>
                     ),
-                    mainComponent: null,
                 })
                 break;
         }

@@ -13,7 +13,11 @@ class RoomStore {
     @action
     setRooms(rooms: RoomElementType[]) {
         this.rooms = rooms
-        console.log(toJS(this.rooms))
+    }
+
+    @action
+    updateRoom(room: RoomElementType) {
+        this.rooms = this.rooms.map(r => r.roomId === room.roomId ? room : r)
     }
 }
 

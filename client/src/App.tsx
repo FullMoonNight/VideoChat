@@ -22,7 +22,6 @@ const App = observer(() => {
     }, [])
 
     useEffect(() => {
-        console.log(user.isAuth)
         const token = localStorage.getItem('accessToken')
         if (token && user.isAuth) {
             socketInterface.createSocket(token)

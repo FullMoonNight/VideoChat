@@ -1,5 +1,7 @@
 import {Manager, Socket} from "socket.io-client";
 import {messageListeners} from "./listeners/messageListeners";
+import {roomListeners} from "./listeners/roomListeners";
+import {connectionListeners} from "./listeners/connectionListeners";
 
 class SocketInterface {
     private socket: Socket | null = null
@@ -16,8 +18,10 @@ class SocketInterface {
     }
 
     setListeners() {
-        if(!this.socket) return console.warn('Socket is not connected')
+        if (!this.socket) return console.warn('Socket is not connected')
         messageListeners(this.socket)
+        roomListeners(this.socket)
+        connectionListeners(this.socket)
     }
 
     createSocket(token: string) {
@@ -57,6 +61,4 @@ class SocketInterface {
 }
 
 const socketInterface = new SocketInterface()
-//@ts-ignore
-window.s = socketInterface;
 export {socketInterface}
