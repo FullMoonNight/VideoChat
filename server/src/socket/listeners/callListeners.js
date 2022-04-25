@@ -33,7 +33,6 @@ module.exports.callListeners = function callListeners(socket, socketInterface) {
 
         for (const userSocketsKey of userSockets) {
             if (userSocketsInRoom.includes(userSocketsKey)) return console.log(`user ${userId} already in room ${roomId}`)
-
         }
 
         userSocketsInRoom.forEach(socketId => {
@@ -67,4 +66,24 @@ module.exports.callListeners = function callListeners(socket, socketInterface) {
             iceCandidate
         })
     })
+
+    function leaveRoom() {
+        const rooms = [...socket.rooms].filter(id => id !== socket.id)
+        rooms.forEach(roomId => {
+            const socketsInRooms = [...io.sockets.adapter.rooms.get(roomId)].filter(socketId => socketId !== socket.id)
+            socketsInRooms.forEach(socketId => {
+                io.to(socketId).emit('REMOVE_PEER', {
+                    peerId: socket.id
+                })
+
+                socket.emit('REMOVE_PEER', {
+                    peerId: socketId
+                })
+            })
+            socket.leave(roomId)
+        })
+    }
+
+    socket.on('disconnecting', leaveRoom)
+    socket.on('LEAVE', leaveRoom)
 }

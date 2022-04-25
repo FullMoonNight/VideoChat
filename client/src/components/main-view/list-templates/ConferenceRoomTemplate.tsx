@@ -24,7 +24,7 @@ export const ConferenceRoomTemplate = ({data}: Props) => {
     return (
         <div className='room-element' onClick={clickHandler}>
             <div className="room-element__image">
-                <img src={`room-image/${data.roomId}--${data.roomImageId}.png`} style={{objectFit: "cover"}} alt="room-img"/>
+                <img src={`room-image/${data.roomId}--${data.roomImageId}.png`} alt="room-img"/>
                 <span hidden={data.confirm}>NEW</span>
             </div>
             <span className='room-element__room-name'>{data.name}</span>

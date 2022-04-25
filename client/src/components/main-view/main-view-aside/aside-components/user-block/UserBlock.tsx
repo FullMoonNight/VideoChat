@@ -18,9 +18,7 @@ export const UserBlock = observer(() => {
             <div className='img-nickname-card' onClick={clickHandler}>
                 <img src={`user-avatar/${user.user.userId}--${profile.settings.userImageId}.png`}
                      alt="user"
-                     style={{
-                         objectFit: 'cover'
-                     }}/>
+                />
                 <div className='status-username'>
                     <span className={`status-emblem ${profile.settings.status}`}></span>
                     <p className='user-username'>{profile.settings.username}</p>

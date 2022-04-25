@@ -86,11 +86,10 @@ export const UserAccountSettingsPanel = observer(() => {
                                 alt='user'
                                 onChange={imageChangeHandler}
                             />
-                            <img src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/${user.user.userId}--${profile.settings.userImageId}.png`}
-                                 alt=""
-                                 style={{
-                                     objectFit: 'cover'
-                                 }}
+                            <img
+                                src={panelState.avatar.size ? URL.createObjectURL(panelState.avatar) : `user-avatar/${user.user.userId}--${profile.settings.userImageId}.png`}
+                                alt=""
+
                             />
                         </div>
                         <div className="user-info-block">

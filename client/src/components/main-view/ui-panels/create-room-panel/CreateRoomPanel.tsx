@@ -104,7 +104,7 @@ export const CreateRoomPanel = observer(() => {
                             includedFriendList.length ?
                                 includedFriendList.map(friend => (
                                     <div key={friend.linkId} className='user-card'>
-                                        <img src={`user-avatar/${friend.user.userId}--${friend.user.userImageId}.png`} style={{objectFit: "cover"}} alt=""
+                                        <img src={`user-avatar/${friend.user.userId}--${friend.user.userImageId}.png`} alt=""
                                              className="user-card__user-img"/>
                                         <p className='user-card__username'>{friend.user.username}</p>
                                         <div className="user-card__spacer"></div>
@@ -126,7 +126,7 @@ export const CreateRoomPanel = observer(() => {
                         {
                             friendList.map(friend => (
                                 <div key={friend.linkId} className='user-card'>
-                                    <img src={`user-avatar/${friend.user.userId}--${friend.user.userImageId}.png`} style={{objectFit: "cover"}} alt=""
+                                    <img src={`user-avatar/${friend.user.userId}--${friend.user.userImageId}.png`} alt=""
                                          className="user-card__user-img"/>
                                     <p className='user-card__username'>{friend.user.username}</p>
                                     <div className="user-card__spacer"></div>
