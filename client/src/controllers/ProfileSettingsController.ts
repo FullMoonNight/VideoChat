@@ -37,7 +37,7 @@ export default class ProfileSettingsController {
         let scheme = localStorage.getItem('colorScheme')
         if (!scheme) {
             scheme = 'light'
-            localStorage.setItem('colorScheme', 'light')
+            localStorage.setItem('colorScheme', scheme)
         }
         return scheme as 'light' | 'dark'
     }

@@ -22,15 +22,15 @@ export const RoomPanel = observer(({roomId}: Params) => {
         return membersMap
     }, [currentRoom])
 
-    const {clients, provideMediaRef} = useWebRTC(roomId)
+    const {clients, provideMediaRef, controllers} = useWebRTC(roomId)
     return (
-        <div className="no-close-wrapper" onClick={() => closeHandler()}>
+        <div className="no-close-wrapper">
             <div className='room-panel'>
                 <div className="room-panel__content">
                     {clients.map(clientObj => {
-                        let member: { userId: string, userImageId: string }
+                        let member: { userId: string, userImageId: string, username: string }
                         if (clientObj.socketId === 'local') {
-                            member = {userId: user.user.userId || '', userImageId: profile.settings.userImageId}
+                            member = {userId: user.user.userId || '', userImageId: profile.settings.userImageId, username: profile.settings.username}
                         } else {
                             member = roomMembers[clientObj.userId]
                         }
@@ -49,9 +49,22 @@ export const RoomPanel = observer(({roomId}: Params) => {
                                         muted={clientObj.socketId === 'local'}
                                     />
                                 </div>
+                                <p className="username">{member.username}</p>
                             </div>
                         )
                     })}
+                </div>
+                <div className="room-panel__control-block">
+                    <div className="button-block">
+                        <button className='microphone' onClick={controllers.microphone.handler}>mic {controllers.microphone.mute ?  'off' : 'on'}</button>
+                        <button className='mute' onClick={controllers.deafen.handler}>{controllers.deafen.state ? 'unmute' : 'mute'}</button>
+                        <button className='video' onClick={controllers.video.handler}>vid {controllers.video.visible ?  'on' : 'off'}</button>
+                        <button className='leave' onClick={() => closeHandler()}>leave</button>
+                        <div className="spacer"></div>
+                        {currentRoom && (currentRoom.editors.text || currentRoom.editors.handWr) ? <button className='editors'>editors</button> : null}
+                        {currentRoom && currentRoom.chat ? <button className='chat'>chat</button> : null}
+
+                    </div>
                 </div>
             </div>
         </div>

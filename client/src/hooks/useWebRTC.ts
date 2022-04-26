@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useMemo} from "react";
+import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 // @ts-ignore
 import freeice from "freeice";
 import {useCallbackState} from "./useCallbackStateHook";
@@ -12,6 +12,40 @@ export function useWebRTC(roomId: string) {
 
     const webRTCInterface = useMemo(() => new WebRTCInterface(), [])
 
+    //@ts-ignore
+    window.rtc = webRTCInterface
+
+    const [muteState, setMuteState] = useCallbackState<boolean>(false)
+    const [deafenState, setDeafenState] = useCallbackState<boolean>(false)
+    const [videoState, setVideoState] = useCallbackState<boolean>(false)
+    const [editorsState, setEditorsState] = useCallbackState<{ visible: boolean, currentEditor: 'text' | 'handWr' }>({currentEditor: 'text', visible: false})
+    const [chatState, setChatState] = useCallbackState<boolean>(false)
+
+    const muteHandler = function () {
+        setMuteState(prevState => !prevState, async (updatedState) => {
+            if (webRTCInterface.localMediaStream?.getAudioTracks()[0]) {
+                webRTCInterface.localMediaStream.getAudioTracks()[0].enabled = !updatedState
+            }
+        })
+    }
+
+    const deafenHandler = function () {
+        setDeafenState(prevState => !prevState, (updatedState) => {
+            webRTCInterface.muteAll(updatedState)
+        })
+    }
+
+    const videoHandler = function () {
+        setVideoState(prevState => !prevState, (updatedState) => {
+            if (updatedState) {
+                webRTCInterface.addVideoOnAllPeers()
+            } else {
+                webRTCInterface.removeVideoFormAllPeers()
+            }
+
+        })
+    }
+
     const addNewClient = useCallback((newClient, cb) => {
         setClients((list: { socketId: string, userId: string }[]) => {
             if (!list.find(element => element.socketId === newClient.socketId && element.userId === newClient.userId))
@@ -23,7 +57,6 @@ export function useWebRTC(roomId: string) {
 
     useEffect(() => {
         async function handlePeer({peerId, userId, createOffer}: { peerId: string, userId: string, createOffer: boolean }) {
-            console.log(1)
             if (webRTCInterface.peerConnections[peerId]) {
                 return console.log(`Already connected to peer ${peerId}`)
             }
@@ -40,13 +73,17 @@ export function useWebRTC(roomId: string) {
                 }
             }
 
-            webRTCInterface.peerConnections[peerId].ontrack = ({streams: [stream]}) => {
+            webRTCInterface.peerConnections[peerId].ontrack = ({streams}) => {
+                const stream = streams[0]
+
                 addNewClient({socketId: peerId, userId}, () => {
-                    if (webRTCInterface.videoElements[peerId]) {
-                        // @ts-ignore
-                        webRTCInterface.videoElements[peerId].srcObject = stream
-                    }
                 })
+                if (webRTCInterface.videoElements[peerId]) {
+                    // @ts-ignore
+                    webRTCInterface.videoElements[peerId].srcObject = null
+                    // @ts-ignore
+                    webRTCInterface.videoElements[peerId].srcObject = stream
+                }
             }
 
             if (webRTCInterface.localMediaStream) {
@@ -70,7 +107,7 @@ export function useWebRTC(roomId: string) {
         return () => {
             socketInterface.off('ADD_PEER')
         }
-    }, [])
+    }, [webRTCInterface.localMediaStream])
 
     useEffect(() => {
         type RelayParams = { peerId: string, sessionDescription: RTCSessionDescriptionInit }
@@ -103,10 +140,7 @@ export function useWebRTC(roomId: string) {
             delete webRTCInterface.peerConnections[peerId]
             delete webRTCInterface.videoElements[peerId]
 
-            console.log('remove', webRTCInterface.peerConnections)
-
-            setClients((list: { socketId: string, userId: string }[]) => list.filter(client => client.socketId !== peerId), () => {
-            })
+            setClients((list: { socketId: string, userId: string }[]) => list.filter(client => client.socketId !== peerId))
         })
 
         return () => {
@@ -128,15 +162,10 @@ export function useWebRTC(roomId: string) {
 
     useEffect(() => {
         async function startCapture() {
-            // webRTCInterface.localMediaStream = await navigator.mediaDevices.getUserMedia({
-            //     audio: true,
-            //     video: {
-            //         height: 720,
-            //         width: 1280,
-            //     }
-            // })
+            webRTCInterface.localMediaStream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+            })
 
-            webRTCInterface.localMediaStream = await navigator.mediaDevices.getDisplayMedia()
             addNewClient({socketId: 'local', userId: user.user.userId}, () => {
                 if (webRTCInterface.videoElements['local']) {
                     webRTCInterface.videoElements['local'].volume = 0;
@@ -159,5 +188,20 @@ export function useWebRTC(roomId: string) {
         webRTCInterface.videoElements[id] = node
     }, [])
 
-    return {clients, provideMediaRef}
+    return {
+        clients, provideMediaRef, controllers: {
+            microphone: {
+                mute: muteState,
+                handler: muteHandler
+            },
+            deafen: {
+                state: deafenState,
+                handler: deafenHandler
+            },
+            video: {
+                visible: videoState,
+                handler: videoHandler
+            }
+        }
+    }
 }

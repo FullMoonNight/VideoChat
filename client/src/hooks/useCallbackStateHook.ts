@@ -1,18 +1,20 @@
 import {useEffect, useRef, useState} from "react";
 
-export function useCallbackState<T = any>(initialState: T | (() => T)): [T, (state: T | ((val: T) => T), callback: () => void) => void] {
-    const [state, setState] = useState<T>(initialState)
-    const cb = useRef<() => void>()
+type ReturnVal<T> = [T, (state: T | ((prevState: T) => T), cb?: (updatedState: T) => void) => void]
 
-    const updateState = (newState: T | ((val: T) => T), callback: () => void) => {
-        cb.current = callback
-        // @ts-ignore
+export function useCallbackState<T = any>(initialState: T): ReturnVal<T> {
+    const [state, setState] = useState<T>(initialState)
+    const cb = useRef<(updatedState: T) => void>()
+
+    const updateState = (newState: T | ((prevState: T) => T), callBack?: (updatedState: T) => void) => {
+        cb.current = callBack
+        // @ts-ignores
         setState(prevState => typeof newState === 'function' ? newState(prevState) : newState)
     }
 
     useEffect(() => {
         if (cb.current) {
-            cb.current()
+            cb.current(state)
             cb.current = undefined
         }
     }, [state])
