@@ -29,7 +29,7 @@ export const FriendMainPanel = observer(() => {
         const menuBlock = useRef<HTMLUListElement | null>(null)
         const currentActiveTabType = useRef<string>('online')
 
-        //Обновляет все спаски после изменеия данных
+        //Обновляет все списки после изменеия данных
         useEffect(() => {
             setFriendListsState()
         }, [friendsUnitedList])
@@ -91,6 +91,7 @@ export const FriendMainPanel = observer(() => {
                     setSectionName('Add new friends')
                     setSearchButtonVisible(true)
                     setButtons({addFriend: true})
+                    setFriendsList([])
                     break
             }
             if (menuTab === 'add') {

@@ -2,6 +2,7 @@ import React from 'react';
 import './FriendTemplate.css'
 import UserFriendsController from "../../../controllers/UserFriendsController";
 import {UserElementType} from "../../../types/UserElementType";
+import {AiOutlineCheck, AiOutlineClose, AiOutlineUserDelete, AiOutlineUserAdd, AiOutlineMessage} from "react-icons/ai";
 
 interface Props {
     data: {
@@ -50,11 +51,11 @@ export const FriendTemplate = ({data, props}: Props) => {
             </div>
             <span className='user-username'>{data.user.username}</span>
             <div className="spacer"></div>
-            <button className='message' hidden={!props.buttonConfig?.message} onClick={messageBtnHandler}>M</button>
-            <button className='addFriend' hidden={!props.buttonConfig?.addFriend} onClick={addFriendBtnHandler}>A</button>
-            <button className='acceptFriend' hidden={!props.buttonConfig?.acceptFriend} onClick={acceptFriendBtnHandler}>V</button>
-            <button className='rejectFriend' hidden={!props.buttonConfig?.rejectFriend} onClick={rejectFriendBtnHandler}>R</button>
-            <button className='removeFriend' hidden={!props.buttonConfig?.removeFriend} onClick={removeFriendBtnHandler}>X</button>
+            <button className='message' hidden={!props.buttonConfig?.message} onClick={messageBtnHandler}><AiOutlineMessage/></button>
+            <button className='addFriend' hidden={!props.buttonConfig?.addFriend} onClick={addFriendBtnHandler}><AiOutlineUserAdd/></button>
+            <button className='acceptFriend' hidden={!props.buttonConfig?.acceptFriend} onClick={acceptFriendBtnHandler}><AiOutlineCheck/></button>
+            <button className='rejectFriend' hidden={!props.buttonConfig?.rejectFriend} onClick={rejectFriendBtnHandler}><AiOutlineClose/></button>
+            <button className='removeFriend' hidden={!props.buttonConfig?.removeFriend} onClick={removeFriendBtnHandler}><AiOutlineUserDelete/></button>
         </div>
     )
 }

@@ -5,6 +5,12 @@ import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
 import {UserElementType} from "../../../../types/UserElementType";
 import {WinContext} from "../../../../pages/MainViewPage";
+import {BsCameraVideoFill, BsCameraVideoOffFill, BsFileTextFill, BsFillMicFill, BsFillMicMuteFill} from "react-icons/bs";
+import {MdHeadset, MdHeadsetOff} from "react-icons/md";
+import {IoChatbox, IoExit} from "react-icons/io5";
+import {FaPaintBrush} from "react-icons/fa";
+import {HiSwitchHorizontal} from "react-icons/hi";
+import {Editor} from "../../../editors/Editor";
 
 interface Params {
     roomId: string
@@ -21,6 +27,10 @@ export const RoomPanel = observer(({roomId}: Params) => {
         })
         return membersMap
     }, [currentRoom])
+
+    const changeHandler = (value: string) => {
+        console.log(value)
+    }
 
     const {clients, provideMediaRef, controllers} = useWebRTC(roomId)
     return (
@@ -54,16 +64,39 @@ export const RoomPanel = observer(({roomId}: Params) => {
                         )
                     })}
                 </div>
+                <div className="room-panel__editors-block" hidden={!controllers.editor.visible}>
+                    <div className="editor-header" hidden={!(currentRoom?.editors.handWr && currentRoom?.editors.text)}>
+                        <button title='switch editor' onClick={()=>controllers.editor.handler('switch')}><HiSwitchHorizontal/></button>
+                    </div>
+                    <Editor type={controllers.editor.editorType} value='' onChange={changeHandler} size={{height: '100%', width: 500}}/>
+                </div>
                 <div className="room-panel__control-block">
                     <div className="button-block">
-                        <button className='microphone' onClick={controllers.microphone.handler}>mic {controllers.microphone.mute ?  'off' : 'on'}</button>
-                        <button className='mute' onClick={controllers.deafen.handler}>{controllers.deafen.state ? 'unmute' : 'mute'}</button>
-                        <button className='video' onClick={controllers.video.handler}>vid {controllers.video.visible ?  'on' : 'off'}</button>
-                        <button className='leave' onClick={() => closeHandler()}>leave</button>
+                        <button className='microphone' onClick={controllers.microphone.handler}>
+                            {controllers.microphone.mute ?
+                                <BsFillMicMuteFill/> :
+                                <BsFillMicFill/>}
+                        </button>
+                        <button className='mute' onClick={controllers.deafen.handler}>{controllers.deafen.state ? <MdHeadsetOff/> : <MdHeadset/>}</button>
+                        <button className='video' onClick={controllers.video.handler}>{controllers.video.visible ? <BsCameraVideoFill/> : <BsCameraVideoOffFill/>}</button>
+                        <button className='leave' onClick={() => closeHandler()}><IoExit/></button>
                         <div className="spacer"></div>
-                        {currentRoom && (currentRoom.editors.text || currentRoom.editors.handWr) ? <button className='editors'>editors</button> : null}
-                        {currentRoom && currentRoom.chat ? <button className='chat'>chat</button> : null}
-
+                        {
+                            currentRoom && (currentRoom.editors.text || currentRoom.editors.handWr) ?
+                                <button className='editors' onClick={() => controllers.editor.handler('changeVisible')}>
+                                    {
+                                        controllers.editor.editorType === 'text' ?
+                                            <BsFileTextFill/> :
+                                            <FaPaintBrush/>
+                                    }
+                                </button> :
+                                null
+                        }
+                        {
+                            currentRoom && currentRoom.chat ?
+                                <button className='chat'><IoChatbox/></button> :
+                                null
+                        }
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import ProfileSettingsController from "../../../../controllers/ProfileSettingsCo
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
 import {WinContext} from "../../../../pages/MainViewPage";
+import {BsFillMoonFill, BsSunFill} from "react-icons/bs";
 
 interface SettingsPanelFieldType {
     avatar: Blob,
@@ -129,8 +130,12 @@ export const UserAccountSettingsPanel = observer(() => {
                         </div>
                         <div className="application-block">
                             <span>Change theme</span>
-                            <input type="checkbox" hidden id='theme-toggle' checked={panelState.colorTheme === "light"} onChange={changeThemeHandler}/>
-                            <label htmlFor="theme-toggle" className='theme-toggle'></label>
+                            <div className="toggle-btn">
+                                <BsFillMoonFill className='dark-theme-icon'/>
+                                <input type="checkbox" hidden id='theme-toggle' checked={panelState.colorTheme === "light"} onChange={changeThemeHandler}/>
+                                <label htmlFor="theme-toggle" className='theme-toggle'></label>
+                                <BsSunFill className='light-theme-icon'/>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import {useCallbackState} from "./useCallbackStateHook";
 import {socketInterface} from "../socket/SocketInterface";
 import WebRTCInterface from "../WebRCT/WebRTCInterface";
 import {MainContext} from "../index";
+import {useImmer} from "use-immer";
 
 export function useWebRTC(roomId: string) {
     const [clients, setClients] = useCallbackState<{ socketId: string, userId: string }[]>([]);
@@ -18,7 +19,7 @@ export function useWebRTC(roomId: string) {
     const [muteState, setMuteState] = useCallbackState<boolean>(false)
     const [deafenState, setDeafenState] = useCallbackState<boolean>(false)
     const [videoState, setVideoState] = useCallbackState<boolean>(false)
-    const [editorsState, setEditorsState] = useCallbackState<{ visible: boolean, currentEditor: 'text' | 'handWr' }>({currentEditor: 'text', visible: false})
+    const [editorsState, setEditorsState] = useImmer<{ visible: boolean, currentEditor: 'text' | 'handWr' }>({currentEditor: 'text', visible: false})
     const [chatState, setChatState] = useCallbackState<boolean>(false)
 
     const muteHandler = function () {
@@ -43,6 +44,16 @@ export function useWebRTC(roomId: string) {
                 webRTCInterface.removeVideoFormAllPeers()
             }
 
+        })
+    }
+
+    const editorHandler = function (action: 'switch' | 'changeVisible') {
+        setEditorsState(draft => {
+            if(action  === 'switch'){
+                draft.currentEditor = draft.currentEditor === 'handWr' ? 'text' : 'handWr'
+            } else {
+                draft.visible = !draft.visible
+            }
         })
     }
 
@@ -201,6 +212,11 @@ export function useWebRTC(roomId: string) {
             video: {
                 visible: videoState,
                 handler: videoHandler
+            },
+            editor: {
+                visible: editorsState.visible,
+                editorType: editorsState.currentEditor,
+                handler: editorHandler
             }
         }
     }

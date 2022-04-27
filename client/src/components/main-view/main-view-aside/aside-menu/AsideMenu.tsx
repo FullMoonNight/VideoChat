@@ -11,6 +11,9 @@ import {CreateRoomBtn} from "../aside-components/create-room-btn/CreateRoomBtn";
 import {ConferenceRoomTemplate} from "../../list-templates/ConferenceRoomTemplate";
 import {toJS} from "mobx";
 import RoomController from "../../../../controllers/RoomController";
+import {FaUserFriends} from "react-icons/fa";
+import {IoChatbubble, IoChatbubbles} from "react-icons/io5";
+import {BsCameraVideoFill} from "react-icons/bs";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
@@ -115,7 +118,7 @@ export const AsideMenu = observer(() => {
     }
 
     const clickHandler = (e: any) => {
-        const element = e.target
+        const element = e.target.closest('.menu-item')
         const elementType = element.dataset.name
         if (!elementType) return
 
@@ -125,10 +128,10 @@ export const AsideMenu = observer(() => {
     return (
         <div className='menu-block' ref={menuBlock}>
             <ul className="menu-item-list" onClick={clickHandler}>
-                <li className="menu-item" data-name='friends'>F</li>
-                <li className="menu-item" data-name='directChats'>D</li>
-                <li className="menu-item" data-name='groupChats'>G</li>
-                <li className="menu-item" data-name='videoConf'>V</li>
+                <li className="menu-item" data-name='friends'><FaUserFriends/></li>
+                <li className="menu-item" data-name='directChats'><IoChatbubble/></li>
+                <li className="menu-item" data-name='groupChats'><IoChatbubbles/></li>
+                <li className="menu-item" data-name='videoConf'><BsCameraVideoFill/></li>
             </ul>
         </div>
     )

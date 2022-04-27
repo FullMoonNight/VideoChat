@@ -114,54 +114,68 @@
 
                 .application-block {
 
+                    .toggle-btn {
+                        display: flex;
+                        margin-top: 5px;
 
-                    .theme-toggle {
-                        $transition-time: .3s;
-
-                        cursor: pointer;
-                        width: 34px;
-                        height: 18px;
-                        border-radius: 10px;
-                        border: 1px solid var(--accent-color);
-                        display: block;
-                        position: relative;
-                        overflow: hidden;
-
-                        &:after {
-                            content: '';
-                            height: 16px;
-                            width: 16px;
-                            backdrop-filter: brightness(200%);
-                            border-radius: 50%;
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 1px;
-                            transition: $transition-time;
+                        .dark-theme-icon {
+                            transform: scale(.9);
                         }
 
-                        &:before {
-                            opacity: 0;
-                            content: '';
-                            background-color: var(--accent-color);
-                            position: absolute;
-                            transition: $transition-time;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
+                        .light-theme-icon {
+                            transform: scale(1.2);
+                        }
+
+                        .theme-toggle {
+                            $transition-time: .3s;
+
+                            cursor: pointer;
+                            width: 34px;
+                            height: 18px;
+                            margin: 0 5px;
+                            border-radius: 10px;
+                            border: 1px solid var(--accent-color);
+                            display: block;
+                            position: relative;
+                            overflow: hidden;
+
+                            &:after {
+                                content: '';
+                                height: 16px;
+                                width: 16px;
+                                backdrop-filter: brightness(200%);
+                                border-radius: 50%;
+                                position: absolute;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                left: 1px;
+                                transition: $transition-time;
+                            }
+
+                            &:before {
+                                opacity: 0;
+                                content: '';
+                                background-color: var(--accent-color);
+                                position: absolute;
+                                transition: $transition-time;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                            }
+                        }
+
+                        input:checked + .theme-toggle {
+                            &:after {
+                                transform: translate(100%, -50%);
+                            }
+
+                            &:before {
+                                opacity: 1;
+                            }
                         }
                     }
 
-                    input:checked + .theme-toggle {
-                        &:after {
-                            transform: translate(100%, -50%);
-                        }
-
-                        &:before {
-                            opacity: 1;
-                        }
-                    }
                 }
             }
         }

@@ -5,6 +5,7 @@ import './CreateRoomPanel.css'
 import {useImmer} from "use-immer";
 import RoomController from "../../../../controllers/RoomController";
 import {WinContext} from "../../../../pages/MainViewPage";
+import {AiOutlineCaretDown} from "react-icons/ai";
 
 export const CreateRoomPanel = observer(() => {
     const {friends, user} = useContext(MainContext)
@@ -120,7 +121,7 @@ export const CreateRoomPanel = observer(() => {
                     <label className="available-friends__collapsed-block-label" htmlFor='af__checkbox'>
                         Add friends to room
                         <div className="line"></div>
-                        <span className='arrow'>v</span>
+                        <span className='arrow'><AiOutlineCaretDown/></span>
                     </label>
                     <div className="available-friends__container">
                         {

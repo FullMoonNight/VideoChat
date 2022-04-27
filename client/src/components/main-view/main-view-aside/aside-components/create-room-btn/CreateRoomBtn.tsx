@@ -13,7 +13,6 @@ export const CreateRoomBtn = () => {
     return (
         <div className='btn-wrapper'>
             <button onClick={clickHandler}>
-                <span>+</span>
                 <span>Создать комнату</span>
             </button>
         </div>

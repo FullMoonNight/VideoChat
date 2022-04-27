@@ -7,6 +7,7 @@ import {WinContext} from "../../../../pages/MainViewPage";
 import {RoomPanel} from "../../ui-panels/ room-panel/RoomPanel";
 import RoomController from "../../../../controllers/RoomController";
 import {ViewPanelsContext} from "../../MainView";
+import {FaCrown} from "react-icons/fa";
 
 interface Props {
     roomId: string
@@ -42,7 +43,7 @@ export const RoomMainPanel = observer(({roomId}: Props) => {
         <div className='room-main-panel'>
             <header>
                 <span className='room-name'>{currentRoom?.name}</span>
-                <span className='crown-emblem' hidden={currentRoom?.owner !== user.user.userId}>w</span>
+                <span className='crown-emblem' hidden={currentRoom?.owner !== user.user.userId}><FaCrown/></span>
             </header>
             <main className='room-main-panel__room-info'>
                 <div className="room-info__content">
