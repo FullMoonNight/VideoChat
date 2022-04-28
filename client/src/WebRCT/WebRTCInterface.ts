@@ -1,5 +1,4 @@
 import {socketInterface} from "../socket/SocketInterface";
-import {log} from "util";
 
 export default class WebRTCInterface {
     videoElements: { [key: string]: HTMLVideoElement | undefined } = {
@@ -7,6 +6,7 @@ export default class WebRTCInterface {
     }
     peerConnections: { [key: string]: RTCPeerConnection } = {}
     localMediaStream: MediaStream | null = null
+    dataChannels: { [key: string]: RTCDataChannel } = {}
 
     muteAll(mute: boolean) {
         for (const videoElementsKey in this.videoElements) {
@@ -16,6 +16,13 @@ export default class WebRTCInterface {
                 currVideoElement.volume = mute ? 0 : 1
             }
         }
+    }
+
+    delete() {
+        this.videoElements = {}
+        this.peerConnections = {}
+        this.localMediaStream = null
+        this.dataChannels = {}
     }
 
     async addVideoOnAllPeers() {
@@ -60,6 +67,12 @@ export default class WebRTCInterface {
                 peerId: peerConnectionsKey,
                 sessionDescription: offer
             })
+        }
+    }
+
+    sendMessageByDataChannel(message: any) {
+        for (let dataChannelsKey in this.dataChannels) {
+            this.dataChannels[dataChannelsKey].send(message)
         }
     }
 }

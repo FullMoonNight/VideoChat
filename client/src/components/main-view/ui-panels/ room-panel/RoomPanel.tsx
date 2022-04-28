@@ -11,28 +11,26 @@ import {IoChatbox, IoExit} from "react-icons/io5";
 import {FaPaintBrush} from "react-icons/fa";
 import {HiSwitchHorizontal} from "react-icons/hi";
 import {Editor} from "../../../editors/Editor";
+import {RoomElementType} from "../../../../types/RoomElementType";
+import {PaintEditor} from "../../../editors/paint-editor/PaintEditor";
+import {values} from "mobx";
 
 interface Params {
-    roomId: string
+    room: RoomElementType
 }
 
-export const RoomPanel = observer(({roomId}: Params) => {
+export const RoomPanel = observer(({room}: Params) => {
     const {rooms, user, profile} = useContext(MainContext)
     const {closeHandler} = useContext(WinContext)
-    const currentRoom = useMemo(() => rooms.rooms.find(room => room.roomId === roomId), [rooms.rooms, roomId])
     const roomMembers = useMemo(() => {
         const membersMap: { [key: string]: UserElementType } = {}
-        currentRoom?.roomMembers.forEach(member => {
+        room?.roomMembers.forEach(member => {
             membersMap[member.userId] = member
         })
         return membersMap
-    }, [currentRoom])
+    }, [room])
 
-    const changeHandler = (value: string) => {
-        console.log(value)
-    }
-
-    const {clients, provideMediaRef, controllers} = useWebRTC(roomId)
+    const {clients, provideMediaRef, controllers} = useWebRTC(room)
     return (
         <div className="no-close-wrapper">
             <div className='room-panel'>
@@ -65,25 +63,32 @@ export const RoomPanel = observer(({roomId}: Params) => {
                     })}
                 </div>
                 <div className="room-panel__editors-block" hidden={!controllers.editor.visible}>
-                    <div className="editor-header" hidden={!(currentRoom?.editors.handWr && currentRoom?.editors.text)}>
-                        <button title='switch editor' onClick={()=>controllers.editor.handler('switch')}><HiSwitchHorizontal/></button>
+                    <div className="editor-header" hidden={!(room?.editors.handWr && room?.editors.text)}>
+                        <button title='switch editor' onClick={() => controllers.editor.visualHandler('switch')}><HiSwitchHorizontal/></button>
                     </div>
-                    <Editor type={controllers.editor.editorType} value='' onChange={changeHandler} size={{height: '100%', width: 500}}/>
+                    {controllers.editor.editorType === 'text' ?
+                        <Editor type='text' value={controllers.editor.textEditorState} onChange={(value) => controllers.editor.onChangeHandler(value, 'text')}
+                                size={{height: '100%', width: '100%'}}/> :
+                        <Editor type='handWr' value={''} onChange={(value) => () => {
+                        }}/>
+                    }
                 </div>
                 <div className="room-panel__control-block">
                     <div className="button-block">
                         <button className='microphone' onClick={controllers.microphone.handler}>
-                            {controllers.microphone.mute ?
-                                <BsFillMicMuteFill/> :
-                                <BsFillMicFill/>}
+                            {
+                                controllers.microphone.mute ?
+                                    <BsFillMicMuteFill/> :
+                                    <BsFillMicFill/>
+                            }
                         </button>
                         <button className='mute' onClick={controllers.deafen.handler}>{controllers.deafen.state ? <MdHeadsetOff/> : <MdHeadset/>}</button>
                         <button className='video' onClick={controllers.video.handler}>{controllers.video.visible ? <BsCameraVideoFill/> : <BsCameraVideoOffFill/>}</button>
                         <button className='leave' onClick={() => closeHandler()}><IoExit/></button>
                         <div className="spacer"></div>
                         {
-                            currentRoom && (currentRoom.editors.text || currentRoom.editors.handWr) ?
-                                <button className='editors' onClick={() => controllers.editor.handler('changeVisible')}>
+                            room && (room.editors.text || room.editors.handWr) ?
+                                <button className='editors' onClick={() => controllers.editor.visualHandler('changeVisible')}>
                                     {
                                         controllers.editor.editorType === 'text' ?
                                             <BsFileTextFill/> :
@@ -93,7 +98,7 @@ export const RoomPanel = observer(({roomId}: Params) => {
                                 null
                         }
                         {
-                            currentRoom && currentRoom.chat ?
+                            room && room.chat ?
                                 <button className='chat'><IoChatbox/></button> :
                                 null
                         }

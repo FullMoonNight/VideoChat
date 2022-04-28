@@ -6,12 +6,15 @@ import {socketInterface} from "../socket/SocketInterface";
 import WebRTCInterface from "../WebRCT/WebRTCInterface";
 import {MainContext} from "../index";
 import {useImmer} from "use-immer";
+import {RoomElementType} from "../types/RoomElementType";
 
-export function useWebRTC(roomId: string) {
+export function useWebRTC(room: RoomElementType) {
+    const roomId = room.roomId
+
     const [clients, setClients] = useCallbackState<{ socketId: string, userId: string }[]>([]);
     const {user} = useContext(MainContext)
 
-    const webRTCInterface = useMemo(() => new WebRTCInterface(), [])
+    let webRTCInterface = useMemo(() => new WebRTCInterface(), [])
 
     //@ts-ignore
     window.rtc = webRTCInterface
@@ -20,7 +23,10 @@ export function useWebRTC(roomId: string) {
     const [deafenState, setDeafenState] = useCallbackState<boolean>(false)
     const [videoState, setVideoState] = useCallbackState<boolean>(false)
     const [editorsState, setEditorsState] = useImmer<{ visible: boolean, currentEditor: 'text' | 'handWr' }>({currentEditor: 'text', visible: false})
+    const [textEditorState, setTextEditorState] = useState('')
+    const [handWrEditorState, setHandWrEditorState] = useState('')
     const [chatState, setChatState] = useCallbackState<boolean>(false)
+
 
     const muteHandler = function () {
         setMuteState(prevState => !prevState, async (updatedState) => {
@@ -49,7 +55,7 @@ export function useWebRTC(roomId: string) {
 
     const editorHandler = function (action: 'switch' | 'changeVisible') {
         setEditorsState(draft => {
-            if(action  === 'switch'){
+            if (action === 'switch') {
                 draft.currentEditor = draft.currentEditor === 'handWr' ? 'text' : 'handWr'
             } else {
                 draft.visible = !draft.visible
@@ -65,6 +71,33 @@ export function useWebRTC(roomId: string) {
         }, cb)
     }, [clients, setClients])
 
+    const receiveMessage = useCallback((messageEv: MessageEvent) => {
+        const data = JSON.parse(messageEv.data) as { type: 'text' | 'handWr', data: any }
+        if (data.type === 'text') {
+            console.log(data.data)
+            setTextEditorState(data.data)
+        }
+    }, [])
+
+    const onChangeHandler = (function () {
+        let savedValues: any, isThrottle = false
+        return function foo(data: string, type: 'text' | 'handWr') {
+            if (isThrottle) {
+                savedValues = arguments
+                return
+            }
+            isThrottle = true
+            console.log(data)
+            webRTCInterface.sendMessageByDataChannel(JSON.stringify({type, data}))
+            setTimeout(() => {
+                isThrottle = false
+                if (savedValues) {
+                    foo.apply(null, savedValues)
+                }
+                savedValues = null
+            }, 1000)
+        }
+    })()
 
     useEffect(() => {
         async function handlePeer({peerId, userId, createOffer}: { peerId: string, userId: string, createOffer: boolean }) {
@@ -101,6 +134,14 @@ export function useWebRTC(roomId: string) {
                 webRTCInterface.localMediaStream.getTracks().forEach(track => {
                     webRTCInterface.localMediaStream && webRTCInterface.peerConnections[peerId].addTrack(track, webRTCInterface.localMediaStream)
                 })
+            }
+
+            if (!webRTCInterface.dataChannels[peerId] && (room.editors.handWr || room.editors.text)) {
+                webRTCInterface.dataChannels[peerId] = webRTCInterface.peerConnections[peerId].createDataChannel(`data chanel for ${peerId}`)
+
+                webRTCInterface.peerConnections[peerId].ondatachannel = (ev) => {
+                    ev.channel.onmessage = receiveMessage
+                }
             }
 
             if (createOffer) {
@@ -150,6 +191,7 @@ export function useWebRTC(roomId: string) {
 
             delete webRTCInterface.peerConnections[peerId]
             delete webRTCInterface.videoElements[peerId]
+            delete webRTCInterface.dataChannels[peerId]
 
             setClients((list: { socketId: string, userId: string }[]) => list.filter(client => client.socketId !== peerId))
         })
@@ -216,7 +258,10 @@ export function useWebRTC(roomId: string) {
             editor: {
                 visible: editorsState.visible,
                 editorType: editorsState.currentEditor,
-                handler: editorHandler
+                visualHandler: editorHandler,
+                textEditorState,
+                handWrEditorState,
+                onChangeHandler
             }
         }
     }

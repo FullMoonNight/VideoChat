@@ -31,7 +31,7 @@ export const RoomMainPanel = observer(({roomId}: Props) => {
     }, [currentRoom])
 
     const connectHandler = () => {
-        setContextWindow(<RoomPanel roomId={roomId}/>)
+        currentRoom && setContextWindow(<RoomPanel room={currentRoom}/>)
     }
 
     const leaveHandler = () => {

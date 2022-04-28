@@ -18,13 +18,12 @@ export const TextEditor = ({value, onChange}: Props) => {
     const ace = useRef<any>()
 
     const changeThemeHandler = () => {
-        console.log(123)
         setTheme(currentTheme => currentTheme === 'monokai' ? 'chrome' : 'monokai')
     }
 
     const clearHandler = () => {
-        console.log(ace.current)
         if (ace.current) {
+            ace.current.editor.setValue('')
         }
     }
 
