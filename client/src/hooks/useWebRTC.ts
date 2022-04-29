@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useMemo, useState} from "react";
+import {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 // @ts-ignore
 import freeice from "freeice";
 import {useCallbackState} from "./useCallbackStateHook";
@@ -24,9 +24,10 @@ export function useWebRTC(room: RoomElementType) {
     const [videoState, setVideoState] = useCallbackState<boolean>(false)
     const [editorsState, setEditorsState] = useImmer<{ visible: boolean, currentEditor: 'text' | 'handWr' }>({currentEditor: 'text', visible: false})
     const [textEditorState, setTextEditorState] = useState('')
-    const [handWrEditorState, setHandWrEditorState] = useState('')
     const [chatState, setChatState] = useCallbackState<boolean>(false)
 
+    const drawMethod = useRef<((value: any) => void)>(value => {
+    })
 
     const muteHandler = function () {
         setMuteState(prevState => !prevState, async (updatedState) => {
@@ -71,15 +72,19 @@ export function useWebRTC(room: RoomElementType) {
         }, cb)
     }, [clients, setClients])
 
-    const receiveMessage = useCallback((messageEv: MessageEvent) => {
+    let receiveMessage = useCallback(function (messageEv: MessageEvent) {
         const data = JSON.parse(messageEv.data) as { type: 'text' | 'handWr', data: any }
-        if (data.type === 'text') {
-            console.log(data.data)
-            setTextEditorState(data.data)
+        switch (data.type) {
+            case 'text':
+                setTextEditorState(data.data)
+                break;
+            case 'handWr':
+                draw(data.data)
+                break;
         }
     }, [])
 
-    const onChangeHandler = (function () {
+    const onChangeTextHandler = (function () {
         let savedValues: any, isThrottle = false
         return function foo(data: string, type: 'text' | 'handWr') {
             if (isThrottle) {
@@ -87,7 +92,6 @@ export function useWebRTC(room: RoomElementType) {
                 return
             }
             isThrottle = true
-            console.log(data)
             webRTCInterface.sendMessageByDataChannel(JSON.stringify({type, data}))
             setTimeout(() => {
                 isThrottle = false
@@ -98,6 +102,19 @@ export function useWebRTC(room: RoomElementType) {
             }, 1000)
         }
     })()
+
+    const onChangeCanvasHandler = useCallback((data: string, type: 'handWr') => {
+        webRTCInterface.sendMessageByDataChannel(JSON.stringify({type, data}))
+    }, [])
+
+
+    const getCanvasDrawMethod = useCallback((updater) => {
+        drawMethod.current = updater
+    }, [])
+
+    let draw = (data: string) => {
+        drawMethod.current(data)
+    }
 
     useEffect(() => {
         async function handlePeer({peerId, userId, createOffer}: { peerId: string, userId: string, createOffer: boolean }) {
@@ -260,8 +277,9 @@ export function useWebRTC(room: RoomElementType) {
                 editorType: editorsState.currentEditor,
                 visualHandler: editorHandler,
                 textEditorState,
-                handWrEditorState,
-                onChangeHandler
+                onChangeTextHandler,
+                getCanvasDrawMethod,
+                onChangeCanvasHandler
             }
         }
     }

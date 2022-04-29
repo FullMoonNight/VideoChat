@@ -10,10 +10,9 @@ import {MdHeadset, MdHeadsetOff} from "react-icons/md";
 import {IoChatbox, IoExit} from "react-icons/io5";
 import {FaPaintBrush} from "react-icons/fa";
 import {HiSwitchHorizontal} from "react-icons/hi";
-import {Editor} from "../../../editors/Editor";
 import {RoomElementType} from "../../../../types/RoomElementType";
 import {PaintEditor} from "../../../editors/paint-editor/PaintEditor";
-import {values} from "mobx";
+import {TextEditor} from "../../../editors/text-editor/TextEditor";
 
 interface Params {
     room: RoomElementType
@@ -66,11 +65,10 @@ export const RoomPanel = observer(({room}: Params) => {
                     <div className="editor-header" hidden={!(room?.editors.handWr && room?.editors.text)}>
                         <button title='switch editor' onClick={() => controllers.editor.visualHandler('switch')}><HiSwitchHorizontal/></button>
                     </div>
-                    {controllers.editor.editorType === 'text' ?
-                        <Editor type='text' value={controllers.editor.textEditorState} onChange={(value) => controllers.editor.onChangeHandler(value, 'text')}
-                                size={{height: '100%', width: '100%'}}/> :
-                        <Editor type='handWr' value={''} onChange={(value) => () => {
-                        }}/>
+                    {
+                        controllers.editor.editorType === 'text' ?
+                            <TextEditor value={controllers.editor.textEditorState} onChange={(value) => controllers.editor.onChangeTextHandler(value, 'text')}/> :
+                            <PaintEditor getDrawMethod={controllers.editor.getCanvasDrawMethod} onChange={(value) => controllers.editor.onChangeCanvasHandler(value, 'handWr')}/>
                     }
                 </div>
                 <div className="room-panel__control-block">
