@@ -8,7 +8,8 @@ class ProfileStore {
     constructor() {
         this.settings = {
             userImageId: '',
-            username: ''
+            username: '',
+            status: 'active'
         }
         this.loaded = false
         makeAutoObservable(this, undefined, {deep: true})

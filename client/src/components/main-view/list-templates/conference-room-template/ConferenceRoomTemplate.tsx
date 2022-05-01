@@ -1,9 +1,8 @@
 import './ConferenceRoomTemplate.css'
-import {RoomElementType} from "../../../types/RoomElementType";
+import {RoomElementType} from "../../../../types/RoomElementType";
 import {useContext} from "react";
-import {WinContext} from "../../../pages/MainViewPage";
-import {RoomMainPanel} from "../main-panels/room-main-panel/RoomMainPanel";
-import {ViewPanelsContext} from "../MainView";
+import {RoomMainPanel} from "../../main-panels/room-main-panel/RoomMainPanel";
+import {ViewPanelsContext} from "../../MainView";
 
 interface Props {
     data: {
@@ -28,8 +27,6 @@ export const ConferenceRoomTemplate = ({data}: Props) => {
                 <span hidden={data.confirm}>NEW</span>
             </div>
             <span className='room-element__room-name'>{data.name}</span>
-
-
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useMemo} from 'react';
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
-import {FriendTemplate} from "../../list-templates/FriendTemplate";
+import {FriendTemplate} from "../../list-templates/friend-template/FriendTemplate";
 import './RoomMainPanel.css'
 import {WinContext} from "../../../../pages/MainViewPage";
 import {RoomPanel} from "../../ui-panels/ room-panel/RoomPanel";

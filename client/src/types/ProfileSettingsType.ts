@@ -3,5 +3,5 @@ export interface ProfileSettingsType {
     username: string
     name?: string
     surname?: string
-    status?: 'active' | 'sleep' | 'hidden'
+    status: 'active' | 'sleep' | 'invisible'
 }

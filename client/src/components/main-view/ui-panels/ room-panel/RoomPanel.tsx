@@ -7,19 +7,21 @@ import {UserElementType} from "../../../../types/UserElementType";
 import {WinContext} from "../../../../pages/MainViewPage";
 import {BsCameraVideoFill, BsCameraVideoOffFill, BsFileTextFill, BsFillMicFill, BsFillMicMuteFill} from "react-icons/bs";
 import {MdHeadset, MdHeadsetOff} from "react-icons/md";
-import {IoChatbox, IoExit} from "react-icons/io5";
+import {IoExit} from "react-icons/io5";
 import {FaPaintBrush} from "react-icons/fa";
 import {HiSwitchHorizontal} from "react-icons/hi";
 import {RoomElementType} from "../../../../types/RoomElementType";
 import {PaintEditor} from "../../../editors/paint-editor/PaintEditor";
 import {TextEditor} from "../../../editors/text-editor/TextEditor";
+import {RiChat4Fill, RiChatOffFill} from "react-icons/ri";
+import {Chat} from "../../../chat-component/Chat";
 
 interface Params {
     room: RoomElementType
 }
 
 export const RoomPanel = observer(({room}: Params) => {
-    const {rooms, user, profile} = useContext(MainContext)
+    const {rooms, user, profile, chats} = useContext(MainContext)
     const {closeHandler} = useContext(WinContext)
     const roomMembers = useMemo(() => {
         const membersMap: { [key: string]: UserElementType } = {}
@@ -28,6 +30,7 @@ export const RoomPanel = observer(({room}: Params) => {
         })
         return membersMap
     }, [room])
+    const roomChat = useMemo(() => chats.chats.find(chat => chat.chatId === room.chat), [])
 
     const {clients, provideMediaRef, controllers} = useWebRTC(room)
     return (
@@ -68,7 +71,8 @@ export const RoomPanel = observer(({room}: Params) => {
                     {
                         controllers.editor.editorType === 'text' ?
                             <TextEditor value={controllers.editor.textEditorState} onChange={(value) => controllers.editor.onChangeTextHandler(value, 'text')}/> :
-                            <PaintEditor getDrawMethod={controllers.editor.getCanvasDrawMethod} onChange={(value) => controllers.editor.onChangeCanvasHandler(value, 'handWr')}/>
+                            <PaintEditor getDrawMethod={controllers.editor.getCanvasDrawMethod}
+                                         onChange={(value) => controllers.editor.onChangeCanvasHandler(value, 'handWr')}/>
                     }
                 </div>
                 <div className="room-panel__control-block">
@@ -97,11 +101,18 @@ export const RoomPanel = observer(({room}: Params) => {
                         }
                         {
                             room && room.chat ?
-                                <button className='chat'><IoChatbox/></button> :
+                                <button className='chat' onClick={controllers.chat.handler}>{controllers.chat.visible ? <RiChat4Fill/> : <RiChatOffFill/>}</button> :
                                 null
                         }
                     </div>
                 </div>
+                {
+                    controllers.chat.visible && roomChat && (
+                        <div className="room-panel__chat-block">
+                            <Chat chat={roomChat}/>
+                        </div>
+                    )
+                }
             </div>
         </div>
     );

@@ -4,7 +4,7 @@ const e = require("express");
 
 const PersonalMessagesModel = sequelize.define('personal_messages', {
     id: {type: DataTypes.UUID, primaryKey: true, notNull: true},
-    ext_path: {type: DataTypes.STRING, notNull: true},
+    text_path: {type: DataTypes.STRING, notNull: true},
     message_type: {type: DataTypes.STRING, notNull: true},
     dispatch_date: {type: DataTypes.DATE, notNull: true},
     checked: {type: DataTypes.BOOLEAN, notNull: true}

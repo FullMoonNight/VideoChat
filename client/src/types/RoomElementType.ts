@@ -4,7 +4,7 @@ export interface RoomElementType {
     roomId: string,
     name: string,
     owner: string,
-    chat: boolean,
+    chat?: string,
     editors: {
         text: boolean,
         handWr: boolean

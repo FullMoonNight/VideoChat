@@ -1,19 +1,21 @@
 import './AsideMenu.css'
 import {useContext, useEffect, useRef, useState} from "react";
 import {ViewPanelsContext} from "../../MainView";
-import {FriendTemplate} from "../../list-templates/FriendTemplate";
+import {FriendTemplate} from "../../list-templates/friend-template/FriendTemplate";
 import {AsideList} from "../aside-list/AsideList";
 import {MainContext} from "../../../../index";
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/friend-main-panel/FriendMainPanel";
 import {CreateRoomBtn} from "../aside-components/create-room-btn/CreateRoomBtn";
-import {ConferenceRoomTemplate} from "../../list-templates/ConferenceRoomTemplate";
+import {ConferenceRoomTemplate} from "../../list-templates/conference-room-template/ConferenceRoomTemplate";
 import {toJS} from "mobx";
 import RoomController from "../../../../controllers/RoomController";
 import {FaUserFriends} from "react-icons/fa";
 import {IoChatbubble, IoChatbubbles} from "react-icons/io5";
 import {BsCameraVideoFill} from "react-icons/bs";
+import {ChatTemplate} from "../../list-templates/chat-template/ChatTemplate";
+import {DirectMessagesMainPanel} from "../../main-panels/dirrect-messages-main-panel/DirectMessagesMainPanel";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
@@ -30,7 +32,7 @@ interface ViewConfigurationType {
 
 export const AsideMenu = observer(() => {
     const {setPanelsHandler} = useContext(ViewPanelsContext)
-    const {friends, rooms} = useContext(MainContext)
+    const {friends, rooms, chats} = useContext(MainContext)
 
 
     // Загрузка данных для всех элементов меню
@@ -54,7 +56,7 @@ export const AsideMenu = observer(() => {
 
     useEffect(() => {
         setMenuState();
-    }, [friends.friends, rooms.rooms])
+    }, [friends.friends, rooms.rooms, chats.chats])
 
     const menuBlock = useRef<HTMLDivElement>(null)
     const currentActiveElement = useRef<HTMLDListElement | null>(null)
@@ -90,8 +92,12 @@ export const AsideMenu = observer(() => {
                 break;
             case 'directChats':
                 setViewConfiguration({
-                    asideComponent: null,
-                    mainComponent: null,
+                    asideComponent: <AsideList
+                        Template={ChatTemplate}
+                        dataList={formatData(chats.chats, 'chatId')}
+                        props={{}}
+                    />,
+                    mainComponent: <DirectMessagesMainPanel chat={chats.chats[0]}/>,
                 })
                 break;
             case 'groupChats':
@@ -130,7 +136,7 @@ export const AsideMenu = observer(() => {
             <ul className="menu-item-list" onClick={clickHandler}>
                 <li className="menu-item" data-name='friends'><FaUserFriends/></li>
                 <li className="menu-item" data-name='directChats'><IoChatbubble/></li>
-                <li className="menu-item" data-name='groupChats'><IoChatbubbles/></li>
+                {/*<li className="menu-item" data-name='groupChats'><IoChatbubbles/></li>*/}
                 <li className="menu-item" data-name='videoConf'><BsCameraVideoFill/></li>
             </ul>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './FriendTemplate.css'
-import UserFriendsController from "../../../controllers/UserFriendsController";
-import {UserElementType} from "../../../types/UserElementType";
+import UserFriendsController from "../../../../controllers/UserFriendsController";
+import {UserElementType} from "../../../../types/UserElementType";
 import {AiOutlineCheck, AiOutlineClose, AiOutlineUserDelete, AiOutlineUserAdd, AiOutlineMessage} from "react-icons/ai";
 
 interface Props {

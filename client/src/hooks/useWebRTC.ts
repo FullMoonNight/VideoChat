@@ -16,9 +16,6 @@ export function useWebRTC(room: RoomElementType) {
 
     let webRTCInterface = useMemo(() => new WebRTCInterface(), [])
 
-    //@ts-ignore
-    window.rtc = webRTCInterface
-
     const [muteState, setMuteState] = useCallbackState<boolean>(false)
     const [deafenState, setDeafenState] = useCallbackState<boolean>(false)
     const [videoState, setVideoState] = useCallbackState<boolean>(false)
@@ -112,9 +109,14 @@ export function useWebRTC(room: RoomElementType) {
         drawMethod.current = updater
     }, [])
 
-    let draw = (data: string) => {
+    const draw = (data: string) => {
         drawMethod.current(data)
     }
+
+    const chatHandler = () => {
+        setChatState(prevState => !prevState)
+    }
+
 
     useEffect(() => {
         async function handlePeer({peerId, userId, createOffer}: { peerId: string, userId: string, createOffer: boolean }) {
@@ -280,6 +282,10 @@ export function useWebRTC(room: RoomElementType) {
                 onChangeTextHandler,
                 getCanvasDrawMethod,
                 onChangeCanvasHandler
+            },
+            chat: {
+                visible: chatState,
+                handler: chatHandler
             }
         }
     }

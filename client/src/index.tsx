@@ -9,6 +9,7 @@ import {profileStore} from "./stores/profileStore";
 import {friendStore} from "./stores/friendStore";
 import {HashRouter} from "react-router-dom";
 import {roomStore} from "./stores/roomStore";
+import {chatStore} from "./stores/chatStore";
 
 type MainContextType = {
     app: typeof appStore,
@@ -16,7 +17,8 @@ type MainContextType = {
     messages: typeof systemMessagesStore,
     profile: typeof profileStore,
     friends: typeof friendStore,
-    rooms: typeof roomStore
+    rooms: typeof roomStore,
+    chats: typeof chatStore
 }
 export const MainContext = createContext<MainContextType>({} as MainContextType)
 
@@ -28,6 +30,7 @@ ReactDOM.render(
         profile: profileStore,
         friends: friendStore,
         rooms: roomStore,
+        chats: chatStore
     }}>
         <HashRouter>
             <React.StrictMode>

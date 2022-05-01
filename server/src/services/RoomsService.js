@@ -61,11 +61,20 @@ class RoomsService {
                 }
             })
 
+            let chat = {}
+            if (room.chat_enable) {
+                chat = await RoomChatModel.findOne({
+                    where: {
+                        room_id: room.room_id
+                    }
+                })
+            }
+
             return {
                 roomId: room.room_id,
                 name: room.room_name,
                 owner: room.owner,
-                chat: room.chat_enable,
+                chat: chat.chat_id,
                 editors: {
                     text: room.text_editor_enable,
                     handWr: room.handwritten_editor_enable
@@ -220,7 +229,6 @@ class RoomsService {
         } catch (e) {
             console.log(e.message)
         }
-        await ChatService.deleteChat(deletedRoom.room_id)
         await deletedRoom.destroy()
     }
 }

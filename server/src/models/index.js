@@ -72,7 +72,8 @@ FriendsModel.belongsTo(UserModel, {
 //Room-RoomChat relation
 RoomModel.hasOne(RoomChatModel, {
     foreignKey: 'room_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
+    onDelete: 'CASCADE'
 })
 RoomChatModel.belongsTo(RoomModel, {
     foreignKey: 'room_id',
@@ -82,7 +83,8 @@ RoomChatModel.belongsTo(RoomModel, {
 //RoomChat-ChatMessages relation
 RoomChatModel.hasMany(ChatMessagesModel, {
     foreignKey: 'chat_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
+    onDelete: 'CASCADE',
 })
 ChatMessagesModel.belongsTo(RoomChatModel, {
     foreignKey: 'chat_id',
@@ -118,6 +120,7 @@ RoomMembers.belongsTo(UserModel, {
     keyType: DataTypes.UUID
 })
 
+//RoomModel = Room
 RoomModel.hasMany(RoomMembers, {
     foreignKey: 'room_id',
     keyType: DataTypes.UUID
