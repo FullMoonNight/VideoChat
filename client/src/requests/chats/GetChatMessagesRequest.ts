@@ -5,7 +5,8 @@ import {FileMessageElementType} from "../../types/FileMessageElementType";
 
 export interface GetChatMessagesParams extends Params {
     count?: number,
-    chatId: string
+    chatId: string,
+    type: 'common' | 'room'
 }
 
 interface GetChatMessagesResponse {

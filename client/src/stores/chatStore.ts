@@ -1,5 +1,7 @@
 import {ChatElementType} from "../types/ChatElementType";
 import {action, makeAutoObservable} from "mobx";
+import {TextMessageElementType} from "../types/TextMessageElementType";
+import {FileMessageElementType} from "../types/FileMessageElementType";
 
 const tempChat: ChatElementType[] = [{
     chatId: '505ab6c8-2798-4df9-9abc-73072411821a',
@@ -77,6 +79,16 @@ class ChatStore {
         const chatInList = this.chats.find(currChat => chat.chatId === currChat.chatId)
         if (chatInList) return
         this.chats = [...this.chats, chat]
+    }
+
+    @action
+    addMessages(chatId: string, messages: (TextMessageElementType | FileMessageElementType)[]) {
+        this.chats = [...this.chats.map(chat => {
+            if (chat.chatId === chatId) {
+                chat.messages = chat.messages.concat(messages)
+            }
+            return chat
+        })]
     }
 }
 

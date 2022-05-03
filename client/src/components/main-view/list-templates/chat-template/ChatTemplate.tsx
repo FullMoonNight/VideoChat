@@ -15,7 +15,6 @@ interface Props {
 export const ChatTemplate = ({data}: Props) => {
     const {setPanelsHandler} = useContext(ViewPanelsContext)
     const {user} = useContext(MainContext)
-    console.log(data)
     const clickHandler = () => {
         setPanelsHandler({
             mainComponent: <DirectMessagesMainPanel chat={data}/>

@@ -109,7 +109,7 @@ export const RoomPanel = observer(({room}: Params) => {
                 {
                     controllers.chat.visible && roomChat && (
                         <div className="room-panel__chat-block">
-                            <Chat chat={roomChat}/>
+                            <Chat chatId={roomChat.chatId}/>
                         </div>
                     )
                 }

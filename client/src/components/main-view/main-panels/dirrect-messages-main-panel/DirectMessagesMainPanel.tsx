@@ -21,7 +21,7 @@ export const DirectMessagesMainPanel = ({chat}: Props) => {
                 </div>
             </header>
             <div className="direct-messages-panel__main-block">
-                <Chat chat={chat}/>
+                <Chat chatId={chat.chatId}/>
             </div>
         </div>
     );

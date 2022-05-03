@@ -1,6 +1,5 @@
 const sequelize = require('../database')
 const {DataTypes} = require("sequelize");
-const e = require("express");
 
 const PersonalMessagesModel = sequelize.define('personal_messages', {
     id: {type: DataTypes.UUID, primaryKey: true, notNull: true},
@@ -10,7 +9,7 @@ const PersonalMessagesModel = sequelize.define('personal_messages', {
     file_name: {type: DataTypes.STRING},
     file_size: {type: DataTypes.INTEGER}
     //source_user_id - ссылка на отправителя
-
+    //chat_id - ссылка на чат
 })
 
 module.exports = PersonalMessagesModel

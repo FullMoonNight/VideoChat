@@ -1,7 +1,6 @@
 import Request, {MethodType} from "../http/RequestInterface";
 import axios, {AxiosResponse, AxiosInstance, AxiosError} from "axios";
 import AuthController from "../controllers/AuthController";
-import {userStore} from "../stores/userStore";
 
 
 interface ErrorType {
@@ -23,9 +22,9 @@ class RequestExecutor<T> {
     async execute(): Promise<AxiosResponse<T> & AxiosError<ErrorType>> {
         if (this.method === 'post') {
             let data = this.command.attachment ? this.command.getAttachment() : this.command.getParameters()
-            return RequestExecutor.axios.post(this.command.getRoute(), data).catch(reason => reason)
+            return RequestExecutor.axios.post(this.command.getRoute(), data, this.command.requestConfiguration).catch(reason => reason)
         } else {
-            return RequestExecutor.axios.get(this.command.getRoute()).catch(reason => reason)
+            return RequestExecutor.axios.get(this.command.getRoute(), this.command.requestConfiguration).catch(reason => reason)
         }
     }
 

@@ -1,11 +1,8 @@
 import {Socket} from "socket.io-client";
+import ChatsController from "../../controllers/ChatsController";
 
 export function messageListeners(socket: Socket) {
-    socket.on('INVITE_REQUEST', ({roomId}: { roomId: string }) => {
-
-    })
-
-    socket.on('START_CONNECTION', ({roomId}: { roomId: string }) => {
-
+    socket.on('UPDATE_CHAT_MESSAGES', ({chatId, chatType, messageCount}: { chatId: string, chatType: 'common' | 'room', messageCount: number }) => {
+        ChatsController.getChatMessages({chatId, type: chatType, count: messageCount})
     })
 }

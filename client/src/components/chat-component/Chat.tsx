@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import './Chat.css'
 import {ChatElementType} from "../../types/ChatElementType";
 import {MainContext} from "../../index";
@@ -6,15 +6,27 @@ import {BsFileEarmark} from "react-icons/bs";
 import {IoCloseSharp, IoSend} from "react-icons/io5";
 import {ImAttachment} from "react-icons/im";
 import ChatsController from "../../controllers/ChatsController";
+import {observer} from "mobx-react-lite";
+import {toJS} from "mobx";
 
 interface Props {
-    chat: ChatElementType
+    chatId: string
 }
 
-export const Chat = ({chat}: Props) => {
-    const {profile, user} = useContext(MainContext)
+export const Chat = observer(({chatId}: Props) => {
+    const {user, chats} = useContext(MainContext)
     const [messageValue, setMessageValue] = useState('')
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
+    const currentChat = useMemo(() => chats.chats.find(chat => chat.chatId === chatId), [chats.chats, chatId])
+
+    const messageList = useRef<HTMLDivElement>(null)
+    const inputBlock = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (messageList.current) {
+            messageList.current.scroll(0, messageList.current.scrollHeight)
+        }
+    }, [])
 
     const changeHandler = (e: any) => {
         setMessageValue(e.target.innerText.trim())
@@ -51,26 +63,35 @@ export const Chat = ({chat}: Props) => {
     }
 
     const sendMessage = () => {
-        if (user.user.userId && (messageValue.trim().length || attachedFiles.length)) {
+        if (user.user.userId && (messageValue.trim().length || attachedFiles.length) && currentChat) {
             ChatsController.sendMessage(
                 {
                     message: messageValue,
-                    chatId: chat.chatId,
+                    chatId: currentChat.chatId,
+                    chatType: currentChat.type,
                     dispatchDate: new Date().toJSON(),
                     userId: user.user.userId
                 },
                 attachedFiles
             )
+            setMessageValue('')
+            inputBlock.current && (inputBlock.current.innerText = '')
+            setAttachedFiles([])
         }
+    }
+
+    const downloadFileHandler = (chatId: string, messageId: string) => {
+        if (!currentChat) return
+        ChatsController.downloadFile({chatId, messageId, chatType: currentChat.type})
     }
 
     return (
         <div className='chat-container'>
             <div className="message-list">
-                <div className="message-list__container">
+                <div ref={messageList} className="message-list__container">
                     {
-                        chat.messages.map(message => {
-                            let sender = chat.chatMembers.find(member => member.userId === message.senderUserId)
+                        currentChat?.messages.map(message => {
+                            let sender = currentChat.chatMembers.find(member => member.userId === message.senderUserId)
                             const {year, month, date, hour, minute} = splitDate(message.sendDate)
                             const whoseMessage = message.senderUserId === user.user.userId ? 'my-message' : 'other-user-message'
                             return (
@@ -85,7 +106,7 @@ export const Chat = ({chat}: Props) => {
                                                     <div className='message-text'>
                                                         {message.value}
                                                     </div> :
-                                                    <div className='message-file'>
+                                                    <div className='message-file' onClick={() => downloadFileHandler(currentChat.chatId, message.messageId)}>
                                                         <div className="message-file__img">
                                                             <BsFileEarmark/>
                                                         </div>
@@ -125,10 +146,10 @@ export const Chat = ({chat}: Props) => {
                         <ImAttachment/>
                         <input type="file" multiple hidden onChange={fileInputChange}/>
                     </label>
-                    <div className={`textarea${messageValue.length ? '' : ' empty'}`} contentEditable onKeyUp={changeHandler} aria-required></div>
+                    <div ref={inputBlock} className={`textarea${messageValue.length ? '' : ' empty'}`} contentEditable onKeyUp={changeHandler}></div>
                     <button onClick={sendMessage}><IoSend/></button>
                 </div>
             </div>
         </div>
     );
-};
+});

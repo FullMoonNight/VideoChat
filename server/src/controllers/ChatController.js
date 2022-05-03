@@ -25,10 +25,10 @@ class ChatController {
 
     async sendMessage(req, res, next) {
         try {
-            const files = req.files.files
-            const body = JSON.parse(req.body.body)
-            console.log(files, body)
-            res.json('ok')
+            let files = req.files?.files
+            const data = JSON.parse(req.body.body)
+            const messages = await ChatService.sendMessage(data, files)
+            res.json(messages)
         } catch (e) {
             next(errorHandler(e))
         }
@@ -36,7 +36,23 @@ class ChatController {
 
     async getChatMessages(req, res, next) {
         try {
+            const {count, chatId, type} = req.query
+            const messages = await ChatService.getMessages(chatId, type, count)
+            res.json({chatId, messages})
+        } catch (e) {
+            next(errorHandler(e))
+        }
+    }
 
+    async downloadFile(req, res, next) {
+        try {
+            const {chatId, chatType, messageId} = req.query
+            const file = await ChatService.getStream(chatId, messageId, chatType)
+            res.setHeader('Content-Type', 'application/liquid')
+            res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition')
+            res.setHeader('Content-Disposition', `attachment; filename=${encodeURI(file.fileName)}`)
+
+            res.send(file.fileBuffer)
         } catch (e) {
             next(errorHandler(e))
         }
