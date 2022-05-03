@@ -50,12 +50,12 @@ export const RoomMainPanel = observer(({roomId}: Props) => {
                     <img src={`/room-image/${currentRoom?.roomId}--${currentRoom?.roomImageId}.png`} alt="" className="room-image"/>
                     <div className='room-info__menu'>
                         <span>{currentRoom?.name}</span>
-                        <button hidden={currentRoom?.owner !== user.user.userId}>Room settings</button>
+                        <button hidden={true || currentRoom?.owner !== user.user.userId}>Room settings</button>
                     </div>
                     <div className="spacer"></div>
                     <div className="control-panel">
                         <button className='control-panel__connect' onClick={connectHandler}>Connect to room</button>
-                        <button className='control-panel__invite'>Invite friends</button>
+                        <button className='control-panel__invite' hidden>Invite friends</button>
                         <button className='control-panel__leave' onClick={leaveHandler}>Leave room</button>
                     </div>
                 </div>
@@ -66,8 +66,9 @@ export const RoomMainPanel = observer(({roomId}: Props) => {
                     <div className="members-list__container">
                         <div className="members-list__content">
                             {
-                                currentRoom?.roomMembers.map(user => {
-                                    return (<FriendTemplate key={user.userId} data={{id: user.userId, user}} props={{buttonConfig: {}}}/>)
+                                currentRoom?.roomMembers.map(member => {
+                                    if (member.userId === user.user.userId) return null
+                                    return (<FriendTemplate key={member.userId} data={{id: member.userId, user: member}} props={{buttonConfig: {}}}/>)
                                 })
                             }
                         </div>

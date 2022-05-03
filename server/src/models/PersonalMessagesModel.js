@@ -4,10 +4,13 @@ const e = require("express");
 
 const PersonalMessagesModel = sequelize.define('personal_messages', {
     id: {type: DataTypes.UUID, primaryKey: true, notNull: true},
-    text_path: {type: DataTypes.STRING, notNull: true},
+    value: {type: DataTypes.STRING, notNull: true},
     message_type: {type: DataTypes.STRING, notNull: true},
     dispatch_date: {type: DataTypes.DATE, notNull: true},
-    checked: {type: DataTypes.BOOLEAN, notNull: true}
+    file_name: {type: DataTypes.STRING},
+    file_size: {type: DataTypes.INTEGER}
+    //source_user_id - ссылка на отправителя
+
 })
 
 module.exports = PersonalMessagesModel

@@ -3,8 +3,9 @@ import './Chat.css'
 import {ChatElementType} from "../../types/ChatElementType";
 import {MainContext} from "../../index";
 import {BsFileEarmark} from "react-icons/bs";
-import {IoSend} from "react-icons/io5";
+import {IoCloseSharp, IoSend} from "react-icons/io5";
 import {ImAttachment} from "react-icons/im";
+import ChatsController from "../../controllers/ChatsController";
 
 interface Props {
     chat: ChatElementType
@@ -13,6 +14,7 @@ interface Props {
 export const Chat = ({chat}: Props) => {
     const {profile, user} = useContext(MainContext)
     const [messageValue, setMessageValue] = useState('')
+    const [attachedFiles, setAttachedFiles] = useState<File[]>([])
 
     const changeHandler = (e: any) => {
         setMessageValue(e.target.innerText.trim())
@@ -40,6 +42,28 @@ export const Chat = ({chat}: Props) => {
         return result
     }
 
+    const fileInputChange = (e: any) => {
+        setAttachedFiles(prevState => [...prevState, ...e.target.files])
+    }
+
+    const removeFile = (index: number) => {
+        setAttachedFiles(prevState => prevState.filter((file, i) => index !== i))
+    }
+
+    const sendMessage = () => {
+        if (user.user.userId && (messageValue.trim().length || attachedFiles.length)) {
+            ChatsController.sendMessage(
+                {
+                    message: messageValue,
+                    chatId: chat.chatId,
+                    dispatchDate: new Date().toJSON(),
+                    userId: user.user.userId
+                },
+                attachedFiles
+            )
+        }
+    }
+
     return (
         <div className='chat-container'>
             <div className="message-list">
@@ -47,14 +71,6 @@ export const Chat = ({chat}: Props) => {
                     {
                         chat.messages.map(message => {
                             let sender = chat.chatMembers.find(member => member.userId === message.senderUserId)
-                            if (!sender && user.user.userId) {
-                                sender = {
-                                    userId: user.user.userId,
-                                    username: profile.settings.username,
-                                    userImageId: profile.settings.userImageId,
-                                    status: profile.settings.status || 'active'
-                                }
-                            }
                             const {year, month, date, hour, minute} = splitDate(message.sendDate)
                             const whoseMessage = message.senderUserId === user.user.userId ? 'my-message' : 'other-user-message'
                             return (
@@ -92,12 +108,26 @@ export const Chat = ({chat}: Props) => {
                 </div>
             </div>
             <div className="chat-input">
-                <label>
-                    <ImAttachment/>
-                    <input type="file" multiple hidden/>
-                </label>
-                <div className={`textarea${messageValue.length ? '' : ' empty'}`} contentEditable onKeyUp={changeHandler} aria-required></div>
-                <button><IoSend/></button>
+                <div className="attached-files-block" hidden={!attachedFiles.length}>
+                    {
+                        attachedFiles.map((file, i) => (
+                            <div key={i} className='attached-file'>
+                                <button className="remove" onClick={() => removeFile(i)}><IoCloseSharp/></button>
+                                <span className="file_icon"><BsFileEarmark/></span>
+                                <span className="filename">{file.name}</span>
+                                <span className="file-size">{formatSize(file.size)}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className="input-block">
+                    <label>
+                        <ImAttachment/>
+                        <input type="file" multiple hidden onChange={fileInputChange}/>
+                    </label>
+                    <div className={`textarea${messageValue.length ? '' : ' empty'}`} contentEditable onKeyUp={changeHandler} aria-required></div>
+                    <button onClick={sendMessage}><IoSend/></button>
+                </div>
             </div>
         </div>
     );

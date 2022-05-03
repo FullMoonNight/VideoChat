@@ -21,7 +21,7 @@ interface Params {
 }
 
 export const RoomPanel = observer(({room}: Params) => {
-    const {rooms, user, profile, chats} = useContext(MainContext)
+    const {user, chats} = useContext(MainContext)
     const {closeHandler} = useContext(WinContext)
     const roomMembers = useMemo(() => {
         const membersMap: { [key: string]: UserElementType } = {}
@@ -38,9 +38,9 @@ export const RoomPanel = observer(({room}: Params) => {
             <div className='room-panel'>
                 <div className="room-panel__content">
                     {clients.map(clientObj => {
-                        let member: { userId: string, userImageId: string, username: string }
-                        if (clientObj.socketId === 'local') {
-                            member = {userId: user.user.userId || '', userImageId: profile.settings.userImageId, username: profile.settings.username}
+                        let member: UserElementType
+                        if (clientObj.socketId === 'local' && user.user.userId) {
+                            member = roomMembers[user.user.userId]
                         } else {
                             member = roomMembers[clientObj.userId]
                         }

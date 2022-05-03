@@ -158,47 +158,96 @@
         padding: 10px;
         box-sizing: border-box;
         width: 100%;
-        display: flex;
-        align-items: center;
         backdrop-filter: brightness(80%);
 
-        button, label {
-            background-color: transparent;
-            border: none;
-            border-radius: 50%;
-            font-size: 22px;
-            width: 30px;
-            height: min-content;
-            line-height: 10px;
-            color: var(--accent-color);
-            cursor: pointer;
-            text-align: center;
+        .attached-files-block {
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--accent-color);
 
-            &:hover {
-                filter: brightness(80%);
+            .attached-file {
+                position: relative;
+                padding-left: 10px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+
+                &:hover {
+                    button.remove {
+                        display: block;
+                    }
+                }
+
+                button.remove {
+                    position: absolute;
+                    background-color: transparent;
+                    border: none;
+                    color: var(--text-color);
+                    cursor: pointer;
+                    display: none;
+                    left: 0;
+                }
+
+                .file_icon {
+                    font-size: 17px;
+                    margin-left: 10px;
+                    line-height: 10px;
+                }
+
+                .filename {
+                    margin-left: 10px;
+                }
+
+                .file-size {
+                    margin-left: 10px;
+                }
+
             }
         }
 
-        .textarea {
-            flex-grow: 1;
-            margin: 0 10px;
-            padding: 10px 15px;
-            max-height: 250px;
-            box-sizing: border-box;
-            outline: none;
-            background-color: var(--background-color);
-            filter: brightness(60%);
-            border-radius: 5px;
-            font-size: 17px;
-            overflow-y: scroll;
+        .input-block {
+            display: flex;
+            align-items: center;
 
-            &.empty {
-                &:after {
-                    content: 'Message';
-                    opacity: .5;
-                    cursor: text;
+            button, label {
+                background-color: transparent;
+                border: none;
+                border-radius: 50%;
+                font-size: 22px;
+                width: 30px;
+                height: min-content;
+                line-height: 10px;
+                color: var(--accent-color);
+                cursor: pointer;
+                text-align: center;
+
+                &:hover {
+                    filter: brightness(80%);
+                }
+            }
+
+            .textarea {
+                flex-grow: 1;
+                margin: 0 10px;
+                padding: 10px 15px;
+                max-height: 250px;
+                box-sizing: border-box;
+                outline: none;
+                background-color: var(--background-color);
+                filter: brightness(60%);
+                border-radius: 5px;
+                font-size: 17px;
+                overflow-y: scroll;
+
+                &.empty {
+                    &:after {
+                        content: 'Message';
+                        opacity: .5;
+                        cursor: text;
+                    }
                 }
             }
         }
+
     }
 }

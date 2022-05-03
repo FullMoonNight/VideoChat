@@ -5,7 +5,7 @@ export interface ConfirmRoomParams extends Params {
     roomId: string
 }
 
-export class ConfirmRoomJoin extends BaseRequest<any> {
+export class ConfirmRoomJoinRequest extends BaseRequest<any> {
     method: MethodType = 'post'
     route: string = '/user_rooms/confirm'
     parameters: ConfirmRoomParams

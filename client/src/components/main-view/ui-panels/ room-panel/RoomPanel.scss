@@ -178,9 +178,14 @@
 
         &__chat-block {
             position: absolute;
-            height: 90%;
+            height: 85%;
             width: 400px;
+            box-sizing: border-box;
+            right: 10px;
+            bottom: 100px;
             background-color: var(--background-color);
+            outline: 1px solid var(--accent-color);
+            border-radius: 10px;
         }
     }
 

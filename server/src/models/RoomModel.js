@@ -9,6 +9,7 @@ const RoomModel = sequielize.define('room', {
     chat_enable: {type: DataTypes.BOOLEAN, notNull: true},
     text_editor_enable: {type: DataTypes.BOOLEAN, notNull: true},
     handwritten_editor_enable: {type: DataTypes.BOOLEAN, notNull: true},
+    //owner - создатель комнаты
 })
 
 module.exports = RoomModel

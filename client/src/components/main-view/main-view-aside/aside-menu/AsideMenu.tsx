@@ -9,13 +9,12 @@ import {observer} from "mobx-react-lite";
 import {FriendMainPanel} from "../../main-panels/friend-main-panel/FriendMainPanel";
 import {CreateRoomBtn} from "../aside-components/create-room-btn/CreateRoomBtn";
 import {ConferenceRoomTemplate} from "../../list-templates/conference-room-template/ConferenceRoomTemplate";
-import {toJS} from "mobx";
 import RoomController from "../../../../controllers/RoomController";
 import {FaUserFriends} from "react-icons/fa";
 import {IoChatbubble, IoChatbubbles} from "react-icons/io5";
 import {BsCameraVideoFill} from "react-icons/bs";
 import {ChatTemplate} from "../../list-templates/chat-template/ChatTemplate";
-import {DirectMessagesMainPanel} from "../../main-panels/dirrect-messages-main-panel/DirectMessagesMainPanel";
+import ChatsController from "../../../../controllers/ChatsController";
 
 const formatData = (dataList: any[], idValue: string) => {
     if (idValue === 'id') return dataList
@@ -37,13 +36,18 @@ export const AsideMenu = observer(() => {
 
     // Загрузка данных для всех элементов меню
     useEffect(() => {
-        Promise.all([UserFriendsController.getAllFriends(), RoomController.getUserRooms()])
-            .then(() => {
-                const savedActiveType = localStorage.getItem('activeMenuItem')
-                if (savedActiveType) {
-                    setActiveElement(savedActiveType, null)
-                }
-            });
+        Promise.all(
+            [
+                UserFriendsController.getAllFriends(),
+                RoomController.getUserRooms(),
+                ChatsController.getUserChats()
+            ]
+        ).then(() => {
+            const savedActiveType = localStorage.getItem('activeMenuItem')
+            if (savedActiveType) {
+                setActiveElement(savedActiveType, null)
+            }
+        });
     }, [])
 
     const [viewConfiguration, setViewConfiguration] = useState<ViewConfigurationType>({})
@@ -94,10 +98,9 @@ export const AsideMenu = observer(() => {
                 setViewConfiguration({
                     asideComponent: <AsideList
                         Template={ChatTemplate}
-                        dataList={formatData(chats.chats, 'chatId')}
+                        dataList={formatData(chats.chats.filter(chat => chat.type === 'common'), 'chatId')}
                         props={{}}
                     />,
-                    mainComponent: <DirectMessagesMainPanel chat={chats.chats[0]}/>,
                 })
                 break;
             case 'groupChats':
@@ -125,7 +128,7 @@ export const AsideMenu = observer(() => {
 
     const clickHandler = (e: any) => {
         const element = e.target.closest('.menu-item')
-        const elementType = element.dataset.name
+        const elementType = element?.dataset?.name
         if (!elementType) return
 
         setActiveElement(elementType, element)

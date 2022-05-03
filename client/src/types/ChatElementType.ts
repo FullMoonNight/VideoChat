@@ -6,5 +6,5 @@ export interface ChatElementType {
     chatId: string,
     chatMembers: UserElementType[]
     messages: (TextMessageElementType | FileMessageElementType)[]
-    type: 'direct' | 'group'
+    type: 'common' | 'room'
 }

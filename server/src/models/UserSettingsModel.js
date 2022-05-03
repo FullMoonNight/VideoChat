@@ -8,6 +8,7 @@ const UserSettingsModel = sequelize.define('user_settings', {
     username: {type: DataTypes.STRING},
     imageId: {type: DataTypes.UUID},
     status: {type: DataTypes.STRING}
+    //user_id - ссылка на пользователя
 })
 
 module.exports = UserSettingsModel

@@ -55,7 +55,7 @@ const tempChat: ChatElementType[] = [{
             size: 1300
         }
     ],
-    type: 'direct'
+    type: 'room'
 }]
 
 class ChatStore {
@@ -70,6 +70,13 @@ class ChatStore {
     @action
     setChats(chats: ChatElementType[]) {
         this.chats = chats
+    }
+
+    @action
+    addChat(chat: ChatElementType) {
+        const chatInList = this.chats.find(currChat => chat.chatId === currChat.chatId)
+        if (chatInList) return
+        this.chats = [...this.chats, chat]
     }
 }
 

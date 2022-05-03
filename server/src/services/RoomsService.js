@@ -12,14 +12,9 @@ const ChatService = require('../services/ChatService')
 class RoomsService {
     async getUserRooms(userId) {
         return await sequelize.transaction(async () => {
-            const roomsSQL = `
-                select r.room_name, r.chat_enable, r.text_editor_enable, r.handwritten_editor_enable, r.owner, r.room_id, r."imageId", rm.confirm
-                from room_members rm join rooms r on rm.room_id = r.room_id
-                where rm.user_id = :userId;
-            `
-            const [userRooms] = await sequelize.query(roomsSQL, {
-                replacements: {
-                    userId
+            const userRooms = await RoomMembers.findAll({
+                where: {
+                    user_id: userId
                 }
             })
 
@@ -51,7 +46,6 @@ class RoomsService {
                 from room_members rm join user_settings us on rm.user_id = us.user_id
                                      join rooms r on rm.room_id = r.room_id
                 where rm.room_id = :roomId
-                and rm.user_id <> :currUserId
             `
 
             const [roomMembers] = await sequelize.query(roomMembersSQL, {

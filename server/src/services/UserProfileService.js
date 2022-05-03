@@ -1,12 +1,9 @@
 const sequelize = require('../database')
 const {UserSettingsModel} = require("../models");
-const {createCanvas, loadImage} = require('canvas')
 const fs = require("fs/promises");
-const {constants} = require('fs')
 
 const path = require("path");
 const {v4} = require("uuid");
-const sharp = require('sharp')
 const {generateImage} = require("../utils/GenerateImageFunction");
 
 

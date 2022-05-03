@@ -2,10 +2,10 @@ import CreateNewRoomRequest, {CreateNewRoomParams} from "../requests/rooms/Creat
 import GetUserRoomsRequest from "../requests/rooms/GetUserRoomsRequest";
 import MessageController from "./MessageController";
 import {roomStore} from "../stores/roomStore";
-import {ConfirmRoomJoin, ConfirmRoomParams} from "../requests/rooms/ConfirmRoomJoin";
+import {ConfirmRoomJoinRequest, ConfirmRoomParams} from "../requests/rooms/ConfirmRoomJoinRequest";
 import {LeaveRoomParams, LeaveRoomRequest} from "../requests/rooms/LeaveRoomRequest";
-import {Controller} from "@react-spring/web";
 import {GetRoomInfoParams, GetRoomInfoRequest} from "../requests/rooms/GetRoomInfoRequest";
+import ChatsController from "./ChatsController";
 
 export default class RoomController {
     //todo добавить метод, для загрузки одной комнаты и изменить обновление
@@ -18,6 +18,7 @@ export default class RoomController {
         if (result.status === 200) {
             MessageController.success(`New room '${result.data.roomName}' has been created`)
             await this.getUserRooms()
+            params.room.chat && await ChatsController.getUserChats()
         }
     }
 
@@ -40,7 +41,7 @@ export default class RoomController {
     }
 
     static async confirmJoinRoom(params: ConfirmRoomParams) {
-        const command = new ConfirmRoomJoin(params)
+        const command = new ConfirmRoomJoinRequest(params)
         const result = await command.execute()
 
         if (result.status === 200) {

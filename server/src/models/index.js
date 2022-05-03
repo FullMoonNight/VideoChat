@@ -5,8 +5,10 @@ const ChatMessagesModel = require('./ChatMessagesModel')
 const RoomChatModel = require('./RoomChatModel')
 const RoomModel = require('./RoomModel')
 const FriendsModel = require('./FriendsModel')
-const PersonalMessagesModel = require('./PersonalMessages')
+const PersonalMessagesModel = require('./PersonalMessagesModel')
 const RoomMembers = require('./RoomMembers')
+const CommonChatMembersModel = require('./CommonChatMembersModel')
+const CommonChatsModel = require('./CommonChatsModel')
 
 const {DataTypes} = require("sequelize");
 
@@ -91,6 +93,16 @@ ChatMessagesModel.belongsTo(RoomChatModel, {
     keyType: DataTypes.UUID
 })
 
+//CommonChat - PersonalMessages
+CommonChatsModel.hasMany(PersonalMessagesModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+PersonalMessagesModel.belongsTo(CommonChatsModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+
 //User - PersonalMessages
 UserModel.hasMany(PersonalMessagesModel, {
     foreignKey: 'source_user_id',
@@ -101,12 +113,23 @@ PersonalMessagesModel.belongsTo(UserModel, {
     keyType: DataTypes.UUID
 })
 
-UserModel.hasMany(PersonalMessagesModel, {
-    foreignKey: 'destination_user_id',
+//User - CommonChatMembers
+UserModel.hasMany(CommonChatMembersModel, {
+    foreignKey: 'user_id',
     keyType: DataTypes.UUID
 })
-PersonalMessagesModel.belongsTo(UserModel, {
-    foreignKey: 'destination_user_id',
+CommonChatMembersModel.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    keyType: DataTypes.UUID
+})
+
+//Chat - CommonChatMembers
+CommonChatsModel.hasMany(CommonChatMembersModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+CommonChatMembersModel.belongsTo(CommonChatsModel, {
+    foreignKey: 'chat_id',
     keyType: DataTypes.UUID
 })
 
@@ -139,5 +162,7 @@ module.exports = {
     RoomModel,
     FriendsModel,
     PersonalMessagesModel,
-    RoomMembers
+    RoomMembers,
+    CommonChatMembersModel,
+    CommonChatsModel
 }
