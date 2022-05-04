@@ -5,20 +5,16 @@ interface Props {
     passwordHandler: (password: string) => void,
     email: string,
     password: string,
+    submitForm: (event: any) => void
 }
 
-export const LoginBlock = ({emailHandler, passwordHandler, email, password}: Props) => {
+export const LoginBlock = ({emailHandler, passwordHandler, email, password, submitForm}: Props) => {
     return (
-        <form>
-            <h3>Login</h3>
-            <div className="input-field">
-                <input type="email" name="" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
-                <label htmlFor="email">Email</label>
-            </div>
-            <div className="input-field">
-                <input type="password" name="" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
-                <label htmlFor="password">Password</label>
-            </div>
+        <form action="#" className="form" id="form2">
+            <h2 className="form__title">Sign In</h2>
+            <input className="input" type="email" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
+            <input className='input' type="password" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
+            <button className="btn" onClick={(e) => submitForm(e)}>Sign In</button>
         </form>
     );
 };

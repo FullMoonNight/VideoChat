@@ -18,6 +18,7 @@ export default class RoomController {
         if (result.status === 200) {
             MessageController.success(`New room '${result.data.roomName}' has been created`)
             await this.getUserRooms()
+            await ChatsController.getUserChats()
             params.room.chat && await ChatsController.getUserChats()
         }
     }

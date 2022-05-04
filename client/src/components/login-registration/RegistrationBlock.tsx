@@ -7,24 +7,17 @@ interface Props {
     username: string,
     email: string,
     password: string,
+    submitForm: (event: any) => void
 }
 
-export const RegistrationBlock = ({usernameHandler, emailHandler, passwordHandler, username, email, password}: Props) => {
+export const RegistrationBlock = ({usernameHandler, emailHandler, passwordHandler, username, email, password, submitForm}: Props) => {
     return (
-        <form>
-            <h3>sign up</h3>
-            <div className="input-field">
-                <input type="text" name="" id="username" required={true} autoComplete="off" value={username} onChange={(e) => usernameHandler(e.target.value)}/>
-                <label htmlFor="username">Username</label>
-            </div>
-            <div className="input-field">
-                <input type="email" name="" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
-                <label htmlFor="email">Email</label>
-            </div>
-            <div className="input-field">
-                <input type="password" name="" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
-                <label htmlFor="password">Password</label>
-            </div>
+        <form action="#" className="form" id="form1">
+            <h2 className="form__title">Sign Up</h2>
+            <input className='input' type="text" id="username" required={true} value={username} onChange={(e) => usernameHandler(e.target.value)}/>
+            <input className='input' type="email" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
+            <input className='input' type="password" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
+            <button className="btn" onClick={(e) => submitForm(e)}>Sign Up</button>
         </form>
     );
 };

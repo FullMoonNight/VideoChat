@@ -26,16 +26,19 @@ interface Props {
 }
 
 export const FriendTemplate = ({data, props}: Props) => {
-    const {chats, user} = useContext(MainContext)
+    const {chats, user, app} = useContext(MainContext)
     const {setPanelsHandler} = useContext(ViewPanelsContext)
     const clickHandler = () => {
     }
 
     const messageBtnHandler = async () => {
+        if (app.waiting) return
+        app.appStartWaiting()
         let certainChat = chats.chats.find(chat => chat.type === 'common' && chat.chatMembers.length === 2 && chat.chatMembers.find(member => member.userId === data.user.userId))
         if (!certainChat && user.user.userId) {
             certainChat = await ChatsController.createChat({initiatorUserId: user.user.userId, interlocutorId: data.user.userId})
         }
+        app.appEndWaiting()
         if (!certainChat) return
         setPanelsHandler({
             mainComponent: <DirectMessagesMainPanel chat={certainChat}/>

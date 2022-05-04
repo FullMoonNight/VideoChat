@@ -31,7 +31,9 @@ export const LoginRegistrationPanel = observer(() => {
         panelMode === "login" ? setPanelMode('registration') : setPanelMode("login")
     }
 
-    async function submitForm() {
+    async function submitForm(e: any) {
+        e.preventDefault()
+        if (app.waiting) return
         app.appStartWaiting()
         if (panelMode === 'registration') {
             await AuthController.registration({username, email, password})
@@ -42,38 +44,46 @@ export const LoginRegistrationPanel = observer(() => {
     }
 
     return (
-        <div className="auth-container">
-            <div className="wrapper">
-                <div className="auth-panel">
-                    {
-                        panelMode === 'registration' &&
-                        <RegistrationBlock
-                            usernameHandler={usernameHandler}
-                            emailHandler={emailHandler}
-                            passwordHandler={passwordHandler}
-                            username={username}
-                            email={email}
-                            password={password}/>
-                    }
-                    {
-                        panelMode === 'login' &&
-                        <LoginBlock
-                            emailHandler={emailHandler}
-                            passwordHandler={passwordHandler}
-                            email={email}
-                            password={password}/>
-                    }
-                    <button onClick={submitForm} disabled={app.waiting}>
-                        {panelMode === "login" ? "login" : "sign up"}
-                    </button>
-                </div>
-                <div className="panel-switch">
-                    <button onClick={togglePanelMode} disabled={app.waiting}>
-                        {panelMode === "registration" ? "login" : "sing up"}
-                    </button>
+        <>
+            <div className="auth-registration-container">
+                <div className={`container ${panelMode === 'login' ? 'right-panel-active' : ''}`}>
+                    <div className="container__form container--signup">
+                        {
+                            panelMode === 'login' &&
+                            <LoginBlock
+                                emailHandler={emailHandler}
+                                passwordHandler={passwordHandler}
+                                email={email}
+                                password={password}
+                                submitForm={submitForm}/>
+                        }
+                    </div>
+                    <div className="container__form container--signin">
+                        {
+                            panelMode === 'registration' &&
+                            < RegistrationBlock
+                                usernameHandler={usernameHandler}
+                                emailHandler={emailHandler}
+                                passwordHandler={passwordHandler}
+                                username={username}
+                                email={email}
+                                password={password}
+                                submitForm={submitForm}/>
+                        }
+                    </div>
+
+                    <div className="container__overlay">
+                        <div className="overlay">
+                            <div className="overlay__panel overlay--left">
+                                <button className="btn" onClick={togglePanelMode}>Sign Up</button>
+                            </div>
+                            <div className="overlay__panel overlay--right">
+                                <button className="btn" onClick={togglePanelMode}>Sign In</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-        </div>
+        </>
     );
 });

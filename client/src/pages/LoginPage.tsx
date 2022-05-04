@@ -5,6 +5,5 @@ import {Link} from "react-router-dom";
 export const LoginPage = () => (
     <>
         <LoginRegistrationPanel/>
-        <Link to='main'>Main</Link>
     </>
 )
