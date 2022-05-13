@@ -1,0 +1,28 @@
+.message-box {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  transform: translateY(-100%);
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+.message-box .message {
+  border-radius: 10px;
+  padding: 5px 15px;
+  margin: 10px;
+  opacity: 1;
+  cursor: pointer;
+  user-select: none;
+}
+.message-box .message.success {
+  border: 3px solid #10a856;
+}
+.message-box .message.error {
+  border: 3px solid #e74c3c;
+}
+.message-box .message.primary {
+  border: 3px solid #3498db;
+}
+
+/*# sourceMappingURL=MessageFeed.css.map */

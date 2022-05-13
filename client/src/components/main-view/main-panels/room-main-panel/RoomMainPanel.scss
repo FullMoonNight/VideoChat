@@ -1,0 +1,131 @@
+@import '../../../../scss/mixins';
+
+.room-main-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    header {
+        display: flex;
+        align-items: center;
+        min-height: 50px;
+        backdrop-filter: brightness(80%);
+        box-sizing: border-box;
+        padding: 0 10px;
+        user-select: none;
+        font-size: 20px;
+
+
+        .room-name {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .crown-emblem {
+            margin-left: 15px;
+            color: #ffff91;
+            font-size: 15px;
+            margin-top: 6px;
+        }
+    }
+
+    .room-main-panel__room-info {
+        margin-top: 10px;
+        padding: 0 10px;
+
+        .room-info__content {
+            $element-size: 130px;
+
+            display: flex;
+            align-items: start;
+            backdrop-filter: brightness(80%);
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+
+            img {
+                width: $element-size;
+                height: $element-size;
+                border-radius: 15px;
+            }
+
+            .room-info__menu {
+                margin-left: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: $element-size;
+
+                span {
+                    font-weight: 600;
+                    font-size: 30px;
+                }
+
+                button {
+                    @include common-button;
+                    height: 25px;
+                    width: 150px;
+                    font-size: 16px;
+                    color: var(--text-color);
+                    background-color: transparent;
+                    border: 1px solid var(--accent-color);
+                }
+            }
+
+            .spacer {
+                flex-grow: 1;
+            }
+
+            .control-panel {
+
+                button {
+                    @include common-button;
+                    height: 30px;
+                    margin-left: 20px;
+                    font-size: 18px;
+
+                    &.control-panel__connect {
+                        background-color: #10a856;
+                    }
+
+                    &.control-panel__invite {
+                        background-color: #3498db;
+                    }
+
+                    &.control-panel__leave {
+                        background-color: #ea3633;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .main-content {
+        margin-top: 10px;
+        padding: 0 10px 45px;
+        flex-grow: 1;
+        overflow: hidden;
+
+
+        .members-list {
+            height: 100%;
+
+            h2 {
+                height: 35px;
+            }
+
+            &__container {
+                height: 100%;
+                padding: 5px;
+                box-sizing: border-box;
+                overflow: hidden;
+                overflow-y: scroll;
+                backdrop-filter: brightness(80%);
+                border-radius: 5px;
+            }
+        }
+    }
+}

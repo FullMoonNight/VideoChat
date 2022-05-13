@@ -1,0 +1,134 @@
+@import "../../../../scss/mixins";
+
+.friend-list-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .friend-type-header {
+        display: flex;
+        align-items: center;
+        min-height: 50px;
+        backdrop-filter: brightness(80%);
+        box-sizing: border-box;
+        padding: 0 10px;
+        user-select: none;
+        font-size: 20px;
+
+        p {
+            font-weight: 600;
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+
+            li {
+                cursor: pointer;
+                position: relative;
+                display: flex;
+                align-items: end;
+                margin-left: 20px;
+                font-weight: 300;
+
+                &.active {
+                    color: var(--accent-color);
+                }
+
+                &.add-friends {
+                    padding: 0 5px;
+                    background-color: var(--accent-color);
+                    border-radius: 5px;
+                    color: #000;
+
+                    &.active {
+                        background: none;
+                        color: var(--accent-color);
+                    }
+
+                }
+
+                p {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    transform: translateX(50%);
+                    background-color: red;
+                    height: 14px;
+                    min-width: 14px;
+                    padding: 0 3px;
+                    box-sizing: border-box;
+                    border-radius: 7px;
+                    color: #fff;
+                    font-size: 14px;
+                    line-height: 14px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .search-line {
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        form {
+            width: 100%;
+
+            input {
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 5px;
+                backdrop-filter: brightness(70%);
+                background: none;
+                outline: none;
+                color: var(--text-color);
+                font-size: 18px;
+                padding: 0 7px;
+                box-sizing: border-box;
+
+                &:focus {
+                    outline: 1px solid var(--accent-color);
+                }
+            }
+        }
+
+        button {
+            @include common-button;
+            min-width: 60px;
+            margin-left: 10px;
+        }
+    }
+
+    .section-name {
+        padding: 0 10px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .friend-list-container {
+        flex-grow: 1;
+        padding: 10px;
+        overflow: hidden;
+
+        .friend-list-block {
+            height: 100%;
+            box-sizing: border-box;
+            padding: 5px;
+            border-radius: 5px;
+            backdrop-filter: brightness(70%);
+            overflow: hidden;
+            overflow-y: scroll;
+
+            .friend-list-content {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+.main-view-aside {
+    height: 100%;
+    min-width: 360px;
+    background-color: var(--main-color);
+    display: flex;
+    flex-direction: column;
+
+    .aside-header {
+        display: flex;
+        height: min-content;
+        background-color: var(--main-color-contrast);
+
+        .main-logo {
+            flex-grow: 1;
+            line-height: 50px;
+            font-size: 30px;
+            text-align: center;
+            padding: 0 5px;
+        }
+    }
+
+    .aside-main {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        overflow: hidden;
+
+        .aside-list-container{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+    }
+}

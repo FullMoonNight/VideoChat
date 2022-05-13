@@ -1,0 +1,46 @@
+.user-menu {
+    $separator-height: 1px;
+
+    position: absolute;
+    bottom: 0;
+    transform: translate(-10px, 100%);
+    width: 100%;
+    background-color: var(--main-color-contrast);
+    border-radius: 0 0 5px 0;
+    z-index: 100;
+
+    div {
+        position: relative;
+        height: 29px;
+        width: 100%;
+        margin-top: $separator-height;
+        display: flex;
+        justify-content: center;
+
+        &:before {
+            content: '';
+            position: absolute;
+            height: $separator-height;
+            width: 90%;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, -$separator-height);
+            background-color: var(--accent-color);
+            color: rgba(0, 0, 0, 0);
+        }
+
+        span {
+            display: block;
+            margin-top: 1px;
+            width: 90%;
+            height: 90%;
+            padding: 0 5px;
+            border-radius: 3px;
+            cursor: pointer;
+
+            &:hover {
+                backdrop-filter: brightness(80%);
+            }
+        }
+    }
+}

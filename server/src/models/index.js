@@ -5,7 +5,11 @@ const ChatMessagesModel = require('./ChatMessagesModel')
 const RoomChatModel = require('./RoomChatModel')
 const RoomModel = require('./RoomModel')
 const FriendsModel = require('./FriendsModel')
-const PersonalMessagesModel = require('./PersonalMessages')
+const PersonalMessagesModel = require('./PersonalMessagesModel')
+const RoomMembers = require('./RoomMembers')
+const CommonChatMembersModel = require('./CommonChatMembersModel')
+const CommonChatsModel = require('./CommonChatsModel')
+
 const {DataTypes} = require("sequelize");
 
 //User-Tokens relation
@@ -70,19 +74,31 @@ FriendsModel.belongsTo(UserModel, {
 //Room-RoomChat relation
 RoomModel.hasOne(RoomChatModel, {
     foreignKey: 'room_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
+    onDelete: 'CASCADE'
 })
 RoomChatModel.belongsTo(RoomModel, {
     foreignKey: 'room_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
 })
 
 //RoomChat-ChatMessages relation
 RoomChatModel.hasMany(ChatMessagesModel, {
     foreignKey: 'chat_id',
-    keyType: DataTypes.UUID
+    keyType: DataTypes.UUID,
+    onDelete: 'CASCADE',
 })
 ChatMessagesModel.belongsTo(RoomChatModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+
+//CommonChat - PersonalMessages
+CommonChatsModel.hasMany(PersonalMessagesModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+PersonalMessagesModel.belongsTo(CommonChatsModel, {
     foreignKey: 'chat_id',
     keyType: DataTypes.UUID
 })
@@ -97,13 +113,44 @@ PersonalMessagesModel.belongsTo(UserModel, {
     keyType: DataTypes.UUID
 })
 
-UserModel.hasMany(PersonalMessagesModel, {
-    foreignKey: 'destination_user_id',
+//User - CommonChatMembers
+UserModel.hasMany(CommonChatMembersModel, {
+    foreignKey: 'user_id',
     keyType: DataTypes.UUID
 })
-PersonalMessagesModel.belongsTo(UserModel, {
-    foreignKey: 'destination_user_id',
+CommonChatMembersModel.belongsTo(UserModel, {
+    foreignKey: 'user_id',
     keyType: DataTypes.UUID
+})
+
+//Chat - CommonChatMembers
+CommonChatsModel.hasMany(CommonChatMembersModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+CommonChatMembersModel.belongsTo(CommonChatsModel, {
+    foreignKey: 'chat_id',
+    keyType: DataTypes.UUID
+})
+
+//RoomMembers - Room
+UserModel.hasMany(RoomMembers, {
+    foreignKey: 'user_id',
+    keyType: DataTypes.UUID
+})
+RoomMembers.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    keyType: DataTypes.UUID
+})
+
+//RoomModel = Room
+RoomModel.hasMany(RoomMembers, {
+    foreignKey: 'room_id',
+    keyType: DataTypes.UUID
+})
+RoomMembers.belongsTo(RoomModel, {
+    foreignKey: 'room_id',
+    keyType: DataTypes.UUID,
 })
 
 module.exports = {
@@ -115,4 +162,7 @@ module.exports = {
     RoomModel,
     FriendsModel,
     PersonalMessagesModel,
+    RoomMembers,
+    CommonChatMembersModel,
+    CommonChatsModel
 }

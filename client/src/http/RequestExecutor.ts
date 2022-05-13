@@ -21,10 +21,10 @@ class RequestExecutor<T> {
 
     async execute(): Promise<AxiosResponse<T> & AxiosError<ErrorType>> {
         if (this.method === 'post') {
-            let data = this.command.binaryData ? this.command.getBinaryData() : this.command.getParameters()
-            return RequestExecutor.axios.post(this.command.getRoute(), data).catch(reason => reason)
+            let data = this.command.attachment ? this.command.getAttachment() : this.command.getParameters()
+            return RequestExecutor.axios.post(this.command.getRoute(), data, this.command.requestConfiguration).catch(reason => reason)
         } else {
-            return RequestExecutor.axios.get(this.command.getRoute()).catch(reason => reason)
+            return RequestExecutor.axios.get(this.command.getRoute(), this.command.requestConfiguration).catch(reason => reason)
         }
     }
 
@@ -47,7 +47,7 @@ class RequestExecutor<T> {
                 if (error.response.status === 401 && error.config && !originRequest._isRetry) {
                     originRequest._isRetry = true
                     try {
-                        const response = await axios.post<{ accessToken: string }>(`${process.env.REACT_APP_DESTINATION_HOST}/api/user/refresh`, null, {withCredentials: true})
+                        const response = await axios.post<{ accessToken: string }>(`${process.env.REACT_APP_DESTINATION_HOST}/api/authenticate/refresh`, null, {withCredentials: true})
                         localStorage.setItem('accessToken', response.data.accessToken)
                         return axiosInstance.request(originRequest)
                     } catch (e) {

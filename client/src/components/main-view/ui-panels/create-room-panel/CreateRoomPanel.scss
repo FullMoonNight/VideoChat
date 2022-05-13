@@ -1,0 +1,224 @@
+@import "../../../../scss/mixins";
+
+.create-room-panel {
+    width: 800px;
+    padding: 5px 12px 12px;
+    border-radius: 15px;
+    background-color: var(--main-color);
+    color: var(--accent-color);
+    box-sizing: border-box;
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+
+        span {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        button {
+            @include common-button;
+            width: 60px;
+            height: 25px;
+        }
+    }
+
+    .separator-line {
+        width: 100%;
+        height: 1px;
+        background-color: var(--accent-color);
+        margin: 5px 0;
+    }
+
+    .input-block {
+        position: relative;
+        margin-top: 25px;
+
+        label {
+            position: absolute;
+            top: 3px;
+            left: 10px;
+            transition: .3s;
+        }
+
+        input {
+            @include common-text-input;
+            width: 100%;
+            height: 30px;
+        }
+    }
+
+    .checkbox-group {
+        margin-top: 15px;
+        display: flex;
+
+        .checkbox-field {
+            margin: 0 15px 0 5px;
+            padding-left: 25px;
+            display: block;
+            position: relative;
+
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 20px;
+                height: 20px;
+                background-color: var(--main-color-contrast);
+                border-radius: 5px;
+
+                &:after {
+                    content: '';
+                    width: 65%;
+                    height: 30%;
+                    border: solid var(--accent-color);
+                    border-width: 0 0 3px 3px;
+                    position: absolute;
+                    top: 40%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(-45deg);
+                }
+            }
+
+            input:not(:checked) + .checkmark:after {
+                display: none;
+            }
+        }
+    }
+
+    .users-grid {
+        $row-height: 50px;
+        margin-top: 15px;
+
+        .included-users {
+            &__container {
+                overflow-y: scroll;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 5px;
+                grid-template-rows: 50px;
+                padding: 5px;
+                box-sizing: border-box;
+                margin-top: 5px;
+                width: 100%;
+                height: min-content;
+                max-height: $row-height*2;
+                background-color: var(--main-color-contrast);
+                border-radius: 5px;
+            }
+        }
+
+        .available-friends {
+            $transition-time: .3s;
+            margin-top: 15px;
+
+            &__collapsed-block-label {
+                display: flex;
+                align-items: center;
+
+                .line {
+                    flex-grow: 1;
+                    height: 1px;
+                    background-color: var(--accent-color);
+                    margin: 4px 5px 0;
+                }
+
+                .arrow {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transform: rotate(90deg);
+                    transition: $transition-time;
+                    border-radius: 50%;
+                    width: 17px;
+                    height: 17px;
+
+                    &:hover {
+                        background-color: var(--main-color-contrast);
+                    }
+                }
+            }
+
+            .spread-checkbox:checked + .available-friends__collapsed-block-label .arrow {
+                transform: rotate(0deg);
+            }
+
+            .spread-checkbox:checked ~ .available-friends__container {
+                height: $row-height*3;
+            }
+
+            &__container {
+                transition: $transition-time;
+                height: 0;
+                max-height: $row-height*3;
+                overflow-y: scroll;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-column-gap: 5px;
+                grid-template-rows: $row-height;
+                box-sizing: border-box;
+            }
+        }
+
+        .user-card {
+            height: 45px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            margin: 1px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            overflow: hidden;
+
+            &__user-img {
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+            }
+
+            &__username {
+                margin-left: 5px;
+            }
+
+            &__spacer {
+                flex-grow: 1;
+            }
+
+            &__action-btn {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                background-color: transparent;
+                outline: none;
+                border: none;
+                cursor: pointer;
+                color: white;
+                width: 20px;
+                height: 100%;
+
+                &:hover {
+                    backdrop-filter: brightness(80%);
+                    border-left: 1px solid var(--accent-color);
+                }
+
+                &:active {
+                    backdrop-filter: brightness(90%);
+                }
+            }
+
+            &:hover {
+                background-color: var(--main-color-contrast);
+                outline: 1px solid var(--accent-color);
+
+                .user-card__action-btn {
+                    display: block;
+                }
+            }
+        }
+    }
+}

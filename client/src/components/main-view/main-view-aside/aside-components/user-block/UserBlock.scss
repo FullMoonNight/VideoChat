@@ -1,0 +1,75 @@
+.user-profile-block {
+    position: relative;
+    padding: 0 5px;
+    height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    .img-nickname-card {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        width: 100%;
+        height: min-content;
+        padding: 4px 5px;
+        border-radius: 3px;
+
+        &:hover {
+            backdrop-filter: brightness(90%);
+        }
+
+        img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+        }
+
+        .status-username {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            height: 35px;
+
+            .status-emblem {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                box-shadow: 0 0 1px 1px rgb(58, 58, 58);
+
+                &.active {
+                    background-color: #10a856;
+                }
+
+                &.sleep {
+                    background-color: #feca57;
+                }
+
+                &.invisible {
+                    background-color: #b9b9b9;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        width: 50%;
+                        height: 50%;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        border-radius: 50%;
+                        background-color: var(--main-color);
+                    }
+                }
+            }
+
+            .user-username {
+                margin-left: 5px;
+                font-weight: bold;
+                font-size: 15px;
+            }
+        }
+    }
+}
