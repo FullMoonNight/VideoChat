@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
-import './Chat.css'
+import './Chat.scss'
 import {ChatElementType} from "../../types/ChatElementType";
 import {MainContext} from "../../index";
 import {BsFileEarmark} from "react-icons/bs";

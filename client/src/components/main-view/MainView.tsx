@@ -4,7 +4,7 @@ import {MainContext} from "../../index";
 import ProfileSettingsController from "../../controllers/ProfileSettingsController";
 import {observer} from "mobx-react-lite";
 import {useImmer} from "use-immer";
-import './MainView.css'
+import './MainView.scss'
 
 interface ViewPanelsType {
     asidePanel: JSX.Element | null,

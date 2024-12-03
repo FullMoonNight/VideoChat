@@ -1,6 +1,6 @@
 import React, {useContext, useMemo} from 'react';
 import {ChatElementType} from "../../../../types/ChatElementType";
-import './ChatTemplate.css'
+import './ChatTemplate.scss'
 import {MainContext} from "../../../../index";
 import {ViewPanelsContext} from "../../MainView";
 import {DirectMessagesMainPanel} from "../../main-panels/dirrect-messages-main-panel/DirectMessagesMainPanel";

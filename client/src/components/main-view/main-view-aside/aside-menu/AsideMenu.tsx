@@ -1,4 +1,4 @@
-import './AsideMenu.css'
+import './AsideMenu.scss'
 import {useContext, useEffect, useRef, useState} from "react";
 import {ViewPanelsContext} from "../../MainView";
 import {FriendTemplate} from "../../list-templates/friend-template/FriendTemplate";

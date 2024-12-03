@@ -1,4 +1,4 @@
-import './ConferenceRoomTemplate.css'
+import './ConferenceRoomTemplate.scss'
 import {RoomElementType} from "../../../../types/RoomElementType";
 import {useContext} from "react";
 import {RoomMainPanel} from "../../main-panels/room-main-panel/RoomMainPanel";

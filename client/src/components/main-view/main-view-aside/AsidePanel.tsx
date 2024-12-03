@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import './AsidePanel.css'
+import './AsidePanel.scss'
 import {UserBlock} from "./aside-components/user-block/UserBlock";
 import {AsideMenu} from "./aside-menu/AsideMenu";
 import {ViewPanelsContext} from "../MainView";

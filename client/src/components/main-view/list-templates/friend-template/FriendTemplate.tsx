@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import './FriendTemplate.css'
+import './FriendTemplate.scss'
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {UserElementType} from "../../../../types/UserElementType";
 import {AiOutlineCheck, AiOutlineClose, AiOutlineUserDelete, AiOutlineUserAdd, AiOutlineMessage} from "react-icons/ai";

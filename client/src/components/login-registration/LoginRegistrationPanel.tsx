@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {LoginBlock} from "./LoginBlock";
 import {RegistrationBlock} from "./RegistrationBlock";
-import './LoginRegistration.css'
+import './LoginRegistration.scss'
 import AuthController from "../../controllers/AuthController";
 import {MainContext} from "../../index";
 import {observer} from "mobx-react-lite";

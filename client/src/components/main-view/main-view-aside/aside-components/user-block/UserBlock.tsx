@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import './UserBlock.css'
+import './UserBlock.scss'
 import {UserMenu} from "../user-menu/UserMenu";
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../../index";

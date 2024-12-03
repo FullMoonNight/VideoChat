@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef} from 'react';
-import './PaintEditor.css'
+import './PaintEditor.scss'
 
 interface Props {
     onChange: (value: string, event?: any) => void,

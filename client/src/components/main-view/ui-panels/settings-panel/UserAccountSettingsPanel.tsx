@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useContext} from 'react';
-import './UserAccountSettingsPanel.css'
+import './UserAccountSettingsPanel.scss'
 import {useImmer} from "use-immer";
 import ProfileSettingsController from "../../../../controllers/ProfileSettingsController";
 import {observer} from "mobx-react-lite";

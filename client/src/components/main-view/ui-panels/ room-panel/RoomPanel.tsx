@@ -1,5 +1,5 @@
 import React, {useContext, useMemo} from 'react';
-import './RoomPanel.css'
+import './RoomPanel.scss'
 import {useWebRTC} from "../../../../hooks/useWebRTC";
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";

@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react';
 import {Chat} from "../../../chat-component/Chat";
 import {ChatElementType} from "../../../../types/ChatElementType";
-import './DiectMessageMainPanel.css'
+import './DiectMessageMainPanel.scss'
 import {MainContext} from "../../../../index";
 
 interface Props {

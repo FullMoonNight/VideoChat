@@ -22,6 +22,7 @@ body.dark {
     height: 100vh;
     place-items: center;
 
+}
     .container {
         background-color: var(--main-color);
         border-radius: 0.7rem;
@@ -32,7 +33,6 @@ body.dark {
         position: relative;
         width: 100%;
     }
-}
 
 .form__title {
     font-weight: 300;

@@ -2,7 +2,7 @@ import {ChangeEvent, useContext, useEffect, useMemo, useRef, useState} from "rea
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
 import {FriendTemplate} from "../../list-templates/friend-template/FriendTemplate";
-import './FriendMainPanel.css'
+import './FriendMainPanel.scss'
 import UserFriendsController from "../../../../controllers/UserFriendsController";
 import {FriendElementType} from "../../../../types/FriendElementType";
 

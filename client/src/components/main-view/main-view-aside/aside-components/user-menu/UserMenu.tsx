@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import './UserMenu.css'
+import './UserMenu.scss'
 import AuthController from "../../../../../controllers/AuthController";
 import {WinContext} from "../../../../../pages/MainViewPage";
 import {UserAccountSettingsPanel} from "../../../ui-panels/settings-panel/UserAccountSettingsPanel";

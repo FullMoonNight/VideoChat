@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import './MessageFeed.css'
+import './MessageFeed.scss'
 import {MainContext} from "../../index";
 import {observer} from "mobx-react-lite";
 import {useTransition, animated} from "@react-spring/web";

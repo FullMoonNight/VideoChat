@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from "react";
-import './AsideList.css'
+import './AsideList.scss'
 
 interface Props<T, R, P> {
     Template: FunctionComponent<T>,

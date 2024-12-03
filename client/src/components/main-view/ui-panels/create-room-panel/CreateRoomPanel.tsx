@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import {MainContext} from "../../../../index";
-import './CreateRoomPanel.css'
+import './CreateRoomPanel.scss'
 import {useImmer} from "use-immer";
 import RoomController from "../../../../controllers/RoomController";
 import {WinContext} from "../../../../pages/MainViewPage";

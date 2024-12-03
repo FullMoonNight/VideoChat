@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {WinContext} from "../../../../../pages/MainViewPage";
 import {CreateRoomPanel} from "../../../ui-panels/create-room-panel/CreateRoomPanel";
-import './CreateToomBtn.css'
+import './CreateToomBtn.scss'
 
 export const CreateRoomBtn = () => {
     const {setContextWindow} = useContext(WinContext)
