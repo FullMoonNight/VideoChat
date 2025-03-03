@@ -14,9 +14,9 @@ export const RegistrationBlock = ({usernameHandler, emailHandler, passwordHandle
     return (
         <form action="#" className="form" id="form1">
             <h2 className="form__title">Sign Up</h2>
-            <input className='input' type="text" id="username" required={true} value={username} onChange={(e) => usernameHandler(e.target.value)}/>
-            <input className='input' type="email" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
-            <input className='input' type="password" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
+            <input className='input' type="text" id="username" autoComplete="login" required={true} value={username} onChange={(e) => usernameHandler(e.target.value)}/>
+            <input className='input' type="email" id="email" autoComplete="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
+            <input className='input' type="password" id="password" autoComplete="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
             <button className="btn" onClick={(e) => submitForm(e)}>Sign Up</button>
         </form>
     );

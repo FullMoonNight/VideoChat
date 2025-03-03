@@ -8,7 +8,7 @@ class SocketInterface {
     private manager
 
     constructor() {
-        this.manager = new Manager('http://localhost:5000', {
+        this.manager = new Manager('ws://localhost:4001', {
             autoConnect: false,
             reconnectionAttempts: 1000,
             timeout: 2000,

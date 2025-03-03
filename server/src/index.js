@@ -18,7 +18,7 @@ const {} = require('./models')
 
 const SocketInterface = require('./socket/SocketInterface')
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4001;
 
 
 app.use(cors({
@@ -32,12 +32,14 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', MainRouter);
 app.use(ErrorMiddleware);
 
+console.log(path.resolve(__dirname, 'static'))
+
 new SocketInterface(io);
 
 (async function start() {
     try {
         await sequelize.authenticate()
-        await sequelize.sync({alter: true})
+        await sequelize.sync({alter: false})
         server.listen(PORT, () => console.log(`Server has been started on ${PORT}`))
     } catch (e) {
         console.log(e)

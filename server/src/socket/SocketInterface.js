@@ -14,7 +14,8 @@ class SocketInterface {
         if (SocketInterface.#singletonInstance) return SocketInterface.#singletonInstance
 
         io.use((socket, next) => {
-            socket._userId = JwtService.validateAccessToken(socket.handshake.auth.token).userId
+            const user = JwtService.validateAccessToken(socket.handshake.auth.token)
+            socket._userId = user?.userId
             next()
         })
 

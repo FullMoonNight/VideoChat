@@ -12,8 +12,8 @@ export const LoginBlock = ({emailHandler, passwordHandler, email, password, subm
     return (
         <form action="#" className="form" id="form2">
             <h2 className="form__title">Sign In</h2>
-            <input className="input" type="email" id="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
-            <input className='input' type="password" id="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
+            <input className="input" type="email" id="email" autoComplete="email" required={true} value={email} onChange={(e) => emailHandler(e.target.value)}/>
+            <input className='input' type="password" id="password" autoComplete="password" required={true} value={password} onChange={(e) => passwordHandler(e.target.value)}/>
             <button className="btn" onClick={(e) => submitForm(e)}>Sign In</button>
         </form>
     );

@@ -66,6 +66,8 @@ export const UserAccountSettingsPanel = observer(() => {
         closeHandler()
     }
 
+    console.log(panelState)
+
     return (
         <div className='settings-panel'>
             <div className="panel-header">

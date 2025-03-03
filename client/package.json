@@ -15,6 +15,7 @@
     "axios": "^0.23.0",
     "c": "^1.1.1",
     "freeice": "^2.2.2",
+    "http-proxy-middleware": "^3.0.3",
     "mobx": "^6.4.2",
     "mobx-react-lite": "^3.3.0",
     "react": "^17.0.2",
@@ -35,7 +36,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": [
       "react-app",
